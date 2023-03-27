@@ -3,6 +3,7 @@ import styles from "./App.module.css";
 import { onMount } from "solid-js";
 import { getSubmitButton, getTextArea } from "@pages/content/components/elementFinder";
 import { getUserConfig } from "@src/dao/user_config";
+import { compilePrompt } from "@pages/content/components/promptManager";
 
 /********************************************************************
  created:    2023-03-27
@@ -48,36 +49,29 @@ const App = () => {
 
       if ((event.type === "click" || (event instanceof KeyboardEvent && event.key === "Enter")) && !isProcessing) {
 
-        const query = textarea.value.trim();
-
+        const query = textarea.value.trim()
         if (query === "") {
           return;
         }
 
-        textarea.value = "";
-
-        const userConfig = await getUserConfig();
-
         isProcessing = true;
-
+        const userConfig = await getUserConfig()
         if (!userConfig.webAccess) {
-          textarea.value = query;
-          pressEnter();
-          isProcessing = false;
-          return;
+          pressEnter()
+          isProcessing = false
+          return
         }
-
-        textarea.value = "";
 
         try {
-          // textarea.value = await compilePrompt(query);
-          pressEnter();
-          isProcessing = false;
+          textarea.value = await compilePrompt(query);
+          console.log(`query=${query}, textarea.value=${textarea.value}`);
 
+          pressEnter()
         } catch (error) {
-          isProcessing = false;
-          showErrorMessage(error);
+          showErrorMessage(error)
         }
+
+        isProcessing = false
       }
     }
 
@@ -93,4 +87,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App
