@@ -5,7 +5,8 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { defaults } from "lodash-es";
-import { getSystemLanguage } from "@src/core/Localization.js";
+import { getSystemLanguage } from "@src/core/Localization";
+import ls from "localstorage-slim";
 
 const defaultConfig = {
   webAccess: true,
@@ -14,13 +15,17 @@ const defaultConfig = {
   promptUUID: "default"
 };
 
-export async function getUserConfig() {
-  const config = localStorage.getItem("defaultConfig");
+const configKey = "configKey";
+
+export function getUserConfig() {
+  const config = ls.get(configKey);
+  // console.log("load config", config);
   // 如果config里有的，用config里的；如果config里面没有的，用defaultConfig里的
   return defaults(config, defaultConfig);
 }
 
-export async function updateUserConfig(config) {
+export function updateUserConfig(config) {
   // await Browser.storage.sync.set(config);
-  localStorage.setItem("defaultConfig", config);
+  ls.set(configKey, config);
+  // console.log("save config", config);
 }

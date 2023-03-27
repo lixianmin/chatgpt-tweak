@@ -21,6 +21,7 @@ specifiers:
   fs-extra: 11.1.0
   jest: ^29.3.1
   jest-environment-jsdom: ^29.3.1
+  localstorage-slim: ^2.4.0
   lodash-es: ^4.17.21
   nodemon: 2.0.20
   postcss: ^8.4.19
@@ -38,6 +39,7 @@ specifiers:
   webextension-polyfill: ^0.10.0
 
 dependencies:
+  localstorage-slim: 2.4.0
   lodash-es: 4.17.21
   solid-js: 1.6.2
   uuid: 9.0.0
@@ -3852,6 +3854,10 @@ packages:
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
+
+  /localstorage-slim/2.4.0:
+    resolution: {integrity: sha512-ILe6kS+TYRzpzEAHYKzGxSgtUOFlMyvnG6vu6TW+F6gV4TQI8wP67rmEB6TMZHmQayOQ9iicpcYEFV1Y68V2fA==}
+    dev: false
 
   /locate-path/5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
