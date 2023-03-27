@@ -1,9 +1,10 @@
 import "@src/styles/index.css";
 import styles from "./App.module.css";
 import { onMount } from "solid-js";
-import { getSubmitButton, getTextArea } from "@pages/content/widgets/elementFinder";
+import { getSubmitButton, getTextArea } from "@pages/content/widgets/element_finder";
 import { getUserConfig } from "@src/dao/user_config";
-import { compilePrompt } from "@pages/content/widgets/promptManager";
+import { compilePrompt } from "@pages/content/widgets/prompt_manager";
+import Toolbar from "@pages/content/widgets/Toolbar";
 
 /********************************************************************
  created:    2023-03-27
@@ -13,6 +14,8 @@ import { compilePrompt } from "@pages/content/widgets/promptManager";
  *********************************************************************/
 
 const App = () => {
+  let toolbar;
+
   onMount(() => {
     let isProcessing = false;
     const textarea = getTextArea();
@@ -38,7 +41,7 @@ const App = () => {
 
 
     async function onSubmit(event: MouseEvent | KeyboardEvent) {
-
+      
       if (event instanceof KeyboardEvent && event.shiftKey && event.key === "Enter") {
         return;
       }
@@ -49,29 +52,29 @@ const App = () => {
 
       if ((event.type === "click" || (event instanceof KeyboardEvent && event.key === "Enter")) && !isProcessing) {
 
-        const query = textarea.value.trim()
+        const query = textarea.value.trim();
         if (query === "") {
           return;
         }
 
         isProcessing = true;
-        const userConfig = await getUserConfig()
+        const userConfig = await getUserConfig();
         if (!userConfig.webAccess) {
-          pressEnter()
-          isProcessing = false
-          return
+          pressEnter();
+          isProcessing = false;
+          return;
         }
 
         try {
           textarea.value = await compilePrompt(query);
           console.log(`query=${query}, textarea.value=${textarea.value}`);
 
-          pressEnter()
+          pressEnter();
         } catch (error) {
-          showErrorMessage(error)
+          showErrorMessage(error);
         }
 
-        isProcessing = false
+        isProcessing = false;
       }
     }
 
@@ -79,12 +82,13 @@ const App = () => {
     btnSubmit.addEventListener("click", onSubmit);
   });
 
-  return (
+  return <>
     <div class="fixed right-5 top-20 z-[2000] w-80 rounded-xl bg-white">
       <div class={styles.App}>
+        <Toolbar ref={toolbar} />
       </div>
     </div>
-  );
+  </>;
 };
 
-export default App
+export default App;
