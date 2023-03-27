@@ -1,5 +1,4 @@
 import "@src/styles/index.css";
-import styles from "./App.module.css";
 import { onMount } from "solid-js";
 import { getSubmitButton, getTextArea } from "@pages/content/widgets/element_finder";
 import { getUserConfig } from "@src/dao/user_config";
@@ -39,9 +38,7 @@ const App = () => {
       // render(<ErrorMessage message={error.message}/>, div)
     }
 
-
     async function onSubmit(event: MouseEvent | KeyboardEvent) {
-      
       if (event instanceof KeyboardEvent && event.shiftKey && event.key === "Enter") {
         return;
       }
@@ -80,13 +77,15 @@ const App = () => {
 
     textarea.addEventListener("keydown", onSubmit);
     btnSubmit.addEventListener("click", onSubmit);
+
+    // @ts-ignore
+    textarea.parentElement.after(<Toolbar id="tweak-toolbar" ref={toolbar} />);
   });
 
+
   return <>
-    <div class="fixed right-5 top-20 z-[2000] w-80 rounded-xl bg-white">
-      <div class={styles.App}>
-        <Toolbar ref={toolbar} />
-      </div>
+    <div>
+      <Toolbar ref={toolbar} />
     </div>
   </>;
 };

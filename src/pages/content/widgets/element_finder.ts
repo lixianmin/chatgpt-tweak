@@ -16,7 +16,7 @@ export function getRootElement(): HTMLDivElement | null {
 }
 
 export function getWebChatGPTToolbar(): HTMLElement | null {
-  return document.querySelector("div[class*='wcg-toolbar']");
+  return document.querySelector("div[class*='toolbar']");
 }
 
 export function getSubmitButton(): HTMLButtonElement {

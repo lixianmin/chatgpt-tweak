@@ -13,22 +13,22 @@ export default function Toolbar(props) {
 
 
   const webAccessToggle =
-    <div className="wcg-group wcg-relative wcg-flex">
-      <label className="wcg-relative wcg-inline-flex wcg-cursor-pointer wcg-items-center">
-        <input type="checkbox" value="" className="wcg-peer wcg-sr-only" checked={webAccess}
+    <div className="group relative flex">
+      <label className="relative inline-flex cursor-pointer items-center">
+        <input type="checkbox" value="" className="peer sr-only" checked={webAccess}
                onChange={handleWebAccessToggle} />
         <div
-          className="dark:wcg-peer-focus:ring-blue-800 wcg-peer wcg-h-5 wcg-w-9 wcg-rounded-full wcg-bg-gray-500 after:wcg-absolute after:wcg-top-[2px] after:wcg-left-[2px] after:wcg-h-4 after:wcg-w-4 after:wcg-rounded-full after:wcg-border after:wcg-border-gray-300 after:wcg-bg-white after:wcg-transition-all after:wcg-content-[''] peer-checked:wcg-bg-emerald-700 peer-checked:after:wcg-translate-x-full peer-checked:after:wcg-border-white peer-focus:wcg-ring-2 peer-focus:wcg-ring-white dark:wcg-border-gray-600" />
+          className="dark:peer-focus:ring-blue-800 peer h-5 w-9 rounded-full bg-gray-500 after:absolute after:top-[2px] after:left-[2px] after:h-4 after:w-4 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-emerald-700 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-2 peer-focus:ring-white dark:border-gray-600" />
         <span
-          className="wcg-ml-1 wcg-pl-1 wcg-text-sm wcg-font-semibold after:wcg-content-['Web'] md:after:wcg-content-['Web_access']" />
+          className="ml-1 pl-1 text-sm font-semibold after:content-['Web'] md:after:content-['Web_access']" />
       </label>
-      <span class="wcg-absolute wcg-left-1/2 wcg-m-4 wcg-mx-auto -wcg-translate-x-6 wcg-translate-y-3 wcg-rounded-md wcg-bg-gray-800 wcg-p-1
-            wcg-text-xs wcg-text-gray-100 wcg-opacity-0 wcg-transition-opacity group-hover:wcg-opacity-100">Alt+W</span>
-    </div>;
+      <span class="absolute left-1/2 m-4 mx-auto -translate-x-6 translate-y-3 rounded-md bg-gray-800 p-1
+            text-xs text-gray-100 opacity-0 transition-opacity group-hover:opacity-100">Alt+W</span>
+    </div>
 
-  return <div className="wcg-flex wcg-flex-col wcg-gap-0">
+  return <div className="flex flex-col gap-0">
     <div
-      className="wcg-toolbar wcg-flex wcg-items-center wcg-justify-between wcg-gap-2 wcg-rounded-md wcg-px-1">
+      className="toolbar flex items-center justify-between gap-2 rounded-md px-1">
       {webAccessToggle}
     </div>
   </div>
