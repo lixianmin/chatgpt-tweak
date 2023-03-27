@@ -1,5 +1,5 @@
-import App from "@pages/content/components/app";
 import { render } from "solid-js/web";
+import App from "./app";
 
 const root = document.createElement("div");
 root.id = "extension-root";

@@ -18,13 +18,18 @@
     },
     "type": "module",
     "dependencies": {
-        "solid-js": "^1.6.2"
+        "lodash-es": "^4.17.21",
+        "solid-js": "^1.6.2",
+        "uuid": "^9.0.0",
+        "webextension-polyfill": "^0.10.0"
     },
     "devDependencies": {
         "@crxjs/vite-plugin": "2.0.0-beta.7",
         "@types/chrome": "0.0.203",
         "@types/jest": "^29.2.3",
         "@types/node": "18.11.10",
+        "@types/uuid": "^9.0.1",
+        "@types/webextension-polyfill": "^0.10.0",
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "autoprefixer": "^10.4.13",
