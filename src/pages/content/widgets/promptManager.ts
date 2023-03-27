@@ -15,7 +15,7 @@ const removeCommands = (query: string) => query.replace(/\/page:(\S+)\s+/g, "").
 
 export const compilePrompt = async (query: string) => {
   const currentPrompt = await getCurrentPrompt();
-  const currentDate = new Date().toLocaleTimeString();
+  const currentDate = new Date().toLocaleString()
   const prompt = replaceVariables(currentPrompt.text, {
     "{query}": removeCommands(query),
     "{current_date}": currentDate

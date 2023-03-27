@@ -1,9 +1,9 @@
 import "@src/styles/index.css";
 import styles from "./App.module.css";
 import { onMount } from "solid-js";
-import { getSubmitButton, getTextArea } from "@pages/content/components/elementFinder";
+import { getSubmitButton, getTextArea } from "@pages/content/widgets/elementFinder";
 import { getUserConfig } from "@src/dao/user_config";
-import { compilePrompt } from "@pages/content/components/promptManager";
+import { compilePrompt } from "@pages/content/widgets/promptManager";
 
 /********************************************************************
  created:    2023-03-27

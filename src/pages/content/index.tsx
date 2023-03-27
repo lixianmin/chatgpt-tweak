@@ -1,5 +1,5 @@
 import { render } from "solid-js/web";
-import App from "./components/app";
+import App from "./widgets/app";
 
 const root = document.createElement("div");
 root.id = "extension-root";
