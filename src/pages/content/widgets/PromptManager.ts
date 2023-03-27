@@ -1,7 +1,7 @@
 import Browser from "webextension-polyfill";
 import { v4 as uuidv4 } from "uuid";
-import { getCurrentLanguageName, getLocaleLanguage, getTranslation, localizationKeys } from "@src/core/localization";
-import { getUserConfig } from "@src/dao/user_config";
+import { getCurrentLanguageName, getLocaleLanguage, getTranslation, localizationKeys } from "@src/core/Localization";
+import { getUserConfig } from "@src/dao/UserConfig";
 
 export const SAVED_PROMPTS_KEY = "saved_prompts";
 

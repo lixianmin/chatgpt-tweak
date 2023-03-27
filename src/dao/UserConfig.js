@@ -5,7 +5,7 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { defaults } from "lodash-es";
-import { getSystemLanguage } from "@src/core/localization";
+import { getSystemLanguage } from "@src/core/Localization.js";
 
 const defaultConfig = {
   webAccess: true,

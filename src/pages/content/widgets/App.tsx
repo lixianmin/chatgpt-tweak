@@ -1,8 +1,8 @@
 import "@src/styles/index.css";
 import { onMount } from "solid-js";
-import { getSubmitButton, getTextArea } from "@pages/content/widgets/element_finder";
-import { getUserConfig } from "@src/dao/user_config";
-import { compilePrompt } from "@pages/content/widgets/prompt_manager";
+import { getSubmitButton, getTextArea } from "@pages/content/widgets/ElementFinder";
+import { getUserConfig } from "@src/dao/UserConfig";
+import { compilePrompt } from "@pages/content/widgets/PromptManager";
 import Toolbar from "@pages/content/widgets/Toolbar";
 
 /********************************************************************
