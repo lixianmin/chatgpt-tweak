@@ -1,4 +1,4 @@
-import App from "@src/pages/content/components/Demo/app";
+import App from "@pages/content/components/app";
 import { render } from "solid-js/web";
 
 const root = document.createElement("div");

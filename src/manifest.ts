@@ -17,27 +17,27 @@ const manifest = defineManifest(async () => ({
   background: { service_worker: "src/pages/background/index.ts" },
   action: {
     default_popup: "src/pages/popup/index.html",
-    default_icon: "icons/34x34.png",
+    default_icon: "icons/34x34.png"
   },
-  chrome_url_overrides: {
-    newtab: "src/pages/newtab/index.html",
-  },
+  // chrome_url_overrides: {
+  //   newtab: "src/pages/newtab/index.html",
+  // },
   icons: {
-    "128": "icons/128x128.png",
+    "128": "icons/128x128.png"
   },
   content_scripts: [
     {
-      matches: ["http://*/*", "https://*/*", "<all_urls>"],
-      js: ["src/pages/content/index.tsx"],
-    },
+      matches: ["https://chat.openai.com/*"],
+      js: ["src/pages/content/index.tsx"]
+    }
   ],
-  devtools_page: "src/pages/devtools/index.html",
+  // devtools_page: "src/pages/devtools/index.html",
   web_accessible_resources: [
     {
       resources: ["assets/js/*.js", "assets/css/*.css", "assets/img/*"],
-      matches: ["*://*/*"],
-    },
-  ],
+      matches: ["*://*/*"]
+    }
+  ]
 }));
 
 export default manifest;
