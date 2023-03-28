@@ -48,7 +48,7 @@ const App = () => {
         const userConfig = useUserConfig();
         if (userConfig.webAccess.get()) {
           textarea.value = prompts.compilePrompt(query);
-          console.log(`textarea.value=${textarea.value}`);
+          // console.log(`textarea.value=${textarea.value}`);
         }
 
         pressEnter();

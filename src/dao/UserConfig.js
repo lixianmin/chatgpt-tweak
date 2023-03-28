@@ -14,11 +14,9 @@ export default function useUserConfig() {
   };
 
   const webAccess = useLocalStorage("tweak-web-access", true);
-  const promptUUID = useLocalStorage("tweak-prompt-uuid", "default");
   const language = useLocalStorage('tweak-language', getSystemLanguage())
   return {
     webAccess,
-    promptUUID,
     language,
   };
 }
