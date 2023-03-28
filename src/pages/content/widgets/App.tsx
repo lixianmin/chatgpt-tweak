@@ -1,9 +1,9 @@
 import "@src/styles/index.css";
 import { onMount } from "solid-js";
-import { getSubmitButton, getTextArea } from "@pages/content/widgets/ElementFinder";
+import { getRootElement, getSubmitButton, getTextarea } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig";
-import { compilePrompt } from "@pages/content/widgets/PromptManager";
 import Toolbar from "@pages/content/widgets/Toolbar";
+import usePrompts from "@src/dao/Prompts";
 
 /********************************************************************
  created:    2023-03-27
@@ -17,8 +17,9 @@ const App = () => {
 
   function attachTweakUI() {
     let isProcessing = false;
-    const textarea = getTextArea();
+    const textarea = getTextarea();
     const btnSubmit = getSubmitButton();
+    const prompts = usePrompts();
 
     function pressEnter() {
       textarea.focus();
@@ -41,30 +42,18 @@ const App = () => {
       }
 
       if ((event.type === "click" || (event instanceof KeyboardEvent && event.key === "Enter")) && !isProcessing) {
-
         const query = textarea.value.trim();
-        if (query === "") {
-          return;
-        }
+        if (query !== "") {
+          isProcessing = true;
+          const userConfig = useUserConfig();
+          if (userConfig.webAccess.get()) {
+            textarea.value = await prompts.compilePrompt(query);
+          }
 
-        isProcessing = true;
-        const userConfig = useUserConfig();
-        if (!userConfig.webAccess.get()) {
+          console.log(`query=${query}, textarea.value=${textarea.value}`);
           pressEnter();
           isProcessing = false;
-          return;
         }
-
-        try {
-          textarea.value = await compilePrompt(query);
-          // console.log(`query=${query}, textarea.value=${textarea.value}`);
-
-          pressEnter();
-        } catch (err) {
-          console.error(err);
-        }
-
-        isProcessing = false;
       }
     }
 
@@ -77,13 +66,18 @@ const App = () => {
   }
 
   function checkAttachTweakUI() {
-    const intervalId = setInterval(() => {
-      attachTweakUI();
-      const toolbar1 = document.getElementById(toolbarId);
-      if (toolbar1) {
-        clearInterval(intervalId);
-      }
-    }, 200);
+    try {
+      const observer = new MutationObserver(() => {
+        const toolbar = document.getElementById(toolbarId);
+        if (!toolbar) {
+          attachTweakUI();
+        }
+      });
+      const rootElement = getRootElement();
+      observer.observe(rootElement, { childList: true });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   onMount(() => {

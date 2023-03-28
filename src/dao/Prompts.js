@@ -16,12 +16,12 @@ export default function usePrompts() {
   });
 
   // 初始的时候默认加一个当前的prompt
-  const currentPrompt = useLocalStorage("tweak-current-prompt");
-  if (!currentPrompt.get()) {
+  const currentName = useLocalStorage("tweak-current-prompt");
+  if (!currentName.get()) {
     const name = "default";
     const prompt = "{current_time}\nAfter answer my question, you must provide 3 related urls, my question is:\n{query}";
 
-    currentPrompt.set(name);
+    currentName.set(name);
     _addPrompt(name, prompt).then();
   }
 
@@ -43,12 +43,41 @@ export default function usePrompts() {
     await db.prompts.where({ name }).modify({ prompt });
   }
 
+  function _replaceVariables(prompt, variables) {
+    let newPrompt = prompt;
+    for (const key in variables) {
+      try {
+        newPrompt = newPrompt.replaceAll(key, variables[key]);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    return newPrompt;
+  }
+
+  async function _compilePrompt(query) {
+    const name = currentName.get();
+    const prompt = await _loadPrompt(name);
+
+    const now = new Date();
+    let currentTime = now.toISOString().slice(0, 19).replace("T", " ");
+
+    const nextPrompt = _replaceVariables(prompt, {
+      "{query}": query,
+      "{current_time}": currentTime
+    });
+
+    console.log(`prompt= ${nextPrompt}`);
+    return nextPrompt;
+  }
+
   return {
-    getCurrentName: () => currentPrompt.get(),
-    setCurrentName: (name) => currentPrompt.set(name),
+    getCurrentName: () => currentName.get(),
+    setCurrentName: (name) => currentName.set(name),
     loadPrompt: _loadPrompt,
     loadAllPrompts: _loadAllPrompts,
     addPrompt: _addPrompt,
-    updatePrompt: _updatePrompt
+    updatePrompt: _updatePrompt,
+    compilePrompt: _compilePrompt
   };
 }

@@ -1,4 +1,4 @@
-export function getTextArea(): HTMLTextAreaElement {
+export function getTextarea(): HTMLTextAreaElement {
   const textarea = document.querySelector("textarea");
   if (!textarea) {
     throw new Error("textarea is null");
@@ -20,7 +20,7 @@ export function getWebChatGPTToolbar(): HTMLElement | null {
 }
 
 export function getSubmitButton(): HTMLButtonElement {
-  const textarea = getTextArea();
+  const textarea = getTextarea();
   // @ts-ignore
   return textarea.parentNode.querySelector("button");
 }
