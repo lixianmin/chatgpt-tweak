@@ -47,7 +47,7 @@ const App = () => {
         isProcessing = true;
         const userConfig = useUserConfig();
         if (userConfig.webAccess.get()) {
-          textarea.value = await prompts.compilePrompt(query);
+          textarea.value = prompts.compilePrompt(query);
           console.log(`textarea.value=${textarea.value}`);
         }
 
