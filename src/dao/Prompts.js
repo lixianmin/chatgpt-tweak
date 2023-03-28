@@ -67,7 +67,6 @@ export default function usePrompts() {
       "{current_time}": currentTime
     });
 
-    console.log(`prompt= ${nextPrompt}`);
     return nextPrompt;
   }
 

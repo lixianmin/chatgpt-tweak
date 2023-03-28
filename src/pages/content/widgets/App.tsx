@@ -1,6 +1,6 @@
 import "@src/styles/index.css";
 import { onMount } from "solid-js";
-import { getRootElement, getSubmitButton, getTextarea } from "@pages/content/widgets/ElementFinder";
+import { getSubmitButton, getTextarea } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig";
 import Toolbar from "@pages/content/widgets/Toolbar";
 import usePrompts from "@src/dao/Prompts";
@@ -48,9 +48,9 @@ const App = () => {
           const userConfig = useUserConfig();
           if (userConfig.webAccess.get()) {
             textarea.value = await prompts.compilePrompt(query);
+            console.log(`textarea.value=${textarea.value}`);
           }
 
-          console.log(`query=${query}, textarea.value=${textarea.value}`);
           pressEnter();
           isProcessing = false;
         }
@@ -67,14 +67,13 @@ const App = () => {
 
   function checkAttachTweakUI() {
     try {
-      const observer = new MutationObserver(() => {
+      // 因为chatgpt的页面变来变去，重新加载什么的都很多，发现哪怕使用MutationObserver也抓不住。定期轮询是最稳定的
+      setInterval(() => {
         const toolbar = document.getElementById(toolbarId);
         if (!toolbar) {
           attachTweakUI();
         }
-      });
-      const rootElement = getRootElement();
-      observer.observe(rootElement, { childList: true });
+      }, 200);
     } catch (err) {
       console.error(err);
     }
