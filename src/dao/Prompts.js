@@ -7,6 +7,7 @@
  *********************************************************************/
 import Dexie from "dexie";
 import useLocalStorage from "@src/core/LocalStorage.js";
+import { formatDateTime } from "@src/core/Time.js";
 
 export default function usePrompts() {
   const db = new Dexie("tweak-prompts");
@@ -58,9 +59,7 @@ export default function usePrompts() {
   async function _compilePrompt(query) {
     const name = currentName.get();
     const prompt = await _loadPrompt(name);
-
-    const now = new Date();
-    let currentTime = now.toISOString().slice(0, 19).replace("T", " ");
+    const currentTime = formatDateTime(new Date());
 
     const nextPrompt = _replaceVariables(prompt, {
       "{query}": query,

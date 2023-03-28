@@ -21,6 +21,7 @@
         "dexie": "^3.2.3",
         "localstorage-slim": "^2.4.0",
         "lodash-es": "^4.17.21",
+        "moment": "^2.29.4",
         "solid-js": "^1.6.2",
         "uuid": "^9.0.0",
         "webextension-polyfill": "^0.10.0"
