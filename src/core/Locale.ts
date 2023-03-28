@@ -1,5 +1,5 @@
 import Browser from "webextension-polyfill"
-import * as localizedStrings from './LocalizedStrings.json'
+import * as localizedStrings from './LocaleText.json'
 
 export const getSystemLanguage = () => Browser.i18n.getUILanguage().split("-")[0]
 

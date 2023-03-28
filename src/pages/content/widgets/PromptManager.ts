@@ -1,6 +1,6 @@
 import Browser from "webextension-polyfill";
 import { v4 as uuidv4 } from "uuid";
-import { getCurrentLanguageName, getLocaleLanguage, getTranslation, localizationKeys } from "@src/core/Localization";
+import { getCurrentLanguageName, getLocaleLanguage, getTranslation, localizationKeys } from "@src/core/Locale";
 import { getUserConfig } from "@src/dao/UserConfig";
 
 export const SAVED_PROMPTS_KEY = "saved_prompts";
@@ -15,7 +15,7 @@ const removeCommands = (query: string) => query.replace(/\/page:(\S+)\s+/g, "").
 
 export const compilePrompt = async (query: string) => {
   const currentPrompt = await getCurrentPrompt();
-  const currentDate = new Date().toLocaleString()
+  const currentDate = new Date().toLocaleString();
   const prompt = replaceVariables(currentPrompt.text, {
     "{query}": removeCommands(query),
     "{current_date}": currentDate
@@ -50,7 +50,7 @@ const getDefaultEnglishPrompt = () => {
 };
 
 export const getCurrentPrompt = async () => {
-  const userConfig = await getUserConfig();
+  const userConfig = getUserConfig();
   const currentPromptUuid = userConfig.promptUUID;
   const savedPrompts = await getSavedPrompts();
   return savedPrompts.find((i: Prompt) => i.uuid === currentPromptUuid) || getDefaultPrompt();

@@ -1,12 +1,12 @@
 {
-    "name": "solid-chrome-extension-template",
-    "displayName": "Solid Chrome Extension Template",
-    "version": "0.202212.1",
-    "description": "Chrome Extension boilerplate with SolidJS + Vite + ManifestV3",
+    "name": "chatgpt-tweak",
+    "displayName": "chatgpt tweak",
+    "version": "2023-03-28",
+    "description": "Tweak your chatgpt to add prompts, history, and so on",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/fuyutarow/solid-chrome-extension-template.git"
+        "url": "https://github.com/lixianmin/chatgpt-tweak.git"
     },
     "scripts": {
         "dev": "vite build -w",

@@ -78,7 +78,7 @@ const App = () => {
 
     // 这个after方法接收Node类型，与JSX.Element类型不一样，但是其实可以直接用，加 @ts-ignore解决ide的错误提示
     // @ts-ignore
-    textarea.parentElement.after(<Toolbar id="tweak-toolbar" ref={toolbar} />);
+    textarea.parentElement.after(<Toolbar id="tweak-toolbar"/>);
   });
 
   return <>

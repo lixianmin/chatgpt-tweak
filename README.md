@@ -10,6 +10,10 @@
 
 </div>
 
+todo 
+1. 改为只有prompt列表即可，不需要web access那个按钮
+2. extension列表中的简介要改一下
+2. 记得加入历史命令列表
 
 ## Intro <a name="intro"></a>
 This boilerplate is made for creating chrome extensions using SolidJS and Typescript.
