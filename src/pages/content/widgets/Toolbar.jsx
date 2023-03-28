@@ -5,16 +5,15 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { createEffect, createSignal } from "solid-js";
-import { getUserConfig, updateUserConfig } from "@src/dao/UserConfig.js";
+import createUserConfig from "@src/dao/UserConfig.js";
 
 export default function Toolbar(props) {
-  const userConfig = getUserConfig();
-  const [webAccess, setWebAccess] = createSignal(userConfig.webAccess);
+  const userConfig = createUserConfig();
+  const [webAccess, setWebAccess] = createSignal(userConfig.webAccess.get());
   const handleWebAccessToggle = () => setWebAccess((prev) => !prev);
 
   createEffect(() => {
-    userConfig.webAccess = webAccess()
-    updateUserConfig(userConfig)
+    userConfig.webAccess.set(webAccess());
   });
 
   const webAccessToggle =

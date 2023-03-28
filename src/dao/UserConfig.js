@@ -1,28 +1,24 @@
+"use strict";
 /********************************************************************
  created:    2023-03-27
  author:     lixianmin
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { defaults } from "lodash-es";
 import { getSystemLanguage } from "@src/core/Locale";
-import ls from "localstorage-slim";
+import useLocalStorage from "@src/core/LocalStorage.js";
 
-const defaultConfig = {
-  webAccess: true,
-  region: "wt-wt",
-  language: getSystemLanguage(),
-  promptUUID: "default"
-};
+export default function createUserConfig() {
+  const defaultConfig = {
+    region: "wt-wt",
+  };
 
-const configKey = "configKey";
-
-export function getUserConfig() {
-  const config = ls.get(configKey)
-  // 如果config里有的，用config里的；如果config里面没有的，用defaultConfig里的
-  return defaults(config, defaultConfig)
-}
-
-export function updateUserConfig(config) {
-  ls.set(configKey, config);
+  const webAccess = useLocalStorage("tweak-web-access", true);
+  const promptUUID = useLocalStorage("tweak-prompt-uuid", "default");
+  const language = useLocalStorage('tweak-language', getSystemLanguage())
+  return {
+    webAccess,
+    promptUUID,
+    language,
+  };
 }

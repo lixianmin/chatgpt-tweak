@@ -1,6 +1,6 @@
 {
   "default_prompt": {
-    "en": "Web search results:\n\n{web_results}\nCurrent date: {current_date}\n\nInstructions: Using the provided web search results, write a comprehensive reply to the given query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject.\nQuery: {query}"
+    "en": "{current_time}\nAfter answer my question, you must provide 3 related urls, my question is:\n{query}"
   },
   "language": {
     "en": "Language",

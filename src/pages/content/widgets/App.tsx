@@ -1,7 +1,7 @@
 import "@src/styles/index.css";
 import { onMount } from "solid-js";
 import { getSubmitButton, getTextArea } from "@pages/content/widgets/ElementFinder";
-import { getUserConfig } from "@src/dao/UserConfig";
+import createUserConfig from "@src/dao/UserConfig";
 import { compilePrompt } from "@pages/content/widgets/PromptManager";
 import Toolbar from "@pages/content/widgets/Toolbar";
 
@@ -53,8 +53,8 @@ const App = () => {
         }
 
         isProcessing = true;
-        const userConfig = await getUserConfig();
-        if (!userConfig.webAccess) {
+        const userConfig = createUserConfig();
+        if (!userConfig.webAccess.get()) {
           pressEnter();
           isProcessing = false;
           return;
@@ -78,7 +78,7 @@ const App = () => {
 
     // 这个after方法接收Node类型，与JSX.Element类型不一样，但是其实可以直接用，加 @ts-ignore解决ide的错误提示
     // @ts-ignore
-    textarea.parentElement.after(<Toolbar id="tweak-toolbar"/>);
+    textarea.parentElement.after(<Toolbar id="tweak-toolbar" />);
   });
 
   return <>
