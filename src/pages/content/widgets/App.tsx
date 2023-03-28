@@ -1,7 +1,7 @@
 import "@src/styles/index.css";
 import { onMount } from "solid-js";
 import { getSubmitButton, getTextArea } from "@pages/content/widgets/ElementFinder";
-import createUserConfig from "@src/dao/UserConfig";
+import useUserConfig from "@src/dao/UserConfig";
 import { compilePrompt } from "@pages/content/widgets/PromptManager";
 import Toolbar from "@pages/content/widgets/Toolbar";
 
@@ -29,13 +29,6 @@ const App = () => {
       textarea.dispatchEvent(enterEvent);
     }
 
-    function showErrorMessage(error: any) {
-      console.info("WebChatGPT error --> API error: ", error);
-      // const div = document.createElement('div')
-      // document.body.appendChild(div)
-      // render(<ErrorMessage message={error.message}/>, div)
-    }
-
     async function onSubmit(event: MouseEvent | KeyboardEvent) {
       if (event instanceof KeyboardEvent && event.shiftKey && event.key === "Enter") {
         return;
@@ -53,7 +46,7 @@ const App = () => {
         }
 
         isProcessing = true;
-        const userConfig = createUserConfig();
+        const userConfig = useUserConfig();
         if (!userConfig.webAccess.get()) {
           pressEnter();
           isProcessing = false;
@@ -62,11 +55,11 @@ const App = () => {
 
         try {
           textarea.value = await compilePrompt(query);
-          console.log(`query=${query}, textarea.value=${textarea.value}`);
+          // console.log(`query=${query}, textarea.value=${textarea.value}`);
 
           pressEnter();
-        } catch (error) {
-          showErrorMessage(error);
+        } catch (err) {
+          console.error(err)
         }
 
         isProcessing = false;

@@ -8,7 +8,7 @@
 import { getSystemLanguage } from "@src/core/Locale";
 import useLocalStorage from "@src/core/LocalStorage.js";
 
-export default function createUserConfig() {
+export default function useUserConfig() {
   const defaultConfig = {
     region: "wt-wt",
   };

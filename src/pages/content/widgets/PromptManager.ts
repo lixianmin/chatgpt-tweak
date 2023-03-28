@@ -1,7 +1,7 @@
 import Browser from "webextension-polyfill";
 import { v4 as uuidv4 } from "uuid";
 import { getCurrentLanguageName, getLocaleLanguage, getTranslation, localizationKeys } from "@src/core/Locale";
-import createUserConfig from "@src/dao/UserConfig";
+import useUserConfig from "@src/dao/UserConfig";
 
 export const SAVED_PROMPTS_KEY = "saved_prompts";
 
@@ -16,7 +16,7 @@ const removeCommands = (query: string) => query.replace(/\/page:(\S+)\s+/g, "").
 export const compilePrompt = async (query: string) => {
   const currentPrompt = await getCurrentPrompt();
   const now = new Date();
-  let currentTime = now.toISOString().slice(0, 19).replace("T", " ");
+  let currentTime = now.toISOString().slice(0, 19).replace('T', ' ');
 
   const prompt = replaceVariables(currentPrompt.text, {
     "{query}": removeCommands(query),
@@ -52,14 +52,13 @@ const getDefaultEnglishPrompt = () => {
 };
 
 export const getCurrentPrompt = async () => {
-  const userConfig = createUserConfig();
+  const userConfig = useUserConfig();
   const currentPromptUuid = userConfig.promptUUID.get();
   const savedPrompts = await getSavedPrompts();
   return savedPrompts.find((i: Prompt) => i.uuid === currentPromptUuid) || getDefaultPrompt();
 };
 
 export const getSavedPrompts = async (addDefaults = true) => {
-  // const data = await Browser.storage.sync.get([SAVED_PROMPTS_KEY])
   const data = localStorage.getItem(SAVED_PROMPTS_KEY) ?? [];
   const savedPrompts = data[SAVED_PROMPTS_KEY] || [];
 
