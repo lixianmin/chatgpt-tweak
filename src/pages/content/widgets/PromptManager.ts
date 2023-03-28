@@ -1,7 +1,5 @@
-import Browser from "webextension-polyfill";
-import { v4 as uuidv4 } from "uuid";
 import { getCurrentLanguageName, getLocaleLanguage, getTranslation, localizationKeys } from "@src/core/Locale";
-import useUserConfig from "@src/dao/UserConfig";
+import usePrompts from "@src/dao/Prompts";
 
 export const SAVED_PROMPTS_KEY = "saved_prompts";
 
@@ -13,12 +11,16 @@ export interface Prompt {
 
 const removeCommands = (query: string) => query.replace(/\/page:(\S+)\s+/g, "").replace(/\/site:(\S+)\s+/g, "");
 
-export const compilePrompt = async (query: string) => {
-  const currentPrompt = await getCurrentPrompt();
-  const now = new Date();
-  let currentTime = now.toISOString().slice(0, 19).replace('T', ' ');
+const prompts = usePrompts();
 
-  const prompt = replaceVariables(currentPrompt.text, {
+export const compilePrompt = async (query: string) => {
+  const currentName = prompts.getCurrentName();
+  const currentPrompt = await prompts.loadPrompt(currentName);
+
+  const now = new Date();
+  let currentTime = now.toISOString().slice(0, 19).replace("T", " ");
+
+  const prompt = replaceVariables(currentPrompt, {
     "{query}": removeCommands(query),
     "{current_time}": currentTime
   });
@@ -51,13 +53,6 @@ const getDefaultEnglishPrompt = () => {
   return { name: "Default English", text: getTranslation(localizationKeys.defaultPrompt, "en"), uuid: "default_en" };
 };
 
-export const getCurrentPrompt = async () => {
-  const userConfig = useUserConfig();
-  const currentPromptUuid = userConfig.promptUUID.get();
-  const savedPrompts = await getSavedPrompts();
-  return savedPrompts.find((i: Prompt) => i.uuid === currentPromptUuid) || getDefaultPrompt();
-};
-
 export const getSavedPrompts = async (addDefaults = true) => {
   const data = localStorage.getItem(SAVED_PROMPTS_KEY) ?? [];
   const savedPrompts = data[SAVED_PROMPTS_KEY] || [];
@@ -86,23 +81,3 @@ function addDefaultPrompts(prompts: Prompt[]) {
     }
   }
 }
-
-export const savePrompt = async (prompt: Prompt) => {
-  const savedPrompts = await getSavedPrompts(false);
-  const index = savedPrompts.findIndex((i: Prompt) => i.uuid === prompt.uuid);
-  if (index >= 0) {
-    savedPrompts[index] = prompt;
-  } else {
-    prompt.uuid = uuidv4();
-    savedPrompts.push(prompt);
-  }
-
-  localStorage.setItem(SAVED_PROMPTS_KEY, savedPrompts);
-  // await Browser.storage.sync.set({[SAVED_PROMPTS_KEY]: savedPrompts})
-};
-
-export const deletePrompt = async (prompt: Prompt) => {
-  let savedPrompts = await getSavedPrompts();
-  savedPrompts = savedPrompts.filter((i: Prompt) => i.uuid !== prompt.uuid);
-  await Browser.storage.sync.set({ [SAVED_PROMPTS_KEY]: savedPrompts });
-};

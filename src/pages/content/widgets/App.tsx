@@ -13,7 +13,9 @@ import Toolbar from "@pages/content/widgets/Toolbar";
  *********************************************************************/
 
 const App = () => {
-  onMount(() => {
+  const toolbarId = "tweak-toolbar";
+
+  function attachTweakUI() {
     let isProcessing = false;
     const textarea = getTextArea();
     const btnSubmit = getSubmitButton();
@@ -59,7 +61,7 @@ const App = () => {
 
           pressEnter();
         } catch (err) {
-          console.error(err)
+          console.error(err);
         }
 
         isProcessing = false;
@@ -71,7 +73,21 @@ const App = () => {
 
     // 这个after方法接收Node类型，与JSX.Element类型不一样，但是其实可以直接用，加 @ts-ignore解决ide的错误提示
     // @ts-ignore
-    textarea.parentElement.after(<Toolbar id="tweak-toolbar" />);
+    textarea.parentElement.after(<Toolbar id={toolbarId} />);
+  }
+
+  function checkAttachTweakUI() {
+    const intervalId = setInterval(() => {
+      attachTweakUI();
+      const toolbar1 = document.getElementById(toolbarId);
+      if (toolbar1) {
+        clearInterval(intervalId);
+      }
+    }, 200);
+  }
+
+  onMount(() => {
+    checkAttachTweakUI();
   });
 
   return <>

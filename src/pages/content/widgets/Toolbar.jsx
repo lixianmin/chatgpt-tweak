@@ -7,7 +7,7 @@
 import { createEffect, createSignal } from "solid-js";
 import useUserConfig from "@src/dao/UserConfig.js";
 
-export default function Toolbar(props) {
+export default function(props) {
   const userConfig = useUserConfig();
   const [webAccess, setWebAccess] = createSignal(userConfig.webAccess.get());
   const handleWebAccessToggle = () => setWebAccess((prev) => !prev);
@@ -28,7 +28,7 @@ export default function Toolbar(props) {
       </label>
     </div>;
 
-  return <div className="flex flex-col gap-0">
+  return <div id={props.id} className="flex flex-col gap-0">
     <div
       className="toolbar flex items-center justify-between gap-2 rounded-md px-1">
       {webAccessToggle}

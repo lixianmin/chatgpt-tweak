@@ -8,16 +8,16 @@ import ls from "localstorage-slim";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function useLocalStorage(name, initialValue = undefined) {
+export default function useLocalStorage(key, initialValue = undefined) {
   return {
     get(defaultValue = initialValue) {
-      const last = ls.get(name);
+      const last = ls.get(key);
       return last ?? defaultValue;
       // 如果ls.get()返回了合理值，则直接用；否则，使用defaultValue
-      // return defaults(ls.get(name), defaultValue)
+      // return defaults(ls.get(key), defaultValue)
     },
     set(value) {
-      ls.set(name, value);
+      ls.set(key, value);
     }
   };
 }

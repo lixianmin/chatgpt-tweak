@@ -12,6 +12,7 @@
 
 todo 
 1. 改为只有prompt列表即可，不需要web access那个按钮
+2. 因为外面有验证登录的功能，所以这个还真需要加一个MutationObserver
 2. extension列表中的简介要改一下
 2. 记得加入历史命令列表
 
