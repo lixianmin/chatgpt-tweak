@@ -76,8 +76,8 @@ export default function usePrompts() {
   }
 
   return {
-    getCurrentName: () => currentPromptName.get(),
-    setCurrentName: (name) => currentPromptName.set(name),
+    getCurrentPromptName: () => currentPromptName.get(),
+    setCurrentPromptName: (name) => currentPromptName.set(name),
     loadPrompt: _loadPrompt,
     loadAllPrompts: () => promptList.get(),
     addPrompt: _addPrompt,
