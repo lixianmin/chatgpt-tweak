@@ -14,14 +14,12 @@ import usePrompts from "@src/dao/Prompts";
 
 const App = () => {
   const toolbarId = "tweak-toolbar";
+  let isProcessing = false;
+  const prompts = usePrompts();
 
-  function attachTweakUI() {
-    let isProcessing = false;
+  function pressEnter() {
     const textarea = getTextarea();
-    const btnSubmit = getSubmitButton();
-    const prompts = usePrompts();
-
-    function pressEnter() {
+    if (textarea) {
       textarea.focus();
       const enterEvent = new KeyboardEvent("keydown", {
         bubbles: true,
@@ -31,30 +29,39 @@ const App = () => {
       });
       textarea.dispatchEvent(enterEvent);
     }
+  }
 
-    async function onSubmit(event: MouseEvent | KeyboardEvent) {
-      if (event instanceof KeyboardEvent && event.shiftKey && event.key === "Enter") {
-        return;
-      }
+  async function onSubmit(event: MouseEvent | KeyboardEvent) {
+    if (event instanceof KeyboardEvent && event.shiftKey && event.key === "Enter") {
+      return;
+    }
 
-      if (event instanceof KeyboardEvent && event.key === "Enter" && event.isComposing) {
-        return;
-      }
+    if (event instanceof KeyboardEvent && event.key === "Enter" && event.isComposing) {
+      return;
+    }
 
-      if ((event.type === "click" || (event instanceof KeyboardEvent && event.key === "Enter")) && !isProcessing) {
-        const query = textarea.value.trim();
-        if (query !== "") {
-          isProcessing = true;
-          const userConfig = useUserConfig();
-          if (userConfig.webAccess.get()) {
-            textarea.value = await prompts.compilePrompt(query);
-            console.log(`textarea.value=${textarea.value}`);
-          }
-
-          pressEnter();
-          isProcessing = false;
+    const textarea = getTextarea();
+    if (textarea && (event.type === "click" || (event instanceof KeyboardEvent && event.key === "Enter")) && !isProcessing) {
+      const query = textarea.value.trim();
+      if (query !== "") {
+        isProcessing = true;
+        const userConfig = useUserConfig();
+        if (userConfig.webAccess.get()) {
+          textarea.value = await prompts.compilePrompt(query);
+          console.log(`textarea.value=${textarea.value}`);
         }
+
+        pressEnter();
+        isProcessing = false;
       }
+    }
+  }
+
+  function attachTweakUI() {
+    const textarea = getTextarea();
+    const btnSubmit = getSubmitButton();
+    if (!textarea || !btnSubmit) {
+      return;
     }
 
     textarea.addEventListener("keydown", onSubmit);
