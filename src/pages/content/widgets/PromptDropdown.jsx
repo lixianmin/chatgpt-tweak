@@ -28,9 +28,8 @@ export default function PromptDropdown() {
     document.activeElement?.blur();
   }
 
-
   return <>
-    <DropdownButton id="dropdown-basic-button" title={currentPromptName()}>
+    <DropdownButton id="dropdown-basic-button" title={currentPromptName()} variant='secondary'>
       <For each={prompts.loadAllPrompts()}>{(prompt, index) => {
         return <Show when={currentPromptName() === prompt.name} fallback={
           <Dropdown.Item onClick={onClickItem} name={prompt.name}>{prompt.name}</Dropdown.Item>

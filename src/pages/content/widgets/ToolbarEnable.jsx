@@ -1,5 +1,5 @@
 "use strict";
-import { ToggleButton } from "solid-bootstrap";
+import { Form } from "solid-bootstrap";
 import { createEffect, createSignal } from "solid-js";
 import useUserConfig from "@src/dao/UserConfig.js";
 
@@ -14,24 +14,19 @@ export default function ToolbarEnable() {
   const config = useUserConfig();
   const [enable, setEnable] = createSignal(config.toolbarEnable.get());
 
-  function enableText() {
-    return enable() ? "Disable" : "Enable";
-  }
-
   createEffect(() => {
     config.toolbarEnable.set(enable());
   });
 
   return <>
-    <ToggleButton
-      id="tweak-toggle-check"
-      type="checkbox"
-      variant="secondary"
-      checked={enable()}
-      value="1"
-      onChange={(evt) => setEnable(evt.currentTarget.checked)}
-    >
-      {enableText()}
-    </ToggleButton>
+    <Form>
+      <Form.Check
+        type="switch"
+        id="tweak-switch"
+        label="switch"
+        onClick={(evt) => setEnable(evt.target.checked)}
+        checked={enable()}
+      />
+    </Form>
   </>;
 }
