@@ -1,4 +1,3 @@
-import "@src/styles/index.css";
 import { onMount } from "solid-js";
 import { getSubmitButton, getTextarea } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig";

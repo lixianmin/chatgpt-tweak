@@ -1,5 +1,6 @@
 "use strict";
-import PromptGrid from "@pages/options/widgets/PromptGrid.jsx";
+
+import { Form } from "solid-bootstrap";
 
 /********************************************************************
  created:    2023-03-28
@@ -8,10 +9,9 @@ import PromptGrid from "@pages/options/widgets/PromptGrid.jsx";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-const Options = () => {
-  return <>
-    <PromptGrid />
-  </>;
-};
-
-export default Options;
+export default function PromptItem(props) {
+  return <Form>
+    {props.name}
+    {props.prompt}
+  </Form>;
+}
