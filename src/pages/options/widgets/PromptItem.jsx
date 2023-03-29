@@ -1,6 +1,6 @@
 "use strict";
 
-import { Form } from "solid-bootstrap";
+import { Button, Card } from "solid-bootstrap";
 
 /********************************************************************
  created:    2023-03-28
@@ -10,8 +10,19 @@ import { Form } from "solid-bootstrap";
  *********************************************************************/
 
 export default function PromptItem(props) {
-  return <Form>
-    {props.name}
-    {props.prompt}
-  </Form>;
+  return <>
+    <Card bg="secondary"
+          text="dark"
+          style={{ width: "18rem" }}
+          class="m-2"
+    >
+      <Card.Header>{props.name}</Card.Header>
+      <Card.Body>
+        <Card.Text>
+          {props.prompt}
+        </Card.Text>
+        <Button variant="secondary">Edit</Button>
+      </Card.Body>
+    </Card>
+  </>;
 }
