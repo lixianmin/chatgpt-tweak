@@ -2,7 +2,7 @@
 
 import ShadowBootstrap from "@src/core/widgets/ShadowBootstrap.jsx";
 import ToolbarEnable from "@pages/content/widgets/ToolbarEnable.jsx";
-import { ButtonGroup } from "solid-bootstrap";
+import { Col, Form, Row } from "solid-bootstrap";
 import ToolbarPrompts from "@pages/content/widgets/ToolbarPrompts.jsx";
 
 /********************************************************************
@@ -15,10 +15,16 @@ import ToolbarPrompts from "@pages/content/widgets/ToolbarPrompts.jsx";
 export default function Toolbar(props) {
   return <>
     <ShadowBootstrap id={props.id}>
-      <ButtonGroup class="mb-2">
-        <ToolbarEnable />
-        <ToolbarPrompts />
-      </ButtonGroup>
+      <Form>
+        <Row>
+          <Col xs={3}>
+            <ToolbarEnable />
+          </Col>
+          <Col xs={2}>
+            <ToolbarPrompts />
+          </Col>
+        </Row>
+      </Form>
     </ShadowBootstrap>
   </>;
 }
