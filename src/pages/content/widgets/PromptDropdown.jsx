@@ -1,6 +1,8 @@
 "use strict";
 
 import { Dropdown, DropdownButton } from "solid-bootstrap";
+import usePrompts from "@src/dao/Prompts.js";
+import { createEffect, createSignal, For, Show } from "solid-js";
 
 /********************************************************************
  created:    2023-03-27
@@ -10,11 +12,27 @@ import { Dropdown, DropdownButton } from "solid-bootstrap";
  *********************************************************************/
 
 export default function PromptDropdown() {
+  const prompts = usePrompts();
+  const [currentPromptName, setCurrentPromptName] = createSignal(prompts.getCurrentPromptName());
+  createEffect(() => {
+    prompts.setCurrentPromptName(currentPromptName());
+  });
+
+  function onClickItem(evt) {
+    const name = evt.target.name;
+    setCurrentPromptName(name)
+  }
+
   return <>
-    <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-      <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-      <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-      <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+    <DropdownButton id="dropdown-basic-button" title={currentPromptName()}>
+      <For each={prompts.loadAllPrompts()}>{(prompt, index) => {
+        return <Show when={currentPromptName() === prompt.name} fallback={
+          <Dropdown.Item onClick={onClickItem} name={prompt.name}>{prompt.name}</Dropdown.Item>
+        } keyed>
+          <Dropdown.Item active>{prompt.name}</Dropdown.Item>
+        </Show>;
+      }
+      }</For>
     </DropdownButton>
   </>;
 }

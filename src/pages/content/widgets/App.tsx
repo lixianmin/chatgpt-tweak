@@ -68,7 +68,7 @@ const App = () => {
     textarea.addEventListener("keydown", onSubmit);
     btnSubmit.addEventListener("click", onSubmit);
 
-    render(() => <Toolbar id={toolbarId} />, textarea.parentElement);
+    render(() => <Toolbar id={toolbarId} />, textarea.parentElement.parentElement);
   }
 
   function checkAttachTweakUI() {
