@@ -1,5 +1,5 @@
 "use strict";
-import { ButtonGroup, ToggleButton } from "solid-bootstrap";
+import { ToggleButton } from "solid-bootstrap";
 import { createEffect, createSignal } from "solid-js";
 import useUserConfig from "@src/dao/UserConfig.js";
 
@@ -22,7 +22,7 @@ export default function ToolbarEnable() {
     config.toolbarEnable.set(enable());
   });
 
-  return <ButtonGroup class="mb-2">
+  return <>
     <ToggleButton
       id="tweak-toggle-check"
       type="checkbox"
@@ -33,5 +33,5 @@ export default function ToolbarEnable() {
     >
       {enableText()}
     </ToggleButton>
-  </ButtonGroup>;
+  </>;
 }
