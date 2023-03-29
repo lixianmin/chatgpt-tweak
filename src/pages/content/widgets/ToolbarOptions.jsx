@@ -1,6 +1,7 @@
 "use strict";
 import Browser from "webextension-polyfill";
 import { Icons } from "@src/core/widgets/Icons.jsx";
+import { Button } from "solid-bootstrap";
 
 /********************************************************************
  created:    2023-03-29
@@ -11,8 +12,8 @@ import { Icons } from "@src/core/widgets/Icons.jsx";
 
 export default function ToolbarOptions() {
   return <>
-    <div onClick={() => Browser.runtime.sendMessage("open.options.page")}>
+    <Button variant="outline-secondary" onClick={() => Browser.runtime.sendMessage("open.options.page")}>
       {Icons.tune}
-    </div>
+    </Button>
   </>;
 }
