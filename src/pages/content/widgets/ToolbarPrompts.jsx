@@ -1,8 +1,8 @@
 "use strict";
 
-import { Dropdown, DropdownButton } from "solid-bootstrap";
+import { Form } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
-import { createEffect, createSignal, For, Show } from "solid-js";
+import { createEffect, createSignal, For } from "solid-js";
 
 /********************************************************************
  created:    2023-03-27
@@ -11,7 +11,7 @@ import { createEffect, createSignal, For, Show } from "solid-js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function PromptDropdown() {
+export default function ToolbarPrompts() {
   const prompts = usePrompts();
   const [currentPromptName, setCurrentPromptName] = createSignal(prompts.getCurrentPromptName());
   createEffect(() => {
@@ -29,16 +29,16 @@ export default function PromptDropdown() {
   }
 
   return <>
-    <DropdownButton id="dropdown-basic-button" title={currentPromptName()} variant='secondary'>
+    <Form.Select>
       <For each={prompts.loadAllPrompts()}>{(prompt, index) => {
         return <Show when={currentPromptName() === prompt.name} fallback={
-          <Dropdown.Item onClick={onClickItem} name={prompt.name}>{prompt.name}</Dropdown.Item>
+          <option onClick={onClickItem} name={prompt.name}>{prompt.name}</option>
         } keyed>
-          <Dropdown.Item active>{prompt.name}</Dropdown.Item>
+          <option>{prompt.name}</option>
         </Show>;
       }
       }</For>
-    </DropdownButton>
+    </Form.Select>
   </>;
 }
 

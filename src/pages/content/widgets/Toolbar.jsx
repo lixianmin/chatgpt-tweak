@@ -1,9 +1,9 @@
 "use strict";
 
-import PromptDropdown from "@pages/content/widgets/PromptDropdown.jsx";
 import ShadowBootstrap from "@src/core/widgets/ShadowBootstrap.jsx";
 import ToolbarEnable from "@pages/content/widgets/ToolbarEnable.jsx";
 import { ButtonGroup } from "solid-bootstrap";
+import ToolbarPrompts from "@pages/content/widgets/ToolbarPrompts.jsx";
 
 /********************************************************************
  created:    2023-03-27
@@ -17,7 +17,7 @@ export default function Toolbar(props) {
     <ShadowBootstrap id={props.id}>
       <ButtonGroup class="mb-2">
         <ToolbarEnable />
-        <PromptDropdown />
+        <ToolbarPrompts />
       </ButtonGroup>
     </ShadowBootstrap>
   </>;

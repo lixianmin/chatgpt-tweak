@@ -19,14 +19,12 @@ export default function ToolbarEnable() {
   });
 
   return <>
-    <Form>
-      <Form.Check
-        type="switch"
-        id="tweak-switch"
-        label="switch"
-        onClick={(evt) => setEnable(evt.target.checked)}
-        checked={enable()}
-      />
-    </Form>
+    <Form.Check inline
+      type="switch"
+      id="tweak-switch"
+      label="switch tweak"
+      onClick={(evt) => setEnable(evt.target.checked)}
+      checked={enable()}
+    />
   </>;
 }
