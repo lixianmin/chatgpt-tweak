@@ -47,7 +47,7 @@ const App = () => {
       if (query !== "") {
         isProcessing = true;
         const userConfig = useUserConfig();
-        if (userConfig.webAccess.get()) {
+        if (userConfig.toolbarEnable.get()) {
           textarea.value = prompts.compilePrompt(query);
           // console.log(`textarea.value=${textarea.value}`);
         }

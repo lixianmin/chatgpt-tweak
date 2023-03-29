@@ -10,13 +10,13 @@ import useLocalStorage from "@src/core/LocalStorage.js";
 
 export default function useUserConfig() {
   const defaultConfig = {
-    region: "wt-wt",
+    region: "wt-wt"
   };
 
-  const webAccess = useLocalStorage("tweak-web-access", true);
-  const language = useLocalStorage('tweak-language', getSystemLanguage())
+  const toolbarEnable = useLocalStorage("tweak-toolbar-enable", true);
+  const language = useLocalStorage("tweak-language", getSystemLanguage());
   return {
-    webAccess,
-    language,
+    toolbarEnable,
+    language
   };
 }

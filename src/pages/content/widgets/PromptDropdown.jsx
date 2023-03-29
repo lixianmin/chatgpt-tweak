@@ -20,8 +20,14 @@ export default function PromptDropdown() {
 
   function onClickItem(evt) {
     const name = evt.target.name;
-    setCurrentPromptName(name)
+    setCurrentPromptName(name);
+    removeFocusFromCurrentElement();
   }
+
+  function removeFocusFromCurrentElement() {
+    document.activeElement?.blur();
+  }
+
 
   return <>
     <DropdownButton id="dropdown-basic-button" title={currentPromptName()}>

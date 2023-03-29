@@ -1,3 +1,10 @@
+/********************************************************************
+ created:    2023-03-27
+ author:     lixianmin
+
+ Copyright (C) - All Rights Reserved
+ *********************************************************************/
+
 export function getTextarea(): HTMLTextAreaElement {
   const textarea = document.querySelector("textarea");
   return textarea;
