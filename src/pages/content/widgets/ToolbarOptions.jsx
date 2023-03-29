@@ -1,16 +1,18 @@
 "use strict";
-
 import Browser from "webextension-polyfill";
+import { Icons } from "@src/core/widgets/Icons.jsx";
 
 /********************************************************************
- created:    2023-03-27
+ created:    2023-03-29
  author:     lixianmin
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-Browser.runtime.onMessage.addListener((request) => {
-  if (request === "open.options.page") {
-    Browser.runtime.openOptionsPage().then();
-  }
-});
+export default function ToolbarOptions() {
+  return <>
+    <div onClick={() => Browser.runtime.sendMessage("open.options.page")}>
+      {Icons.tune}
+    </div>
+  </>;
+}

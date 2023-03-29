@@ -10,7 +10,7 @@ import "@src/styles/index.css";
 const Options = () => {
   return <>
     <div className="flex w-3/5 flex-col items-center">
-      {/*<PromptEditor />*/}
+      hello, this is options page
     </div>
   </>;
 };
