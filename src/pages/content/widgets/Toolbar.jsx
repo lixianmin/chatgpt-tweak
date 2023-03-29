@@ -7,9 +7,11 @@
 import { createEffect, createSignal } from "solid-js";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
-import { Icons } from "@src/core/Icons.jsx";
+import { Icons } from "@src/core/widgets/Icons.jsx";
+import PromptDropdown from "@pages/content/widgets/PromptDropdown.jsx";
+import ShadowBootstrap from "@src/core/widgets/ShadowBootstrap.jsx";
 
-export default function(props) {
+export default function Toolbar(props) {
   const userConfig = useUserConfig();
   const prompts = usePrompts();
 
@@ -75,11 +77,16 @@ export default function(props) {
     </ul>
   </div>;
 
-  return <div id={props.id} className="flex flex-col gap-0">
-    <div
-      className="toolbar flex items-center justify-between gap-2 rounded-md px-1">
-      {webAccessToggle}
-      {promptsDropList}
-    </div>
-  </div>;
+  return <>
+    <ShadowBootstrap id={props.id}>
+      <div className="flex flex-col gap-0">
+        <div
+          className="toolbar flex items-center justify-between gap-2 rounded-md px-1">
+          {webAccessToggle}
+          {/*{promptsDropList}*/}
+          <PromptDropdown />
+        </div>
+      </div>
+    </ShadowBootstrap>
+  </>;
 }

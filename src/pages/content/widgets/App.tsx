@@ -4,6 +4,7 @@ import { getSubmitButton, getTextarea } from "@pages/content/widgets/ElementFind
 import useUserConfig from "@src/dao/UserConfig";
 import Toolbar from "@pages/content/widgets/Toolbar";
 import usePrompts from "@src/dao/Prompts";
+import { render } from "solid-js/web";
 
 /********************************************************************
  created:    2023-03-27
@@ -67,9 +68,7 @@ const App = () => {
     textarea.addEventListener("keydown", onSubmit);
     btnSubmit.addEventListener("click", onSubmit);
 
-    // 这个after方法接收Node类型，与JSX.Element类型不一样，但是其实可以直接用，加 @ts-ignore解决ide的错误提示
-    // @ts-ignore
-    textarea.parentElement.after(<Toolbar id={toolbarId} />);
+    render(() => <Toolbar id={toolbarId} />, textarea.parentElement);
   }
 
   function checkAttachTweakUI() {
