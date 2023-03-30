@@ -37,6 +37,14 @@ export default function usePrompts() {
     }
   }
 
+  function _deletePromptByIndex(index) {
+    const list = promptList.getStorage();
+    if (index >= 0 && index < list.length) {
+      list.splice(index, 1);
+      promptList.setStorage(list);
+    }
+  }
+
   function _setPromptByIndex(index, prompt) {
     const list = promptList.getStorage();
     if (index >= 0 && list.length) {
@@ -84,6 +92,7 @@ export default function usePrompts() {
     getAllPrompts: () => promptList.getStorage(),
     setPromptByIndex: _setPromptByIndex,
     getPromptByIndex: _getPromptByIndex,
+    deletePromptByIndex: _deletePromptByIndex,
     compilePrompt: _compilePrompt
   };
 }

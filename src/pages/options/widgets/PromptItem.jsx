@@ -1,7 +1,6 @@
 "use strict";
 
-import { Button, Card, Form } from "solid-bootstrap";
-import usePrompts from "@src/dao/Prompts.js";
+import { Button, Card, CloseButton, Col, Form, Row } from "solid-bootstrap";
 
 /********************************************************************
  created:    2023-03-28
@@ -11,23 +10,27 @@ import usePrompts from "@src/dao/Prompts.js";
  *********************************************************************/
 
 export default function PromptItem(props) {
-  const prompts = usePrompts();
+  const prompts = props.prompts;
   const promptIndex = props.promptIndex;
+
   const currentPrompt = prompts.getPromptByIndex(promptIndex);
   let textarea;
 
   function onClickSave() {
-    console.log("textarea.value:", textarea.value);
-    console.log("currentPrompt.prompt:", currentPrompt.prompt);
+    // console.log("textarea.value:", textarea.value);
+    // console.log("currentPrompt.prompt:", currentPrompt.prompt);
 
     currentPrompt.prompt = textarea.value;
     prompts.setPromptByIndex(promptIndex, currentPrompt);
-
-    console.log("set:", prompts.getPromptByIndex(promptIndex));
+    // console.log("set:", prompts.getPromptByIndex(promptIndex));
   }
 
   function onClickReset() {
     textarea.value = currentPrompt.prompt;
+  }
+
+  function onClickDelete() {
+    prompts.deletePromptByIndex(promptIndex);
   }
 
   return <>
@@ -36,8 +39,17 @@ export default function PromptItem(props) {
       style={{ width: "18rem" }}
       class="m-2"
     >
-      <Card.Header>{currentPrompt.name}</Card.Header>
+
       <Card.Body>
+        <Row>
+          <Col xs="10">
+            <Form.Control type="text" placeholder="Name" value={currentPrompt.name} />
+          </Col>
+          <Col xs="1">
+            <CloseButton onClick={onClickDelete} />
+          </Col>
+        </Row>
+
         <Form.Control ref={textarea} as="textarea" rows={3} value={currentPrompt.prompt} />
 
         <Button variant="outline-primary" size="sm" onClick={onClickSave}>Save</Button>

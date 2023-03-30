@@ -32,7 +32,7 @@ export default function ToolbarPrompts() {
 
   return <>
     <Form.Select onChange={onChange}>
-      <For each={prompts.getAllPrompts()}>{(prompt, index) => {
+      <For each={prompts.getAllPrompts().slice().reverse()}>{(prompt, index) => {
         return <Show when={currentPromptName() === prompt.name} fallback={
           <option name={prompt.name}>{prompt.name}</option>
         } keyed>
