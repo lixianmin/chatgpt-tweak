@@ -40,8 +40,8 @@ export default function PromptItem(props) {
       <Card.Body>
         <Form.Control ref={textarea} as="textarea" rows={3} value={currentPrompt.prompt} />
 
-        <Button variant="outline-primary" onClick={onClickSave}>Save</Button>
-        <Button variant="outline-danger" onClick={onClickReset}>Reset</Button>
+        <Button variant="outline-primary" size="sm" onClick={onClickSave}>Save</Button>
+        <Button variant="outline-danger" size="sm" onClick={onClickReset}>Reset</Button>
       </Card.Body>
     </Card>
   </>;

@@ -2,7 +2,7 @@
 
 import { Form } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
-import { createEffect, createSignal, For } from "solid-js";
+import { createEffect, createSignal, For, Show } from "solid-js";
 
 /********************************************************************
  created:    2023-03-27
@@ -19,9 +19,10 @@ export default function ToolbarPrompts() {
     prompts.setCurrentPromptName(currentPromptName());
   });
 
-  function onClickItem(evt) {
-    const name = evt.target.name;
+  function onChange(evt) {
+    const name = evt.target.value;
     setCurrentPromptName(name);
+
     removeFocusFromCurrentElement();
   }
 
@@ -29,21 +30,15 @@ export default function ToolbarPrompts() {
     document.activeElement?.blur();
   }
 
-  function onChange(evt) {
-    const promptName = evt.target.value;
-    setCurrentPromptName(promptName);
-  }
-
   return <>
     <Form.Select onChange={onChange}>
       <For each={prompts.getAllPrompts()}>{(prompt, index) => {
         return <Show when={currentPromptName() === prompt.name} fallback={
-          <option onClick={onClickItem} name={prompt.name}>{prompt.name}</option>
+          <option name={prompt.name}>{prompt.name}</option>
         } keyed>
-          <option>{prompt.name}</option>
+          <option selected="true">{prompt.name}</option>
         </Show>;
-      }
-      }</For>
+      }}</For>
     </Form.Select>
   </>;
 }
