@@ -19,7 +19,7 @@ export default function ToolbarEnable() {
   });
 
   return <>
-    <Form.Check inline
+    <Form.Check
       type="switch"
       id="tweak-switch"
       label="switch tweak"
