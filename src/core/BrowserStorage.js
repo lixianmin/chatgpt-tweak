@@ -11,6 +11,7 @@ import Browser from "webextension-polyfill";
 export default async function useBrowserStorage(key, initialValue = undefined) {
   const obj = await Browser.storage.sync.get([key]);
   let current = obj[key];
+  // console.log("key", key, "current", current);
   if (!current) {
     current = initialValue;
   }

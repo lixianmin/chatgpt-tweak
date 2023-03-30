@@ -7,10 +7,12 @@
  *********************************************************************/
 import { formatDateTime } from "@src/core/Time.js";
 import useBrowserStorage from "@src/core/BrowserStorage.js";
+import createChangeDataCapture from "@src/core/ChangeDataCapture.js";
 
 // 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
 const currentPromptName = await useBrowserStorage("tweak-current-prompt-name");
 const promptList = await useBrowserStorage("tweak-prompt-list", []);
+const cdc = createChangeDataCapture();
 
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
@@ -42,6 +44,7 @@ export default function usePrompts() {
     if (index >= 0 && index < list.length) {
       list.splice(index, 1);
       promptList.setStorage(list);
+      cdc.signal();
     }
   }
 
@@ -50,6 +53,7 @@ export default function usePrompts() {
     if (index >= 0 && list.length) {
       list[index] = prompt;
       promptList.setStorage(list);
+      cdc.signal();
     }
   }
 
@@ -86,6 +90,7 @@ export default function usePrompts() {
   }
 
   return {
+    onSignal: cdc.onSignal,
     getCurrentPromptName: () => currentPromptName.getStorage(),
     setCurrentPromptName: (name) => currentPromptName.setStorage(name),
     addPrompt: _addPrompt,

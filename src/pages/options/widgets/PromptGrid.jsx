@@ -11,7 +11,7 @@ import { Form } from "solid-bootstrap";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function PromptGrid(props) {
+export default function PromptGrid() {
   const prompts = usePrompts();
 
   return <>
