@@ -12,10 +12,10 @@ import useUserConfig from "@src/dao/UserConfig.js";
 
 export default function ToolbarEnable() {
   const config = useUserConfig();
-  const [enable, setEnable] = createSignal(config.toolbarEnable.get());
+  const [enable, setEnable] = createSignal(config.toolbarEnable.getStorage());
 
   createEffect(() => {
-    config.toolbarEnable.set(enable());
+    config.toolbarEnable.setStorage(enable());
   });
 
   return <>

@@ -19,11 +19,12 @@ export default defineConfig({
     alias: {
       "@src": root,
       "@assets": assetsDir,
-      "@pages": pagesDir,
-    },
+      "@pages": pagesDir
+    }
   },
   publicDir,
   build: {
+    target: ["edge90", "chrome90", "firefox90", "safari15"],  // 支持top level的await
     outDir,
     sourcemap: isDev,
     rollupOptions: {
@@ -49,6 +50,6 @@ export default defineConfig({
       //     return `assets/[ext]/${name}.chunk.[ext]`;
       //   },
       // },
-    },
-  },
+    }
+  }
 });

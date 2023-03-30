@@ -10,13 +10,13 @@ import ls from "localstorage-slim";
 
 export default function useLocalStorage(key, initialValue = undefined) {
   return {
-    get(defaultValue = initialValue) {
+    getStorage(defaultValue = initialValue) {
       const last = ls.get(key);
       return last ?? defaultValue;
       // 如果ls.get()返回了合理值，则直接用；否则，使用defaultValue
       // return defaults(ls.get(key), defaultValue)
     },
-    set(value) {
+    setStorage(value) {
       ls.set(key, value);
     }
   };

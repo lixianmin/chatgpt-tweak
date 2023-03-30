@@ -9,9 +9,9 @@ import { getSystemLanguage } from "@src/core/Locale";
 import useLocalStorage from "@src/core/LocalStorage.js";
 
 export default function useUserConfig() {
-  const defaultConfig = {
-    region: "wt-wt"
-  };
+  // const defaultConfig = {
+  //   region: "wt-wt"
+  // };
 
   const toolbarEnable = useLocalStorage("tweak-toolbar-enable", true);
   const language = useLocalStorage("tweak-language", getSystemLanguage());

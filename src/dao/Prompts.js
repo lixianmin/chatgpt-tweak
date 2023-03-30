@@ -5,26 +5,25 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import useLocalStorage from "@src/core/LocalStorage.js";
 import { formatDateTime } from "@src/core/Time.js";
+import useBrowserStorage from "@src/core/BrowserStorage.js";
+
+// 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
+const currentPromptName = await useBrowserStorage("tweak-current-prompt-name");
+const promptList = await useBrowserStorage("tweak-prompt-list", []);
 
 export default function usePrompts() {
-  // 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
-
-  const currentPromptName = useLocalStorage("tweak-current-prompt-name");
-  const promptList = useLocalStorage("tweak-prompt-list", []);
-
   // 初始的时候默认加一个当前的prompt
-  if (!currentPromptName.get()) {
+  if (!currentPromptName.getStorage()) {
     const name = "default";
     const prompt = "{current_time}\nAfter answer my question, you must provide 3 related urls, my question is:\n{query}";
 
-    currentPromptName.set(name);
+    currentPromptName.setStorage(name);
     _addPrompt(name, prompt);
   }
 
   function _loadPrompt(name) {
-    for (let item of promptList.get()) {
+    for (let item of promptList.getStorage()) {
       if (item.name === name) {
         return item.prompt;
       }
@@ -34,17 +33,17 @@ export default function usePrompts() {
   }
 
   function _addPrompt(name, prompt) {
-    const list = promptList.get();
+    const list = promptList.getStorage();
     list.push({ name, prompt });
-    promptList.set(list);
+    promptList.setStorage(list);
   }
 
   function _updatePrompt(name, prompt) {
-    const list = promptList.get();
+    const list = promptList.getStorage();
     for (let item of list) {
       if (item.name === name) {
         item.prompt = prompt;
-        promptList.set(list);
+        promptList.setStorage(list);
         break;
       }
     }
@@ -63,7 +62,7 @@ export default function usePrompts() {
   }
 
   function _compilePrompt(query) {
-    const name = currentPromptName.get();
+    const name = currentPromptName.getStorage();
     const prompt = _loadPrompt(name);
     const currentTime = formatDateTime(new Date());
 
@@ -76,10 +75,10 @@ export default function usePrompts() {
   }
 
   return {
-    getCurrentPromptName: () => currentPromptName.get(),
-    setCurrentPromptName: (name) => currentPromptName.set(name),
+    getCurrentPromptName: () => currentPromptName.getStorage(),
+    setCurrentPromptName: (name) => currentPromptName.setStorage(name),
     loadPrompt: _loadPrompt,
-    loadAllPrompts: () => promptList.get(),
+    loadAllPrompts: () => promptList.getStorage(),
     addPrompt: _addPrompt,
     updatePrompt: _updatePrompt,
     compilePrompt: _compilePrompt

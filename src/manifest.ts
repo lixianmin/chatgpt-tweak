@@ -37,6 +37,12 @@ const manifest = defineManifest(async () => ({
       resources: ["assets/js/*.js", "assets/css/*.css", "assets/img/*"],
       matches: ["*://*/*"]
     }
+  ],
+  "permissions": [
+    "storage",  // 不加这个，Browser.storage.sync取不到
+    "webRequest",
+    "webRequestBlocking",
+    "*://*/*"
   ]
 }));
 
