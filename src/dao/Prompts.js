@@ -22,31 +22,33 @@ export default function usePrompts() {
     _addPrompt(name, prompt);
   }
 
-  function _loadPrompt(name) {
-    for (let item of promptList.getStorage()) {
-      if (item.name === name) {
-        return item.prompt;
+  function _getPromptByName(name) {
+    for (let v of promptList.getStorage()) {
+      if (v.name === name) {
+        return v;
       }
     }
+  }
 
-    return "";
+  function _getPromptByIndex(index) {
+    const list = promptList.getStorage();
+    if (index >= 0 && index < list.length) {
+      return list[index];
+    }
+  }
+
+  function _setPromptByIndex(index, prompt) {
+    const list = promptList.getStorage();
+    if (index >= 0 && list.length) {
+      list[index] = prompt;
+      promptList.setStorage(list);
+    }
   }
 
   function _addPrompt(name, prompt) {
     const list = promptList.getStorage();
     list.push({ name, prompt });
     promptList.setStorage(list);
-  }
-
-  function _updatePrompt(name, prompt) {
-    const list = promptList.getStorage();
-    for (let item of list) {
-      if (item.name === name) {
-        item.prompt = prompt;
-        promptList.setStorage(list);
-        break;
-      }
-    }
   }
 
   function _replaceVariables(prompt, variables) {
@@ -63,24 +65,25 @@ export default function usePrompts() {
 
   function _compilePrompt(query) {
     const name = currentPromptName.getStorage();
-    const prompt = _loadPrompt(name);
+    const prompt = _getPromptByName(name);
+    // console.log("prompt", prompt, "name", name);
     const currentTime = formatDateTime(new Date());
 
-    const nextPrompt = _replaceVariables(prompt, {
+    const text = _replaceVariables(prompt.prompt, {
       "{query}": query,
       "{current_time}": currentTime
     });
 
-    return nextPrompt;
+    return text;
   }
 
   return {
     getCurrentPromptName: () => currentPromptName.getStorage(),
     setCurrentPromptName: (name) => currentPromptName.setStorage(name),
-    loadPrompt: _loadPrompt,
-    loadAllPrompts: () => promptList.getStorage(),
     addPrompt: _addPrompt,
-    updatePrompt: _updatePrompt,
+    getAllPrompts: () => promptList.getStorage(),
+    setPromptByIndex: _setPromptByIndex,
+    getPromptByIndex: _getPromptByIndex,
     compilePrompt: _compilePrompt
   };
 }

@@ -30,7 +30,7 @@ export default function ToolbarPrompts() {
 
   return <>
     <Form.Select>
-      <For each={prompts.loadAllPrompts()}>{(prompt, index) => {
+      <For each={prompts.getAllPrompts()}>{(prompt, index) => {
         return <Show when={currentPromptName() === prompt.name} fallback={
           <option onClick={onClickItem} name={prompt.name}>{prompt.name}</option>
         } keyed>

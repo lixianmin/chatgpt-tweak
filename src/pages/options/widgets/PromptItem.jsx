@@ -1,7 +1,7 @@
 "use strict";
 
-import { Button, Card } from "solid-bootstrap";
-import { createSignal, Show } from "solid-js";
+import { Button, Card, Form } from "solid-bootstrap";
+import usePrompts from "@src/dao/Prompts.js";
 
 /********************************************************************
  created:    2023-03-28
@@ -11,19 +11,23 @@ import { createSignal, Show } from "solid-js";
  *********************************************************************/
 
 export default function PromptItem(props) {
-
-  const [editing, setEditing] = createSignal(false);
+  const prompts = usePrompts();
+  const promptIndex = props.promptIndex;
+  const currentPrompt = prompts.getPromptByIndex(promptIndex);
+  let textarea;
 
   function onClickSave() {
-    setEditing(false);
+    console.log("textarea.value:", textarea.value);
+    console.log("currentPrompt.prompt:", currentPrompt.prompt);
+
+    currentPrompt.prompt = textarea.value;
+    prompts.setPromptByIndex(promptIndex, currentPrompt);
+
+    console.log("set:", prompts.getPromptByIndex(promptIndex));
   }
 
-  function onClickCancel() {
-    setEditing(false);
-  }
-
-  function onClickEdit() {
-    setEditing(true);
+  function onClickReset() {
+    textarea.value = currentPrompt.prompt;
   }
 
   return <>
@@ -32,19 +36,12 @@ export default function PromptItem(props) {
       style={{ width: "18rem" }}
       class="m-2"
     >
-      <Card.Header>{props.name}</Card.Header>
+      <Card.Header>{currentPrompt.name}</Card.Header>
       <Card.Body>
-        <Card.Text>
-          {props.prompt}
-        </Card.Text>
+        <Form.Control ref={textarea} as="textarea" rows={3} value={currentPrompt.prompt} />
 
-        <Show when={editing()} fallback={<>
-          <Button variant="outline-secondary" onClick={onClickEdit}>Edit</Button>
-        </>} keyed>
-          <Button variant="outline-secondary" onClick={onClickSave}>Save</Button>
-          <Button variant="outline-secondary" onClick={onClickCancel}>Cancel</Button>
-        </Show>
-
+        <Button variant="outline-primary" onClick={onClickSave}>Save</Button>
+        <Button variant="outline-danger" onClick={onClickReset}>Reset</Button>
       </Card.Body>
     </Card>
   </>;

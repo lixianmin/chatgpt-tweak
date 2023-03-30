@@ -46,7 +46,7 @@ const App = () => {
       if (query !== "") {
         isProcessing = true;
         const userConfig = useUserConfig();
-        if (userConfig.toolbarEnable.get()) {
+        if (userConfig.toolbarEnable.getStorage()) {
           textarea.value = prompts.compilePrompt(query);
           // console.log(`textarea.value=${textarea.value}`);
         }

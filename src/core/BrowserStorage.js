@@ -8,29 +8,20 @@ import Browser from "webextension-polyfill";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-function isEmptyOrNull(o) {
-  if (o) {
-    for (let k in o) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 export default async function useBrowserStorage(key, initialValue = undefined) {
-  let currentValue = await Browser.storage.sync.get([key]);
-  if (isEmptyOrNull(currentValue)) {
-    currentValue = initialValue;
+  const obj = await Browser.storage.sync.get([key]);
+  let current = obj[key];
+  if (!current) {
+    current = initialValue;
   }
 
   return {
     getStorage(defaultValue = initialValue) {
-      return currentValue ?? defaultValue;
+      return current ?? defaultValue;
     },
     setStorage(value) {
-      currentValue = value;
-      Browser.storage.sync.set({ key: value }).then();
+      current = value;
+      Browser.storage.sync.set({ [key]: value }).then();
     }
   };
 }
