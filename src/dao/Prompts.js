@@ -6,61 +6,53 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { formatDateTime } from "@src/core/Time.js";
-import useBrowserStorage from "@src/core/BrowserStorage.js";
-import createChangeDataCapture from "@src/core/ChangeDataCapture.js";
+import createStoreBrowserStorage from "@src/core/StoreBrowserStorage.js";
 
 // 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
-const currentPromptName = await useBrowserStorage("tweak-current-prompt-name");
-const promptList = await useBrowserStorage("tweak-prompt-list", []);
-const cdc = createChangeDataCapture();
+const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-prompt-data", { name: "", list: [] });
 
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
-  if (!currentPromptName.getStorage()) {
+  if (!promptState.name) {
     const name = "default";
     const prompt = "{current_time}\nAfter answer my question, you must provide 3 related urls, my question is:\n{query}";
 
-    currentPromptName.setStorage(name);
+    setPromptState("name", name);
     _addPrompt(name, prompt);
   }
 
   function _getPromptByName(name) {
-    for (let v of promptList.getStorage()) {
-      if (v.name === name) {
-        return v;
+    for (let item of promptState.list) {
+      if (item.name === name) {
+        return item;
       }
     }
   }
 
   function _getPromptByIndex(index) {
-    const list = promptList.getStorage();
+    const list = promptState.list;
     if (index >= 0 && index < list.length) {
       return list[index];
     }
   }
 
   function _deletePromptByIndex(index) {
-    const list = promptList.getStorage();
+    const list = promptState.list;
     if (index >= 0 && index < list.length) {
       list.splice(index, 1);
-      promptList.setStorage(list);
-      cdc.signal();
+      setPromptState("list", list);
     }
   }
 
   function _setPromptByIndex(index, prompt) {
-    const list = promptList.getStorage();
+    const list = promptState.list;
     if (index >= 0 && list.length) {
-      list[index] = prompt;
-      promptList.setStorage(list);
-      cdc.signal();
+      setPromptState("list", index, "prompt", prompt);
     }
   }
 
   function _addPrompt(name, prompt) {
-    const list = promptList.getStorage();
-    list.push({ name, prompt });
-    promptList.setStorage(list);
+    setPromptState("list", list => [...list, { name, prompt }]);
   }
 
   function _replaceVariables(prompt, variables) {
@@ -76,7 +68,7 @@ export default function usePrompts() {
   }
 
   function _compilePrompt(query) {
-    const name = currentPromptName.getStorage();
+    const name = promptState.name;
     const prompt = _getPromptByName(name);
     // console.log("prompt", prompt, "name", name);
     const currentTime = formatDateTime(new Date());
@@ -90,11 +82,10 @@ export default function usePrompts() {
   }
 
   return {
-    onSignal: cdc.onSignal,
-    getCurrentPromptName: () => currentPromptName.getStorage(),
-    setCurrentPromptName: (name) => currentPromptName.setStorage(name),
+    getCurrentPromptName: () => promptState.name,
+    setCurrentPromptName: (name) => setPromptState("name", name),
     addPrompt: _addPrompt,
-    getAllPrompts: () => promptList.getStorage(),
+    getAllPrompts: () => promptState.list,
     setPromptByIndex: _setPromptByIndex,
     getPromptByIndex: _getPromptByIndex,
     deletePromptByIndex: _deletePromptByIndex,

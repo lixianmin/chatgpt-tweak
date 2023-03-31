@@ -1,6 +1,6 @@
 "use strict";
 
-import { Form } from "solid-bootstrap";
+import { Button, Form } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
 import { createEffect, createSignal, For, Show } from "solid-js";
 
@@ -30,7 +30,12 @@ export default function ToolbarPrompts() {
     document.activeElement?.blur();
   }
 
+  function onClickAdd() {
+    prompts.addPrompt("hello", "world");
+  }
+
   return <>
+    <Button onClick={onClickAdd}>Add</Button>
     <Form.Select onChange={onChange}>
       <For each={prompts.getAllPrompts().slice().reverse()}>{(prompt, index) => {
         return <Show when={currentPromptName() === prompt.name} fallback={
