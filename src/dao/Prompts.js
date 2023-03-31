@@ -19,7 +19,7 @@ export default function usePrompts() {
     const prompt = "{current_time}\nAfter answer my question, you must provide 3 related urls, my question is:\n{query}";
 
     setPromptState("name", name);
-    _addPrompt(name, prompt);
+    _addPrompt({ name, prompt });
   }
 
   function _getPromptByName(name) {
@@ -40,8 +40,7 @@ export default function usePrompts() {
   function _deletePromptByIndex(index) {
     const list = promptState.list;
     if (index >= 0 && index < list.length) {
-      setPromptState(
-        produce((draft) => {
+      setPromptState(produce(draft => {
           draft.list.splice(index, 1);
         })
       );
@@ -50,13 +49,19 @@ export default function usePrompts() {
 
   function _setPromptByIndex(index, prompt) {
     const list = promptState.list;
-    if (index >= 0 && list.length) {
-      setPromptState("list", index, "prompt", prompt);
+    if (index >= 0 && index < list.length) {
+      setPromptState(produce(draft => {
+        draft.list[index] = prompt;
+        // console.log("draft", draft, "index", index, "prompt", prompt);
+      }));
     }
   }
 
-  function _addPrompt(name, prompt) {
-    setPromptState("list", list => [...list, { name, prompt }]);
+  function _addPrompt(prompt) {
+    setPromptState(produce(draft => {
+      draft.list.push(prompt);
+      console.log("draft.list", draft.list);
+    }));
   }
 
   function _replaceVariables(prompt, variables) {

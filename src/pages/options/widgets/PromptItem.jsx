@@ -18,11 +18,8 @@ export default function PromptItem(props) {
 
   function onClickSave() {
     // console.log("textarea.value:", textarea.value);
-    // console.log("currentPrompt.prompt:", currentPrompt.prompt);
-
-    currentPrompt.prompt = textarea.value;
-    prompts.setPromptByIndex(promptIndex, currentPrompt);
-    // console.log("set:", prompts.getPromptByIndex(promptIndex));
+    const next = { name: currentPrompt.name, prompt: textarea.value };
+    prompts.setPromptByIndex(promptIndex, next);
   }
 
   function onClickReset() {
