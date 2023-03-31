@@ -7,6 +7,7 @@
  *********************************************************************/
 import { formatDateTime } from "@src/core/Time.js";
 import createStoreBrowserStorage from "@src/core/StoreBrowserStorage.js";
+import { produce } from "solid-js/store";
 
 // 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
 const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-prompt-data", { name: "", list: [] });
@@ -39,8 +40,11 @@ export default function usePrompts() {
   function _deletePromptByIndex(index) {
     const list = promptState.list;
     if (index >= 0 && index < list.length) {
-      list.splice(index, 1);
-      setPromptState("list", list);
+      setPromptState(
+        produce((draft) => {
+          draft.list.splice(index, 1);
+        })
+      );
     }
   }
 
@@ -85,7 +89,7 @@ export default function usePrompts() {
     getCurrentPromptName: () => promptState.name,
     setCurrentPromptName: (name) => setPromptState("name", name),
     addPrompt: _addPrompt,
-    getAllPrompts: () => promptState.list,
+    getPromptList: () => promptState.list,
     setPromptByIndex: _setPromptByIndex,
     getPromptByIndex: _getPromptByIndex,
     deletePromptByIndex: _deletePromptByIndex,

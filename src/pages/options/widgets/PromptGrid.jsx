@@ -16,7 +16,7 @@ export default function PromptGrid() {
 
   return <>
     <Form>
-      <For each={prompts.getAllPrompts()}>{(prompt, index) => {
+      <For each={prompts.getPromptList()}>{(prompt, index) => {
         return <PromptItem prompts={prompts} promptIndex={index()}></PromptItem>;
       }}</For>
     </Form>
