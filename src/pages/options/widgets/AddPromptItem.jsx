@@ -2,6 +2,7 @@
 
 import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
+import Browser from "webextension-polyfill";
 
 /********************************************************************
  created:    2023-04-01
@@ -47,12 +48,23 @@ export default function AddPromptItem(props) {
       return;
     }
 
-    const next = { name, text };
-    prompts.addPrompt(next);
+    const newPrompt = { name, text };
+    prompts.addPrompt(newPrompt);
 
     nameControl.value = "";
     textControl.value = "";
+
     setDisableAddButton(true);
+    notifyAddNewPrompt(newPrompt);
+  }
+
+  function notifyAddNewPrompt(newPrompt) {
+    // Browser.runtime.sendMessage({ cmd: "add.new.prompt" });
+    Browser.tabs.query({ url: "https://chat.openai.com/*" }).then(tabs => {
+      for (let tab of tabs.values()) {
+        Browser.tabs.sendMessage(tab.id, { cmd: "add.new.prompt", newPrompt }).then();
+      }
+    });
   }
 
   function checkDisableAddButton() {

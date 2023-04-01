@@ -12,7 +12,7 @@ import { Button } from "solid-bootstrap";
 
 export default function ToolbarOptions() {
   return <>
-    <Button variant="outline-secondary" onClick={() => Browser.runtime.sendMessage("open.options.page")}>
+    <Button variant="outline-secondary" onClick={() => Browser.runtime.sendMessage({ cmd: "open.options.page" })}>
       {Icons.tune}
     </Button>
   </>;

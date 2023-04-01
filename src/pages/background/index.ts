@@ -10,8 +10,10 @@ import Browser from "webextension-polyfill";
  *********************************************************************/
 
 Browser.runtime.onMessage.addListener((request) => {
-  // 这个openOptionsPage()方法只能background里调用，为什么还不清楚
-  if (request === "open.options.page") {
-    Browser.runtime.openOptionsPage().then();
+  switch (request.cmd) {
+    case "open.options.page":
+      // 这个openOptionsPage()方法只能background里调用，为什么还不清楚
+      Browser.runtime.openOptionsPage().then();
+      break;
   }
 });

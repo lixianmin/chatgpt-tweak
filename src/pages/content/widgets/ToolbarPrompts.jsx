@@ -2,7 +2,8 @@
 
 import { Form } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
-import { For, Show } from "solid-js";
+import { For, onCleanup, onMount, Show } from "solid-js";
+import Browser from "webextension-polyfill";
 
 /********************************************************************
  created:    2023-03-27
@@ -13,6 +14,17 @@ import { For, Show } from "solid-js";
 
 export default function ToolbarPrompts() {
   const prompts = usePrompts();
+
+  onMount(() => {
+    Browser.runtime.onMessage.addListener(onHandleMessage);
+    onCleanup(() => Browser.runtime.onMessage.removeListener(onHandleMessage));
+  });
+
+  function onHandleMessage(request) {
+    if (request.cmd === "add.new.prompt") {
+      prompts.addPrompt(request.newPrompt);
+    }
+  }
 
   function onChange(evt) {
     const name = evt.target.value;

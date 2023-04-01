@@ -38,11 +38,12 @@ const manifest = defineManifest(async () => ({
       matches: ["*://*/*"]
     }
   ],
-  "permissions": [
+  permissions: [
     "storage",  // 不加这个，Browser.storage.sync取不到
-    "webRequest",
-    "webRequestBlocking",
-    "*://*/*"
+    "tabs"
+    // "webRequest",
+    // "webRequestBlocking",
+    // "*://*/*"
   ]
 }));
 
