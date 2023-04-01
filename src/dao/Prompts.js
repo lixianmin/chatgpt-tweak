@@ -77,8 +77,8 @@ export default function usePrompts() {
   }
 
   function _compilePrompt(query) {
-    const name = promptState.name;
-    const prompt = _getPromptByName(name);
+    const current = promptState.current;
+    const prompt = _getPromptByName(current);
     const currentTime = formatDateTime(new Date());
 
     const text = _replaceVariables(prompt.text, {

@@ -40,7 +40,7 @@ export default async function createStoreBrowserStorage(key, initialValue = unde
   createEffect(() => {
     // 这里不能使用unwrap()，否则存储不下来，奇怪
     const cloned = deepClone(state);
-    console.log("6. deepClone", cloned);
+    // console.log("6. deepClone", cloned);
     Browser.storage.sync.set({ [key]: cloned }).then();
   });
 
