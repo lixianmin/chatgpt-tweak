@@ -11,7 +11,9 @@ import { Button, Card, CloseButton, Col, Form, Row } from "solid-bootstrap";
 
 export default function PromptItem(props) {
   const prompts = props.prompts;
-  const promptIndex = props.promptIndex;
+  const reverseIndex = props.reverseIndex;
+  const list = prompts.getPromptList();
+  const promptIndex = list.length - reverseIndex - 1;
 
   const currentPrompt = prompts.getPromptByIndex(promptIndex);
   let textControl;

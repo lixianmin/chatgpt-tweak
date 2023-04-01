@@ -18,8 +18,8 @@ export default function PromptGrid() {
   return <>
     <Form>
       <AddPromptItem prompts={prompts} />
-      <For each={prompts.getPromptList()}>{(prompt, index) => {
-        return <PromptItem prompts={prompts} promptIndex={index()}></PromptItem>;
+      <For each={prompts.getPromptList().slice().reverse()}>{(prompt, reverseIndex) => {
+        return <PromptItem prompts={prompts} reverseIndex={reverseIndex()}></PromptItem>;
       }}</For>
     </Form>
   </>;
