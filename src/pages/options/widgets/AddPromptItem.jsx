@@ -17,10 +17,11 @@ export default function AddPromptItem(props) {
   let nameControl;
   let textControl;
 
-  function onChangeName() {
+  function onInputName() {
     const name = nameControl.value.trim();
     const last = prompts.getPromptByName(name);
     // console.log("name: ", name, "last", last);
+
     const warning = !!last;
     setShowWarning(warning);
   }
@@ -50,7 +51,7 @@ export default function AddPromptItem(props) {
       <Card.Body>
         <Row>
           <Col xs="10">
-            <Form.Control ref={nameControl} type="text" placeholder="Name" onChange={onChangeName} />
+            <Form.Control ref={nameControl} type="text" placeholder="Name" onInput={onInputName} />
           </Col>
         </Row>
 
