@@ -16,7 +16,7 @@ export default function ToolbarPrompts() {
 
   function onChange(evt) {
     const name = evt.target.value;
-    prompts.setCurrentPromptName(name);
+    prompts.setCurrentPrompt(name);
 
     removeFocusFromCurrentElement();
   }
@@ -28,7 +28,7 @@ export default function ToolbarPrompts() {
   return <>
     <Form.Select onChange={onChange}>
       <For each={prompts.getPromptList().slice().reverse()}>{(prompt, index) => {
-        return <Show when={prompts.getCurrentPromptName() === prompt.name} fallback={
+        return <Show when={prompts.getCurrentPrompt() === prompt.name} fallback={
           <option name={prompt.name}>{prompt.name}</option>
         } keyed>
           <option selected="true">{prompt.name}</option>
