@@ -40,7 +40,7 @@ export default function PromptItem(props) {
       <Card.Body>
         <Row>
           <Col xs="10">
-            <Form.Control type="text" placeholder="Name" value={currentPrompt.name} />
+            <Card.Subtitle>{currentPrompt.name}</Card.Subtitle>
           </Col>
           <Col xs="1">
             <CloseButton onClick={onClickDelete} disabled={currentPrompt.name === prompts.getCurrentPrompt()} />
