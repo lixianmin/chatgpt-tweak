@@ -60,7 +60,7 @@ export default function usePrompts() {
   function _addPrompt(prompt) {
     setPromptState(produce(draft => {
       draft.list.push(prompt);
-      console.log("draft.list", draft.list);
+      // console.log("draft.list", draft.list);
     }));
   }
 
@@ -91,9 +91,10 @@ export default function usePrompts() {
 
   return {
     getCurrentPrompt: () => promptState.current,
-    setCurrentPrompt: (name) => setPromptState("current", name),
+    setCurrentPrompt: (current) => setPromptState("current", current),
     addPrompt: _addPrompt,
     getPromptList: () => promptState.list,
+    getPromptByName: _getPromptByName,
     setPromptByIndex: _setPromptByIndex,
     getPromptByIndex: _getPromptByIndex,
     deletePromptByIndex: _deletePromptByIndex,

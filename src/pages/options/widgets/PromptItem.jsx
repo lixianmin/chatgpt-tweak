@@ -14,16 +14,16 @@ export default function PromptItem(props) {
   const promptIndex = props.promptIndex;
 
   const currentPrompt = prompts.getPromptByIndex(promptIndex);
-  let textarea;
+  let textControl;
 
   function onClickSave() {
     // console.log("textarea.value:", textarea.value);
-    const next = { name: currentPrompt.name, text: textarea.value };
+    const next = { name: currentPrompt.name, text: textControl.value };
     prompts.setPromptByIndex(promptIndex, next);
   }
 
   function onClickReset() {
-    textarea.value = currentPrompt.text;
+    textControl.value = currentPrompt.text;
   }
 
   function onClickDelete() {
@@ -43,11 +43,11 @@ export default function PromptItem(props) {
             <Form.Control type="text" placeholder="Name" value={currentPrompt.name} />
           </Col>
           <Col xs="1">
-            <CloseButton onClick={onClickDelete} />
+            <CloseButton onClick={onClickDelete} disabled={currentPrompt.name === prompts.getCurrentPrompt()} />
           </Col>
         </Row>
 
-        <Form.Control ref={textarea} as="textarea" rows={3} value={currentPrompt.text} />
+        <Form.Control ref={textControl} as="textarea" rows={3} value={currentPrompt.text} />
 
         <Button variant="outline-primary" size="sm" onClick={onClickSave}>Save</Button>
         <Button variant="outline-danger" size="sm" onClick={onClickReset}>Reset</Button>
