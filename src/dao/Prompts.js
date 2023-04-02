@@ -15,8 +15,9 @@ const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-pro
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
   if (!promptState.current) {
-    const name = "default";
-    const text = "{current_time}\nAfter answer my question, you must provide 3 related urls, my question is:\n{query}";
+    // todo 也许可以默认提供好几个prompts
+    const name = "related 3 urls";
+    const text = "{current_time}\nAfter answering my question, you must provide 3 related urls, my question is:\n{query}";
 
     setPromptState("current", name);
     _addPrompt({ name, text });
@@ -28,6 +29,19 @@ export default function usePrompts() {
         return item;
       }
     }
+  }
+
+  function indexOfByName(name) {
+    const list = promptState.list;
+    const size = list.length;
+    for (let i = 0; i < size; i++) {
+      const item = list[i];
+      if (item.name === name) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   function _getPromptByIndex(index) {
@@ -95,6 +109,7 @@ export default function usePrompts() {
     addPrompt: _addPrompt,
     getPromptList: () => promptState.list,
     getPromptByName: _getPromptByName,
+    indexOfByName: indexOfByName,
     setPromptByIndex: _setPromptByIndex,
     getPromptByIndex: _getPromptByIndex,
     deletePromptByIndex: _deletePromptByIndex,

@@ -16,6 +16,7 @@ export default function ToolbarPrompts() {
   const prompts = usePrompts();
   const tabBus = createTabBusChatGPT();
 
+  // todo 经过多次新建和删除后，这里prompts列表不准了
   tabBus.mountListener(request => {
     switch (request.cmd) {
       case CommandType.addPrompt:

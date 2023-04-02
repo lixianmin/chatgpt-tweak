@@ -15,17 +15,22 @@ const tabBus = createTabBusChatGPT();
 
 export default function PromptItem(props) {
   const prompts = props.prompts;
-  const reverseIndex = props.reverseIndex;
   const list = prompts.getPromptList();
-  const promptIndex = list.length - reverseIndex - 1;
-
-  const currentPrompt = prompts.getPromptByIndex(promptIndex);
+  const currentPrompt = prompts.getPromptByIndex(list.length - props.reverseIndex - 1);
   let textControl;
+
+  function getPromptIndex() {
+    // 这个index，因为可以多次删除或新建，因此会变化，因此需要每次重新获取
+    return prompts.indexOfByName(currentPrompt.name);
+  }
 
   function onClickSave() {
     // console.log("textarea.value:", textarea.value);
-    const next = { name: currentPrompt.name, text: textControl.value };
-    prompts.setPromptByIndex(promptIndex, next);
+    const index = getPromptIndex();
+    if (index >= 0) {
+      const next = { name: currentPrompt.name, text: textControl.value };
+      prompts.setPromptByIndex(index, next);
+    }
   }
 
   function onClickReset() {
@@ -33,8 +38,12 @@ export default function PromptItem(props) {
   }
 
   function onClickDelete() {
-    prompts.deletePromptByIndex(promptIndex);
-    tabBus.broadcastMessage({ cmd: CommandType.deletePromptByIndex, promptIndex });
+    // 这个index，因为可以删除多次，因此会变化，因此需要每次重新获取
+    const index = getPromptIndex();
+    if (index >= 0) {
+      prompts.deletePromptByIndex(index);
+      tabBus.broadcastMessage({ cmd: CommandType.deletePromptByIndex, index });
+    }
   }
 
   return <>
