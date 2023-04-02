@@ -2,8 +2,8 @@
 
 import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
-import Browser from "webextension-polyfill";
 import { CommandType } from "@src/common/Consts.js";
+import { createTabBusChatGPT } from "@src/core/TabBus.js";
 
 /********************************************************************
  created:    2023-04-01
@@ -11,6 +11,7 @@ import { CommandType } from "@src/common/Consts.js";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
+const tabBus = createTabBusChatGPT();
 
 export default function AddPromptItem(props) {
   const prompts = props.prompts;
@@ -56,16 +57,7 @@ export default function AddPromptItem(props) {
     textControl.value = "";
 
     setDisableAddButton(true);
-    notifyAddNewPrompt(newPrompt);
-  }
-
-  function notifyAddNewPrompt(newPrompt) {
-    // Browser.runtime.sendMessage({ cmd: "add.new.prompt" });
-    Browser.tabs.query({ url: "https://chat.openai.com/*" }).then(tabs => {
-      for (let tab of tabs.values()) {
-        Browser.tabs.sendMessage(tab.id, { cmd: CommandType.addNewPrompt, newPrompt }).then();
-      }
-    });
+    tabBus.broadcastMessage({ cmd: CommandType.addPrompt, newPrompt });
   }
 
   function checkDisableAddButton() {

@@ -22,7 +22,7 @@ export default function ToolbarPrompts() {
   });
 
   function onHandleMessage(request) {
-    if (request.cmd === CommandType.addNewPrompt) {
+    if (request.cmd === CommandType.addPrompt) {
       prompts.addPrompt(request.newPrompt);
     }
   }

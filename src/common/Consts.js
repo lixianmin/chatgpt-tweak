@@ -9,5 +9,6 @@
 
 export const CommandType = {
   openOptionsPage: "open.options.page",
-  addNewPrompt: "add.new.prompt"
+  addPrompt: "add.prompt",
+  deletePromptByIndex: "delete.prompt.by.index"
 };

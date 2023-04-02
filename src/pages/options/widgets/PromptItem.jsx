@@ -1,6 +1,8 @@
 "use strict";
 
 import { Button, Card, CloseButton, Col, Form, Row } from "solid-bootstrap";
+import { CommandType } from "@src/common/Consts.js";
+import { createTabBusChatGPT } from "@src/core/TabBus.js";
 
 /********************************************************************
  created:    2023-03-28
@@ -8,6 +10,8 @@ import { Button, Card, CloseButton, Col, Form, Row } from "solid-bootstrap";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
+
+const tabBus = createTabBusChatGPT();
 
 export default function PromptItem(props) {
   const prompts = props.prompts;
@@ -30,6 +34,7 @@ export default function PromptItem(props) {
 
   function onClickDelete() {
     prompts.deletePromptByIndex(promptIndex);
+    tabBus.broadcastMessage({ cmd: CommandType.deletePromptByIndex, promptIndex });
   }
 
   return <>
