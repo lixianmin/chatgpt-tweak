@@ -20,10 +20,10 @@ export default function usePrompts() {
     const text = "{current_time}\nAfter answering my question, you must provide 3 related urls, my question is:\n{query}";
 
     setPromptState("current", name);
-    _addPrompt({ name, text });
+    addPrompt({ name, text });
   }
 
-  function _getPromptByName(name) {
+  function getPromptByName(name) {
     for (let item of promptState.list) {
       if (item.name === name) {
         return item;
@@ -44,14 +44,19 @@ export default function usePrompts() {
     return -1;
   }
 
-  function _getPromptByIndex(index) {
+  function getPromptByIndex(index) {
     const list = promptState.list;
     if (index >= 0 && index < list.length) {
       return list[index];
     }
   }
 
-  function _deletePromptByIndex(index) {
+  function deletePromptByName(name) {
+    const index = indexOfByName(name);
+    deletePromptByIndex(index);
+  }
+
+  function deletePromptByIndex(index) {
     const list = promptState.list;
     if (index >= 0 && index < list.length) {
       setPromptState(produce(draft => {
@@ -61,7 +66,12 @@ export default function usePrompts() {
     }
   }
 
-  function _setPromptByIndex(index, prompt) {
+  function setPromptByName(name, prompt) {
+    const index = indexOfByName(name);
+    setPromptByIndex(index, prompt);
+  }
+
+  function setPromptByIndex(index, prompt) {
     const list = promptState.list;
     if (index >= 0 && index < list.length) {
       setPromptState(produce(draft => {
@@ -71,7 +81,7 @@ export default function usePrompts() {
     }
   }
 
-  function _addPrompt(prompt) {
+  function addPrompt(prompt) {
     setPromptState(produce(draft => {
       draft.list.push(prompt);
       // console.log("draft.list", draft.list);
@@ -90,9 +100,9 @@ export default function usePrompts() {
     return next;
   }
 
-  function _compilePrompt(query) {
+  function compilePrompt(query) {
     const current = promptState.current;
-    const prompt = _getPromptByName(current);
+    const prompt = getPromptByName(current);
     const currentTime = formatDateTime(new Date());
 
     const text = _replaceVariables(prompt.text, {
@@ -106,13 +116,13 @@ export default function usePrompts() {
   return {
     getCurrentPrompt: () => promptState.current,
     setCurrentPrompt: (current) => setPromptState("current", current),
-    addPrompt: _addPrompt,
+    addPrompt: addPrompt,
     getPromptList: () => promptState.list,
-    getPromptByName: _getPromptByName,
+    getPromptByName: getPromptByName,
     indexOfByName: indexOfByName,
-    setPromptByIndex: _setPromptByIndex,
-    getPromptByIndex: _getPromptByIndex,
-    deletePromptByIndex: _deletePromptByIndex,
-    compilePrompt: _compilePrompt
+    setPromptByName: setPromptByName,
+    getPromptByIndex: getPromptByIndex,
+    deletePromptByName: deletePromptByName,
+    compilePrompt: compilePrompt
   };
 }

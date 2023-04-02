@@ -14,8 +14,7 @@ import { For } from "solid-js";
 
 export default function PromptGrid() {
   const prompts = usePrompts();
-  // todo 在删除的时候，如果先删除index=3的，再删除index=2的，会无反应，原因是PromptItem中记录的index没有变化
-
+  
   // 通过在一行中把所有的column都放进来，然后设置 md='auto'，可以进行自动排版
   return <>
     <Form>

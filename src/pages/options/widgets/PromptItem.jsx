@@ -26,11 +26,9 @@ export default function PromptItem(props) {
 
   function onClickSave() {
     // console.log("textarea.value:", textarea.value);
-    const index = getPromptIndex();
-    if (index >= 0) {
-      const next = { name: currentPrompt.name, text: textControl.value };
-      prompts.setPromptByIndex(index, next);
-    }
+    const name = currentPrompt.name;
+    const next = { name: name, text: textControl.value };
+    prompts.setPromptByName(name, next);
   }
 
   function onClickReset() {
@@ -39,11 +37,9 @@ export default function PromptItem(props) {
 
   function onClickDelete() {
     // 这个index，因为可以删除多次，因此会变化，因此需要每次重新获取
-    const index = getPromptIndex();
-    if (index >= 0) {
-      prompts.deletePromptByIndex(index);
-      tabBus.broadcastMessage({ cmd: CommandType.deletePromptByIndex, index });
-    }
+    const name = currentPrompt.name;
+    prompts.deletePromptByName(name);
+    tabBus.broadcastMessage({ cmd: CommandType.deletePromptByName, name });
   }
 
   return <>
