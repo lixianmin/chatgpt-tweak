@@ -3,6 +3,7 @@
 import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
 import Browser from "webextension-polyfill";
+import { CommandType } from "@src/common/Consts.js";
 
 /********************************************************************
  created:    2023-04-01
@@ -62,7 +63,7 @@ export default function AddPromptItem(props) {
     // Browser.runtime.sendMessage({ cmd: "add.new.prompt" });
     Browser.tabs.query({ url: "https://chat.openai.com/*" }).then(tabs => {
       for (let tab of tabs.values()) {
-        Browser.tabs.sendMessage(tab.id, { cmd: "add.new.prompt", newPrompt }).then();
+        Browser.tabs.sendMessage(tab.id, { cmd: CommandType.addNewPrompt, newPrompt }).then();
       }
     });
   }

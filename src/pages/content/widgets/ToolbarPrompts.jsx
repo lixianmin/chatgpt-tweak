@@ -4,6 +4,7 @@ import { Form } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
 import { For, onCleanup, onMount, Show } from "solid-js";
 import Browser from "webextension-polyfill";
+import { CommandType } from "@src/common/Consts.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -21,7 +22,7 @@ export default function ToolbarPrompts() {
   });
 
   function onHandleMessage(request) {
-    if (request.cmd === "add.new.prompt") {
+    if (request.cmd === CommandType.addNewPrompt) {
       prompts.addPrompt(request.newPrompt);
     }
   }

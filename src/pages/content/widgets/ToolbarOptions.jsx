@@ -2,6 +2,7 @@
 import Browser from "webextension-polyfill";
 import { Icons } from "@src/core/widgets/Icons.jsx";
 import { Button } from "solid-bootstrap";
+import { CommandType } from "@src/common/Consts.js";
 
 /********************************************************************
  created:    2023-03-29
@@ -12,7 +13,8 @@ import { Button } from "solid-bootstrap";
 
 export default function ToolbarOptions() {
   return <>
-    <Button variant="outline-secondary" onClick={() => Browser.runtime.sendMessage({ cmd: "open.options.page" })}>
+    <Button variant="outline-secondary"
+            onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}>
       {Icons.tune}
     </Button>
   </>;

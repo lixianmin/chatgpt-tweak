@@ -5,8 +5,8 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { getSystemLanguage } from "@src/core/Locale";
 import useLocalStorage from "@src/core/LocalStorage.js";
+import { getSystemLanguage } from "@src/common/Locale.ts";
 
 export default function useUserConfig() {
   const toolbarEnable = useLocalStorage("tweak-toolbar-enable", true);
