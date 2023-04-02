@@ -2,9 +2,9 @@
 
 import { Form } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
-import { For, onCleanup, onMount, Show } from "solid-js";
-import Browser from "webextension-polyfill";
+import { For, Show } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
+import { createTabBusChatGPT } from "@src/core/TabBus.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -12,20 +12,20 @@ import { CommandType } from "@src/common/Consts.js";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-
 export default function ToolbarPrompts() {
   const prompts = usePrompts();
+  const tabBus = createTabBusChatGPT();
 
-  onMount(() => {
-    Browser.runtime.onMessage.addListener(onHandleMessage);
-    onCleanup(() => Browser.runtime.onMessage.removeListener(onHandleMessage));
-  });
-
-  function onHandleMessage(request) {
-    if (request.cmd === CommandType.addPrompt) {
-      prompts.addPrompt(request.newPrompt);
+  tabBus.mountListener(request => {
+    switch (request.cmd) {
+      case CommandType.addPrompt:
+        prompts.addPrompt(request.newPrompt);
+        break;
+      case CommandType.deletePromptByIndex:
+        prompts.deletePromptByIndex(request.promptIndex);
+        break;
     }
-  }
+  });
 
   function onChange(evt) {
     const name = evt.target.value;
