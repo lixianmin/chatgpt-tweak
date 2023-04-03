@@ -1,5 +1,8 @@
 {
   "switch tweak": "tweak开关",
+  "Add": "添加",
   "Name of the prompt": "提示词的名字",
-  "Full content of the prompt": "提示词的完整内容"
+  "Full content of the prompt": "提示词的完整内容",
+  "Save": "保存",
+  "Reset": "重置"
 }

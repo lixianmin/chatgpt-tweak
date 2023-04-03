@@ -87,7 +87,7 @@ export default function AddPromptItem(props) {
             <Badge bg="warning" hidden={!showWarning()}>The name="{nameSignal()}" already exists</Badge>
           </h5>
         </Row>
-        <Button variant="outline-primary" size="sm" onClick={onClickAdd} disabled={disableAddButton()}>Add</Button>
+        <Button variant="outline-primary" size="sm" onClick={onClickAdd} disabled={disableAddButton()}>{_T("Add")}</Button>
       </Card.Body>
     </Card>
   </>;

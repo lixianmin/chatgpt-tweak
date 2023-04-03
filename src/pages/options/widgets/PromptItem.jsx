@@ -6,8 +6,8 @@ import { createTabBusChatGPT } from "@src/core/TabBus.js";
 import { IoTrash } from "solid-icons/io";
 import IconButton from "@src/core/widgets/IconButton.jsx";
 import { createSignal, Show } from "solid-js";
-import { ImCross } from "solid-icons/im";
 import { FiX } from "solid-icons/fi";
+import { _T } from "@src/common/Locale.js";
 
 /********************************************************************
  created:    2023-03-28
@@ -77,8 +77,8 @@ export default function PromptItem(props) {
 
         <Form.Control ref={textControl} as="textarea" rows={3} value={currentPrompt.text} />
 
-        <Button variant="outline-primary" size="sm" onClick={onClickSave}>Save</Button>
-        <Button variant="outline-danger" size="sm" onClick={onClickReset}>Reset</Button>
+        <Button variant="outline-primary" size="sm" onClick={onClickSave}>{_T("Save")}</Button>
+        <Button variant="outline-danger" size="sm" onClick={onClickReset}>{_T("Reset")}</Button>
       </Card.Body>
     </Card>
   </>;
