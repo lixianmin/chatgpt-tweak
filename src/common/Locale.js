@@ -37,7 +37,7 @@ export const _T = getLocalText;
 
 export const Locale = {
   languageTable: languageTable,
-  getCurrentLanguage: () => currentLanguage,
+  getCurrentLanguage: () => currentLanguage.name,
   setCurrentLanguage: setCurrentLanguage,
   getBrowserLanguage: getBrowserLanguage
 };
