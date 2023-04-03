@@ -5,15 +5,32 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import useLocalStorage from "@src/core/LocalStorage.js";
-import { getSystemLanguage } from "@src/common/Locale.ts";
+import createStoreBrowserStorage from "@src/core/StoreBrowserStorage.js";
+import { Locale } from "@src/common/Locale.js";
+import { produce } from "solid-js/store";
+
+const [configState, setConfigState] = await createStoreBrowserStorage("tweak-user-config", {
+  toolbarEnable: true,
+  uiLanguage: Locale.getBrowserLanguage()
+});
+
+function setUiLanguage(language) {
+  setConfigState(produce(draft => {
+    draft.uiLanguage = language;
+  }));
+}
+
+function setToolbarEnable(enable) {
+  setConfigState(produce(draft => {
+      draft.toolbarEnable = enable;
+    }
+  ));
+}
 
 export default function useUserConfig() {
-  const toolbarEnable = useLocalStorage("tweak-toolbar-enable", true);
-  const language = useLocalStorage("tweak-language", getSystemLanguage());
-
   return {
-    toolbarEnable: toolbarEnable,
-    language: language
+    toolbarEnable: configState.toolbarEnable,
+    setToolbarEnable: setToolbarEnable,
+    setUiLanguage: setUiLanguage
   };
 }

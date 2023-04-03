@@ -119,7 +119,6 @@ export default function usePrompts() {
     addPrompt: addPrompt,
     getPromptList: () => promptState.list,
     getPromptByName: getPromptByName,
-    indexOfByName: indexOfByName,
     setPromptByName: setPromptByName,
     getPromptByIndex: getPromptByIndex,
     deletePromptByName: deletePromptByName,

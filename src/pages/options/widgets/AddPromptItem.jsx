@@ -4,6 +4,7 @@ import { Badge, Button, Card, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import { _T } from "@src/common/Locale.js";
 
 /********************************************************************
  created:    2023-04-01
@@ -77,8 +78,9 @@ export default function AddPromptItem(props) {
     >
 
       <Card.Body>
-        <Form.Control ref={nameControl} type="text" placeholder="Name of the prompt" onInput={onInputName} />
-        <Form.Control ref={textControl} as="textarea" rows={3} placeholder="Full content of the prompt" onInput={onInputText} />
+        <Form.Control ref={nameControl} type="text" placeholder={_T("Name of the prompt")} onInput={onInputName} />
+        <Form.Control ref={textControl} as="textarea" rows={3} placeholder={_T("Full content of the prompt")}
+                      onInput={onInputText} />
 
         <Row>
           <h5>
