@@ -1,6 +1,7 @@
 "use strict";
 
 import { createSignal } from "solid-js";
+import { Button } from "solid-bootstrap";
 
 /********************************************************************
  created:    2023-04-02
@@ -23,12 +24,12 @@ export default function IconButton(props) {
   }
 
   return (
-    <button style={{ background: "transparent", border: "none", color: iconColor() }} {...buttonProps}
+    <Button style={{ background: "transparent", border: "none", color: iconColor() }} {...buttonProps}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 

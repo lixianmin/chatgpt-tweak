@@ -1,8 +1,12 @@
 "use strict";
 
-import { Button, Card, CloseButton, Col, Form, Row } from "solid-bootstrap";
+import { Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import { IoTrash } from "solid-icons/io";
+import IconButton from "@src/core/widgets/IconButton.jsx";
+import { createSignal, Show } from "solid-js";
+import { ImCross } from "solid-icons/im";
 
 /********************************************************************
  created:    2023-03-28
@@ -19,11 +23,9 @@ export default function PromptItem(props) {
   const currentPrompt = prompts.getPromptByIndex(list.length - props.reverseIndex - 1);
   let textControl;
 
-  function getPromptIndex() {
-    // 这个index，因为可以多次删除或新建，因此会变化，因此需要每次重新获取
-    return prompts.indexOfByName(currentPrompt.name);
-  }
-
+  // 删除需要二次确认，否则容易误除
+  const [confirmDelete, setConfirmDelete] = createSignal(false);
+  
   function onClickSave() {
     // console.log("textarea.value:", textarea.value);
     const name = currentPrompt.name;
@@ -36,10 +38,14 @@ export default function PromptItem(props) {
   }
 
   function onClickDelete() {
-    // 这个index，因为可以删除多次，因此会变化，因此需要每次重新获取
-    const name = currentPrompt.name;
-    prompts.deletePromptByName(name);
-    tabBus.broadcastMessage({ cmd: CommandType.deletePromptByName, name });
+    if (!confirmDelete()) {
+      setConfirmDelete(true);
+    } else {
+      // 这个index，因为可以删除多次，因此会变化，因此需要每次重新获取
+      const name = currentPrompt.name;
+      prompts.deletePromptByName(name);
+      tabBus.broadcastMessage({ cmd: CommandType.deletePromptByName, name });
+    }
   }
 
   return <>
@@ -55,7 +61,16 @@ export default function PromptItem(props) {
             <Card.Subtitle>{currentPrompt.name}</Card.Subtitle>
           </Col>
           <Col xs="1">
-            <CloseButton onClick={onClickDelete} disabled={currentPrompt.name === prompts.getCurrentPrompt()} />
+            <IconButton size="sm" color="tomato" hoverColor="darkred" onClick={onClickDelete}
+                        disabled={currentPrompt.name === prompts.getCurrentPrompt()}>
+              <Show when={confirmDelete()} keyed
+                    fallback={
+                      <IoTrash size={24} />
+                    }
+              >
+                <ImCross size={20} />
+              </Show>
+            </IconButton>
           </Col>
         </Row>
 
