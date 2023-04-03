@@ -1,6 +1,6 @@
 "use strict";
 
-import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
+import { Badge, Button, Card, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
@@ -77,13 +77,8 @@ export default function AddPromptItem(props) {
     >
 
       <Card.Body>
-        <Row>
-          <Col xs="10">
-            <Form.Control ref={nameControl} type="text" placeholder="Name" onInput={onInputName} />
-          </Col>
-        </Row>
-
-        <Form.Control ref={textControl} as="textarea" rows={3} placeholder="Prompt text" onInput={onInputText} />
+        <Form.Control ref={nameControl} type="text" placeholder="Name of the prompt" onInput={onInputName} />
+        <Form.Control ref={textControl} as="textarea" rows={3} placeholder="Full content of the prompt" onInput={onInputText} />
 
         <Row>
           <h5>

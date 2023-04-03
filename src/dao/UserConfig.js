@@ -11,8 +11,9 @@ import { getSystemLanguage } from "@src/common/Locale.ts";
 export default function useUserConfig() {
   const toolbarEnable = useLocalStorage("tweak-toolbar-enable", true);
   const language = useLocalStorage("tweak-language", getSystemLanguage());
+
   return {
-    toolbarEnable,
-    language
+    toolbarEnable: toolbarEnable,
+    language: language
   };
 }

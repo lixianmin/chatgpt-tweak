@@ -1,7 +1,7 @@
 import Browser from "webextension-polyfill"
 import * as localizedStrings from './LocaleText.json'
 
-// todo 重启梳理语言，以及本地化问题
+// todo 重新梳理语言，以及本地化问题
 export const getSystemLanguage = () => Browser.i18n.getUILanguage().split("-")[0]
 
 export const Languages = {

@@ -1,7 +1,7 @@
 "use strict";
+import { TbSettings } from "solid-icons/tb";
+import IconButton from "@src/core/widgets/IconButton.jsx";
 import Browser from "webextension-polyfill";
-import { Icons } from "@src/core/widgets/Icons.jsx";
-import { Button } from "solid-bootstrap";
 import { CommandType } from "@src/common/Consts.js";
 
 /********************************************************************
@@ -13,9 +13,10 @@ import { CommandType } from "@src/common/Consts.js";
 
 export default function ToolbarOptions() {
   return <>
-    <Button variant="outline-secondary"
-            onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}>
-      {Icons.tune}
-    </Button>
+    <IconButton color="white" hoverColor="silver"
+                onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}
+    >
+      <TbSettings size="32" />
+    </IconButton>
   </>;
 }

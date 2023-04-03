@@ -30,6 +30,7 @@ specifiers:
   prettier: 2.8.0
   sass: 1.56.1
   solid-bootstrap: ^1.0.13
+  solid-icons: ^1.0.4
   solid-js: ^1.6.2
   ts-jest: ^29.0.3
   ts-loader: 9.4.2
@@ -47,6 +48,7 @@ dependencies:
   lodash-es: 4.17.21
   moment: 2.29.4
   solid-bootstrap: 1.0.13_solid-js@1.6.2
+  solid-icons: 1.0.4_solid-js@1.6.2
   solid-js: 1.6.2
   uuid: 9.0.0
   webextension-polyfill: 0.10.0
@@ -4633,6 +4635,15 @@ packages:
       solid-bootstrap-core: 1.0.13_solid-js@1.6.2
       solid-js: 1.6.2
       solid-react-transition: 1.0.11_solid-js@1.6.2
+    dev: false
+
+  /solid-icons/1.0.4_solid-js@1.6.2:
+    resolution: {integrity: sha512-gJTp4in3+OYCs9WvDkSLt4Los2unR3Uoder8wjh15GsfP20xiNOLfPTJllXmn+fI8+k3x7bRYtLGIgWd9fUQug==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      solid-js: '*'
+    dependencies:
+      solid-js: 1.6.2
     dev: false
 
   /solid-js/1.6.2:
