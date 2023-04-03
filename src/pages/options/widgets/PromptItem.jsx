@@ -7,6 +7,7 @@ import { IoTrash } from "solid-icons/io";
 import IconButton from "@src/core/widgets/IconButton.jsx";
 import { createSignal, Show } from "solid-js";
 import { ImCross } from "solid-icons/im";
+import { FiX } from "solid-icons/fi";
 
 /********************************************************************
  created:    2023-03-28
@@ -25,7 +26,7 @@ export default function PromptItem(props) {
 
   // 删除需要二次确认，否则容易误除
   const [confirmDelete, setConfirmDelete] = createSignal(false);
-  
+
   function onClickSave() {
     // console.log("textarea.value:", textarea.value);
     const name = currentPrompt.name;
@@ -68,7 +69,7 @@ export default function PromptItem(props) {
                       <IoTrash size={24} />
                     }
               >
-                <ImCross size={20} />
+                <FiX size={26} />
               </Show>
             </IconButton>
           </Col>

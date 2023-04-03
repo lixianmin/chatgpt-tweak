@@ -1,6 +1,6 @@
 {
     "name": "chatgpt-tweak",
-    "displayName": "chatgpt tweak",
+    "displayName": "Chatgpt Tweak",
     "version": "2023-03-28",
     "description": "Tweak your chatgpt to add prompts, history, and so on",
     "license": "MIT",
