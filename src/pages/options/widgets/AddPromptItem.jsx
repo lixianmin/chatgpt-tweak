@@ -1,6 +1,6 @@
 "use strict";
 
-import { Badge, Button, Card, Form, Row } from "solid-bootstrap";
+import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
@@ -64,10 +64,24 @@ export default function AddPromptItem(props) {
   function checkDisableAddButton() {
     const name = nameControl.value.trim();
     const text = textControl.value.trim();
-    const disable = !name || !text || showWarning();
+    const disable = !name || !text || showWarning() || !text.includes("{query}");
 
     // console.log("!name", !name, "!text", !text, "showWarning", showWarning());
     setDisableAddButton(disable);
+  }
+
+  function onClickInsertToCursor(text) {
+    const start = textControl.selectionStart;
+    const currentValue = textControl.value;
+    const newValue = currentValue.substring(0, start) + text + currentValue.substring(start);
+    textControl.value = newValue;
+
+    // 重新设置cursor的位置
+    textControl.focus();
+    const cursorPosition = start + text.length;
+    textControl.setSelectionRange(cursorPosition, cursorPosition);
+
+    checkDisableAddButton();
   }
 
   return <>
@@ -87,8 +101,21 @@ export default function AddPromptItem(props) {
             <Badge bg="warning" hidden={!showWarning()}>{_T("The same name already exists")}</Badge>
           </h5>
         </Row>
-        <Button variant="outline-primary" size="sm" onClick={onClickAdd}
-                disabled={disableAddButton()}>{_T("Add")}</Button>
+        <Row>
+          <Col xs="3">
+            <Button variant="outline-danger" size="sm"
+                    onClick={() => onClickInsertToCursor("{query}")}>{"{query}"}</Button>
+          </Col>
+          <Col xs="5">
+            <Button variant="outline-success" size="sm"
+                    onClick={() => onClickInsertToCursor("{current_time}")}>{"{current_time}"}</Button>
+          </Col>
+          <Col xs="auto">
+            <Button variant="outline-primary" size="sm" onClick={onClickAdd}
+                    disabled={disableAddButton()}>{_T("Add")}</Button>
+          </Col>
+        </Row>
+
       </Card.Body>
     </Card>
   </>;

@@ -78,8 +78,14 @@ export default function PromptItem(props) {
 
         <Form.Control ref={textControl} as="textarea" rows={3} value={currentPrompt.text} />
 
-        <Button variant="outline-primary" size="sm" onClick={onClickSave}>{_T("Save")}</Button>
-        <Button variant="outline-danger" size="sm" onClick={onClickReset}>{_T("Reset")}</Button>
+        <Row>
+          <Col xs="auto">
+            <Button variant="outline-primary" size="sm" onClick={onClickSave}>{_T("Save")}</Button>
+          </Col>
+          <Col xs="auto">
+            <Button variant="outline-danger" size="sm" xs="4" onClick={onClickReset}>{_T("Reset")}</Button>
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   </>;
