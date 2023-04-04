@@ -32,6 +32,7 @@ export default function PromptItem(props) {
     const name = currentPrompt.name;
     const next = { name: name, text: textControl.value };
     prompts.setPromptByName(name, next);
+    tabBus.broadcastMessage({ cmd: CommandType.savePrompt, name: name, prompt: next });
   }
 
   function onClickReset() {

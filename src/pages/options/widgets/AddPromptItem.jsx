@@ -18,7 +18,7 @@ export default function AddPromptItem(props) {
   const prompts = props.prompts;
   const [showWarning, setShowWarning] = createSignal(false);
   const [disableAddButton, setDisableAddButton] = createSignal(true);
-  const [nameSignal, setNameSignal] = createSignal("");
+  // const [nameSignal, setNameSignal] = createSignal("");
 
   let nameControl;
   let textControl;
@@ -31,7 +31,7 @@ export default function AddPromptItem(props) {
     const warning = !!last;
     setShowWarning(warning);
     if (warning) {
-      setNameSignal(name);
+      // setNameSignal(name);
       // console.log("warning name:", name, "nameSignal():", nameSignal());
     }
     checkDisableAddButton();

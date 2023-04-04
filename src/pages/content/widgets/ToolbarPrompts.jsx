@@ -25,6 +25,9 @@ export default function ToolbarPrompts() {
       case CommandType.deletePromptByName:
         prompts.deletePromptByName(request.name);
         break;
+      case CommandType.savePrompt:
+        prompts.setPromptByName(request.name, request.prompt);
+        break;
     }
   });
 

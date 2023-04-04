@@ -19,7 +19,6 @@ export default function usePrompts() {
     setPromptState("current", promptState.list[0].name);
   }
 
-  // todo 修改prompt的内容，并且保存之后，content的内容并没有得到修改
   function addBuiltinPrompts() {
     addPrompt({
       name: "Translator",

@@ -10,5 +10,6 @@
 export const CommandType = {
   openOptionsPage: "open.options.page",
   addPrompt: "add.prompt",
-  deletePromptByName: "delete.prompt.by.name"
+  deletePromptByName: "delete.prompt.by.name",
+  savePrompt: "save.prompt"
 };
