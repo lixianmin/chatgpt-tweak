@@ -1,5 +1,6 @@
 {
   "switch tweak": "tweak开关",
+  "+ New Prompt": "+ 新提示词",
   "Name of the prompt": "提示词的名字",
   "Full content of the prompt": "提示词的完整内容",
   "The same name already exists": "提示词的名字重复啦",

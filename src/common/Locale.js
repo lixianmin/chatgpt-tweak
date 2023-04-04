@@ -57,15 +57,14 @@ function setCurrentLanguageByName(name) {
   }));
 }
 
-function getLocalText(original) {
+// 导出_T()方法，用于获取本地化的文本
+export function _T(original) {
   const value = localeState.languageValue;
   // console.log("value", value);
   const config = value.config.default;
+  // console.log(config)
   return config[original] ?? original;
 }
-
-// 导出_T()方法，用于获取本地化的文本
-export const _T = getLocalText;
 
 export const Locale = {
   languageTable: languageTable,

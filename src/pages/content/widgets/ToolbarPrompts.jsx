@@ -6,6 +6,7 @@ import { For, Show } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
 import Browser from "webextension-polyfill";
+import { _T } from "@src/common/Locale.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -63,7 +64,7 @@ export default function ToolbarPrompts() {
       }}</For>
       <Button variant="outline-info" style={{ background: "transparent", border: "none" }}
               onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}>
-        + New Prompt
+        {_T('+ New Prompt')}
       </Button>
     </DropdownButton>
 
