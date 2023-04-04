@@ -10,11 +10,11 @@ import { onCleanup, onMount } from "solid-js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export function createTabBusChatGPT() {
-  return createTabBus({ url: "https://chat.openai.com/*" });
+export function createTabMessageBusChatGPT() {
+  return createTabMessageBus({ url: "https://chat.openai.com/*" });
 }
 
-export function createTabBus(queryInfo) {
+export function createTabMessageBus(queryInfo) {
   function broadcastMessage(message) {
     // 使用这个方法，需要在manifest.ts文件中加入tabs权限，同时需要重启npm run dev，否则不生效
     Browser.tabs.query(queryInfo).then(tabs => {
@@ -28,15 +28,14 @@ export function createTabBus(queryInfo) {
     });
   }
 
-  function mountListener(callback) {
-    onMount(() => {
-      Browser.runtime.onMessage.addListener(callback);
-      onCleanup(() => Browser.runtime.onMessage.removeListener(callback));
-    });
-  }
-
   return {
-    broadcastMessage: broadcastMessage,
-    mountListener: mountListener
+    broadcastMessage: broadcastMessage
   };
+}
+
+export function mountMessageListener(callback) {
+  onMount(() => {
+    Browser.runtime.onMessage.addListener(callback);
+    onCleanup(() => Browser.runtime.onMessage.removeListener(callback));
+  });
 }

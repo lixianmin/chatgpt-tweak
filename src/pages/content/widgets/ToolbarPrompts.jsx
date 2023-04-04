@@ -3,10 +3,9 @@
 import { Button, ButtonGroup, Dropdown, DropdownButton } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
 import { For, Show } from "solid-js";
-import { CommandType } from "@src/common/Consts.js";
-import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import { CommandType as Consts, CommandType } from "@src/common/Consts.js";
 import Browser from "webextension-polyfill";
-import { _T, Locale } from "@src/common/Locale.js";
+import { _T } from "@src/common/Locale.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -27,6 +26,10 @@ export default function ToolbarPrompts() {
   function onSelectPromptName(name) {
     prompts.setCurrentPrompt(name);
     removeFocusFromCurrentElement();
+
+    // 通知options page
+    // console.log("onSelectPromptName", name);
+    Browser.runtime.sendMessage({ cmd: Consts.setCurrentPrompt, name });
   }
 
   function removeFocusFromCurrentElement() {

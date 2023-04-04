@@ -3,7 +3,7 @@
 import { ButtonGroup, Dropdown, DropdownButton } from "solid-bootstrap";
 import { For, Show } from "solid-js";
 import { _T, Locale } from "@src/common/Locale.js";
-import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
 import { CommandType } from "@src/common/Consts.js";
 
 /********************************************************************
@@ -15,7 +15,7 @@ import { CommandType } from "@src/common/Consts.js";
 
 export default function LanguageSettings() {
 
-  const tabBus = createTabBusChatGPT();
+  const tabBus = createTabMessageBusChatGPT();
 
   function onSelectLanguageName(name) {
     // console.log("name", name);

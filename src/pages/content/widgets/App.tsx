@@ -4,7 +4,7 @@ import useUserConfig from "@src/dao/UserConfig";
 import Toolbar from "@pages/content/widgets/Toolbar";
 import usePrompts from "@src/dao/Prompts";
 import { render } from "solid-js/web";
-import attachTabBusListener from "@pages/content/widgets/TabBusListener";
+import attachTabBusListener from "@pages/content/widgets/ContentMessageListener";
 
 /********************************************************************
  created:    2023-03-27

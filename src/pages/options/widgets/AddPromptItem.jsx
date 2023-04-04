@@ -3,7 +3,7 @@
 import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
-import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
 import { _T } from "@src/common/Locale.js";
 
 /********************************************************************
@@ -12,7 +12,7 @@ import { _T } from "@src/common/Locale.js";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-const tabBus = createTabBusChatGPT();
+const tabBus = createTabMessageBusChatGPT();
 
 export default function AddPromptItem(props) {
   const prompts = props.prompts;

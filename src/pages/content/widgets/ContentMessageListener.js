@@ -1,7 +1,7 @@
 "use strict";
 
 import { Locale } from "@src/common/Locale.js";
-import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import { mountMessageListener } from "@src/core/MessageBus.js";
 import { CommandType } from "@src/common/Consts.js";
 import usePrompts from "@src/dao/Prompts.js";
 
@@ -12,11 +12,10 @@ import usePrompts from "@src/dao/Prompts.js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function mountTabBusListener() {
+export default function mountContentMessageListener() {
   const prompts = usePrompts();
-  const tabBus = createTabBusChatGPT();
 
-  tabBus.mountListener(request => {
+  mountMessageListener(request => {
     switch (request.cmd) {
       case CommandType.addPrompt:
         prompts.addPrompt(request.newPrompt);
