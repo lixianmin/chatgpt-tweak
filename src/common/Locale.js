@@ -24,8 +24,8 @@ const browserLanguage = getBrowserLanguage();
 
 // 指的是en, zh这样的，而不是『English』、『中文』 这样的
 const [localeState, setLocaleState] = await createStoreBrowserStorage("tweak-locale", {
-  languageKey: browserLanguage,
-  languageValue: languageTable[browserLanguage]
+  languageKey: browserLanguage
+  // languageValue: languageTable[browserLanguage] 这个不应该序列化，因为这个新建和修改太频繁啦
 });
 
 // console.log(`browserLanguage=${browserLanguage}`, "localState=", localeState);
@@ -39,7 +39,7 @@ function getBrowserLanguage() {
 }
 
 function getCurrentLanguageName() {
-  return localeState.languageValue.name;
+  return languageTable[localeState.languageKey].name;
 }
 
 function setCurrentLanguageByName(name) {
@@ -59,7 +59,7 @@ function setCurrentLanguageByName(name) {
 
 // 导出_T()方法，用于获取本地化的文本
 export function _T(original) {
-  const value = localeState.languageValue;
+  const value = languageTable[localeState.languageKey];
   // console.log("value", value);
   const config = value.config.default;
   // console.log(config)
