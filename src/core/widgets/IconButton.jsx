@@ -1,6 +1,6 @@
 "use strict";
 
-import { createSignal } from "solid-js";
+import { createSignal, splitProps } from "solid-js";
 import { Button } from "solid-bootstrap";
 
 /********************************************************************
@@ -12,7 +12,8 @@ import { Button } from "solid-bootstrap";
 
 
 export default function IconButton(props) {
-  const { color = "white", hoverColor = "silver", children, ...buttonProps } = props;
+  const [localProps, otherProps] = splitProps(props, ["disabled"]); // 直接解构会导致signal失去响应性，参考：https://www.solidjs.com/tutorial/props_split?solved
+  const { color = "white", hoverColor = "silver", children, ...buttonProps } = otherProps;
   const [iconColor, setIconColor] = createSignal(color);
 
   function onMouseEnter() {
@@ -23,13 +24,14 @@ export default function IconButton(props) {
     setIconColor(color);
   }
 
-  return (
+  return <>
     <Button style={{ background: "transparent", border: "none", color: iconColor() }} {...buttonProps}
+            disabled={localProps.disabled}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
     >
       {children}
     </Button>
-  );
+  </>;
 }
 
