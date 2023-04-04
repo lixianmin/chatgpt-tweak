@@ -6,7 +6,7 @@ import { For, Show } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
 import Browser from "webextension-polyfill";
-import { _T } from "@src/common/Locale.js";
+import { _T, Locale } from "@src/common/Locale.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -16,22 +16,6 @@ import { _T } from "@src/common/Locale.js";
  *********************************************************************/
 export default function ToolbarPrompts() {
   const prompts = usePrompts();
-  const tabBus = createTabBusChatGPT();
-
-  // todo 修改语言的时候，content界面没有收到
-  tabBus.mountListener(request => {
-    switch (request.cmd) {
-      case CommandType.addPrompt:
-        prompts.addPrompt(request.newPrompt);
-        break;
-      case CommandType.deletePromptByName:
-        prompts.deletePromptByName(request.name);
-        break;
-      case CommandType.savePrompt:
-        prompts.setPromptByName(request.name, request.prompt);
-        break;
-    }
-  });
 
   // function onChange(evt) {
   //   const name = evt.target.value;
@@ -64,7 +48,7 @@ export default function ToolbarPrompts() {
       }}</For>
       <Button variant="outline-info" style={{ background: "transparent", border: "none" }}
               onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}>
-        {_T('+ New Prompt')}
+        {_T("+ New Prompt")}
       </Button>
     </DropdownButton>
 

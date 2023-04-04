@@ -4,6 +4,7 @@ import useUserConfig from "@src/dao/UserConfig";
 import Toolbar from "@pages/content/widgets/Toolbar";
 import usePrompts from "@src/dao/Prompts";
 import { render } from "solid-js/web";
+import attachTabBusListener from "@pages/content/widgets/TabBusListener";
 
 /********************************************************************
  created:    2023-03-27
@@ -72,6 +73,7 @@ const App = () => {
 
   function checkAttachTweakUI() {
     try {
+      // todo 这里实际上是创建了两个Toolbar，第一个创建了，但是不知道为啥消失不见的
       // 因为chatgpt的页面变来变去，重新加载什么的都很多，发现哪怕使用MutationObserver也抓不住。定期轮询是最稳定的
       setInterval(() => {
         const toolbar = document.getElementById(toolbarId);
@@ -87,6 +89,8 @@ const App = () => {
   onMount(() => {
     checkAttachTweakUI();
   });
+
+  attachTabBusListener();
 
   return <>
   </>;

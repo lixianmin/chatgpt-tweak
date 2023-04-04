@@ -22,7 +22,6 @@ export default function ToolbarEnable() {
   return <>
     <Form.Check
       type="switch"
-      id="tweak-switch"
       label={_T("switch tweak")}
       onClick={(evt) => setEnable(evt.target.checked)}
       checked={enable()}
