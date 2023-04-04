@@ -1,10 +1,11 @@
 "use strict";
 
-import { Form } from "solid-bootstrap";
+import { Button, ButtonGroup, Dropdown, DropdownButton } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
 import { For, Show } from "solid-js";
 import { CommandType } from "@src/common/Consts.js";
 import { createTabBusChatGPT } from "@src/core/TabBus.js";
+import Browser from "webextension-polyfill";
 
 /********************************************************************
  created:    2023-03-27
@@ -31,10 +32,15 @@ export default function ToolbarPrompts() {
     }
   });
 
-  function onChange(evt) {
-    const name = evt.target.value;
-    prompts.setCurrentPrompt(name);
+  // function onChange(evt) {
+  //   const name = evt.target.value;
+  //   prompts.setCurrentPrompt(name);
+  //
+  //   removeFocusFromCurrentElement();
+  // }
 
+  function onSelectPromptName(name) {
+    prompts.setCurrentPrompt(name);
     removeFocusFromCurrentElement();
   }
 
@@ -43,15 +49,32 @@ export default function ToolbarPrompts() {
   }
 
   return <>
-    <Form.Select onChange={onChange}>
+    <DropdownButton variant="outline-success"
+                    as={ButtonGroup}
+                    title={prompts.getCurrentPrompt()}
+                    onSelect={onSelectPromptName}>
       <For each={prompts.getPromptList()}>{(prompt, index) => {
-        return <Show when={prompts.getCurrentPrompt() === prompt.name} fallback={
-          <option name={prompt.name}>{prompt.name}</option>
-        } keyed>
-          <option selected="true">{prompt.name}</option>
+        return <Show when={prompts.getCurrentPrompt() === prompt.name} keyed fallback={
+          <Dropdown.Item eventKey={prompt.name}>{prompt.name}</Dropdown.Item>
+        }>
+          <Dropdown.Item eventKey={prompt.name} active>{prompt.name}</Dropdown.Item>
         </Show>;
       }}</For>
-    </Form.Select>
+      <Button variant="outline-info" style={{ background: "transparent", border: "none" }}
+              onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}>
+        + New Prompt
+      </Button>
+    </DropdownButton>
+
+    {/*<Form.Select onChange={onChange}>*/}
+    {/*  <For each={prompts.getPromptList()}>{(prompt, index) => {*/}
+    {/*    return <Show when={prompts.getCurrentPrompt() === prompt.name} fallback={*/}
+    {/*      <option name={prompt.name}>{prompt.name}</option>*/}
+    {/*    } keyed>*/}
+    {/*      <option selected="true">{prompt.name}</option>*/}
+    {/*    </Show>;*/}
+    {/*  }}</For>*/}
+    {/*</Form.Select>*/}
   </>;
 }
 
