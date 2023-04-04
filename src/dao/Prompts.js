@@ -19,18 +19,19 @@ export default function usePrompts() {
     setPromptState("current", promptState.list[0].name);
   }
 
+  // todo 修改prompt的内容，并且保存之后，content的内容并没有得到修改
   function addBuiltinPrompts() {
     addPrompt({
       name: "Translator",
-      text: "{current_time}\nSuppose you are a professional English translator, you must translate whatever I will say into English:\n\n{query}"
+      text: "{current_time}\nFirstly, you must firstly rephrase what I will say into elegant English. Secondly, if I am asking a question, please answer it in a new paragraph. What I will say is:\n\n{query}"
     });
 
     addPrompt({
       name: "Coder",
-      text: "{current_time}\nSuppose you are a professional English translator and programmer, from now on, you must translate whatever I will say into English." +
-        "And whenever I ask you program questions, you must provide some code examples besides answer my question." +
+      text: "{current_time}\nSuppose you are a professional coder. Firstly, you must rephrase my question in elegant English." +
+        "Secondly, if I ask you program questions, you must provide some code examples besides answer my question." +
         "At last, after answering my questions, you must provide at least 3 related urls. " +
-        "Here comes my questions: \n\n{query}"
+        "my question is: \n\n{query}"
     });
   }
 

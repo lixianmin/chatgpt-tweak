@@ -16,6 +16,7 @@ export default function ToolbarPrompts() {
   const prompts = usePrompts();
   const tabBus = createTabBusChatGPT();
 
+  // todo 修改语言的时候，content界面没有收到
   tabBus.mountListener(request => {
     switch (request.cmd) {
       case CommandType.addPrompt:
