@@ -49,8 +49,9 @@ export default function ToolbarPrompts() {
   }
 
   return <>
-    <DropdownButton variant="outline-success"
+    <DropdownButton variant="outline-info"
                     as={ButtonGroup}
+                    size="sm"
                     title={prompts.getCurrentPrompt()}
                     onSelect={onSelectPromptName}>
       <For each={prompts.getPromptList()}>{(prompt, index) => {
