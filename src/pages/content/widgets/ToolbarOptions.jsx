@@ -12,8 +12,9 @@ import { CommandType } from "@src/common/Consts.js";
  *********************************************************************/
 
 export default function ToolbarOptions() {
+  // 因为是自定义控件，所以还需要兼顾chatgpt处于dark mode还是light mode
   return <>
-    <IconButton color="white" hoverColor="silver"
+    <IconButton color="green" hoverColor="darkgreen"
                 onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}
     >
       <TbSettings size="32" />

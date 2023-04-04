@@ -15,12 +15,23 @@ const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-pro
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
   if (!promptState.current) {
-    // todo 也许可以默认提供好几个prompts
-    const name = "related 3 urls";
-    const text = "{current_time}\nAfter answering my question, you must provide 3 related urls, my question is:\n{query}";
+    addBuiltinPrompts();
+    setPromptState("current", promptState.list[0].name);
+  }
 
-    setPromptState("current", name);
-    addPrompt({ name, text });
+  function addBuiltinPrompts() {
+    addPrompt({
+      name: "Translator",
+      text: "{current_time}\nSuppose you are a professional English translator, you must translate whatever I will say into English:\n\n{query}"
+    });
+
+    addPrompt({
+      name: "Coder",
+      text: "{current_time}\nSuppose you are a professional English translator and programmer, from now on, you must translate whatever I will say into English." +
+        "And whenever I ask you program questions, you must provide some code examples besides answer my question." +
+        "At last, after answering my questions, you must provide at least 3 related urls. " +
+        "Here comes my questions: \n\n{query}"
+    });
   }
 
   function getPromptByName(name) {

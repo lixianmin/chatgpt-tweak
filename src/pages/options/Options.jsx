@@ -1,7 +1,7 @@
 "use strict";
 import PromptGrid from "@pages/options/widgets/PromptGrid.jsx";
 import { Button, ButtonGroup, Dropdown, DropdownButton } from "solid-bootstrap";
-import { createEffect, createSignal, For, Show } from "solid-js";
+import { For, Show } from "solid-js";
 import { _T, Locale } from "@src/common/Locale.js";
 
 /********************************************************************
@@ -12,24 +12,17 @@ import { _T, Locale } from "@src/common/Locale.js";
  *********************************************************************/
 
 const Options = () => {
-  const [currentLanguage, setCurrentLanguage] = createSignal(Locale.getCurrentLanguage());
-
-  function onSelectLanguage(language) {
-    setCurrentLanguage(language);
-    console.log(language)
+  function onSelectLanguageName(name) {
+    Locale.setCurrentLanguageByName(name);
   }
-
-  createEffect(() => {
-    Locale.setCurrentLanguage(currentLanguage());
-  });
 
   return <>
     <ButtonGroup>
       <Button variant="light" href="https://github.com/lixianmin/chatgpt-tweak">GitHub</Button>
-      <DropdownButton variant="light" as={ButtonGroup} title={_T("System Language")} onSelect={onSelectLanguage}>
+      <DropdownButton variant="light" as={ButtonGroup} title={_T("System Language")} onSelect={onSelectLanguageName}>
         <For each={Object.keys(Locale.languageTable)}>{(languageKey) => {
           const item = Locale.languageTable[languageKey];
-          return <Show when={item.name === currentLanguage()} keyed fallback={
+          return <Show when={item.name === Locale.getCurrentLanguageName()} keyed fallback={
             <Dropdown.Item eventKey={item.name}>{item.name}</Dropdown.Item>
           }>
             <Dropdown.Item eventKey={item.name} active>{item.name}</Dropdown.Item>
