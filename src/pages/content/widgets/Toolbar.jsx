@@ -30,7 +30,14 @@ function initInputBox() {
   const btnSubmit = getSubmitButton();
   inputBox.addEventListener("keydown", onKeyDown);
   btnSubmit.addEventListener("click", onSubmit);
-  document.addEventListener("keydown", () => inputBox.focus()); // 如果焦点不在inputBox，则回车时获得焦点
+
+  // 如果焦点不在inputBox，则回车时获得焦点
+  document.addEventListener("keydown", (evt) => {
+    if (evt.key === "Enter" && evt.target !== inputBox) {
+      inputBox.focus();
+      evt.preventDefault();
+    }
+  });
 
   createEffect(() => {
     // 这里需要设置成响应式的
@@ -53,7 +60,7 @@ function initInputBox() {
     const enterEvent = new KeyboardEvent("keydown", {
       bubbles: true,
       cancelable: true,
-      key: "Enter",
+      // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
       code: "Enter"
     });
     inputBox.dispatchEvent(enterEvent);
@@ -94,6 +101,8 @@ function initInputBox() {
       case "Tab":
         onKeyDownTab(evt);
         break;
+      default:
+        // console.log("evt", evt);
     }
   }
 
