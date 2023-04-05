@@ -10,6 +10,9 @@ import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
 import { createDelayed, longestCommonPrefix } from "@src/core/Tools.ts";
+import { formatDateTime } from "@src/core/Time.js";
+import { _T } from "@src/common/Locale.js";
+import { createEffect } from "solid-js";
 
 /********************************************************************
  created:    2023-03-27
@@ -28,9 +31,15 @@ function initInputBox() {
   inputBox.addEventListener("keydown", onKeyDown);
   btnSubmit.addEventListener("click", onSubmit);
 
+  createEffect(() => {
+    // 这里需要设置成响应式的
+    inputBox.placeholder = _T("↑↓:histories Tab:complete Enter:send");
+  });
+
   function printHistory() {
     const list = historyStore.getHistoryList();
-    let result = "history commands: \n\n";
+    const currentTime = formatDateTime(new Date());
+    let result = currentTime + "\n\n history commands: \n\n";
     for (let i = 0; i < list.length; i++) {
       result += `${i + 1}. ${list[i]} \n`;
     }
