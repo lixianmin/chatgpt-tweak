@@ -16,8 +16,8 @@ const manifest = defineManifest(async () => ({
   options_page: "src/pages/options/index.html",
   background: { service_worker: "src/pages/background/index.ts" },
   action: {
-    default_popup: "src/pages/popup/index.html",
-    default_icon: "icons/34x34.png"
+    // default_popup: "src/pages/popup/index.html",
+    // default_icon: "icons/34x34.png"
   },
   // chrome_url_overrides: {
   //   newtab: "src/pages/newtab/index.html",
