@@ -1,8 +1,6 @@
 import { onMount } from "solid-js";
-import { getSubmitButton, getTextarea } from "@pages/content/widgets/ElementFinder";
-import useUserConfig from "@src/dao/UserConfig";
+import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
 import Toolbar from "@pages/content/widgets/Toolbar";
-import usePrompts from "@src/dao/Prompts";
 import { render } from "solid-js/web";
 import attachTabBusListener from "@pages/content/widgets/ContentMessageListener";
 
@@ -15,62 +13,13 @@ import attachTabBusListener from "@pages/content/widgets/ContentMessageListener"
 
 const App = () => {
   const toolbarId = "tweak-toolbar";
-  let isProcessing = false;
-  const prompts = usePrompts();
-
-  function pressEnter() {
-    const textarea = getTextarea();
-    if (textarea) {
-      textarea.focus();
-      const enterEvent = new KeyboardEvent("keydown", {
-        bubbles: true,
-        cancelable: true,
-        key: "Enter",
-        code: "Enter"
-      });
-      textarea.dispatchEvent(enterEvent);
-    }
-  }
-
-  function onKeyDown(event: KeyboardEvent) {
-    switch (event.key) {
-      case "Enter":
-        if (!event.shiftKey && !event.isComposing) {
-          onSubmit();
-        }
-        break;
-    }
-  }
-
-  function onSubmit() {
-    const textarea = getTextarea();
-    if (textarea && !isProcessing) {
-      const query = textarea.value.trim();
-      if (query !== "") {
-        isProcessing = true;
-        const userConfig = useUserConfig();
-        if (userConfig.toolbarEnable) {
-          textarea.value = prompts.compilePrompt(query);
-          // console.log(`textarea.value=${textarea.value}`);
-        }
-
-        pressEnter();
-        isProcessing = false;
-      }
-    }
-  }
 
   function attachTweakUI() {
-    const textarea = getTextarea();
+    const inputBox = getInputBox();
     const btnSubmit = getSubmitButton();
-    if (!textarea || !btnSubmit) {
-      return;
+    if (inputBox && btnSubmit) {
+      render(() => <Toolbar id={toolbarId} />, inputBox.parentElement.parentElement);
     }
-
-    textarea.addEventListener("keydown", onKeyDown);
-    btnSubmit.addEventListener("click", onSubmit);
-
-    render(() => <Toolbar id={toolbarId} />, textarea.parentElement.parentElement);
   }
 
   function checkAttachTweakUI() {

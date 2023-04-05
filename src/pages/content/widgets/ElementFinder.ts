@@ -5,9 +5,9 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export function getTextarea(): HTMLTextAreaElement {
-  const textarea = document.querySelector("textarea");
-  return textarea;
+export function getInputBox(): HTMLTextAreaElement {
+  const inputBox = document.querySelector("textarea");
+  return inputBox;
 }
 
 export function getFooter(): HTMLDivElement | null {
@@ -15,12 +15,12 @@ export function getFooter(): HTMLDivElement | null {
 }
 
 export function getSubmitButton(): HTMLButtonElement {
-  const textarea = getTextarea();
-  if (!textarea) {
+  const inputBox = getInputBox();
+  if (!inputBox) {
     return null;
   }
 
-  const parent = textarea.parentNode;
+  const parent = inputBox.parentNode;
   if (!parent) {
     return null;
   }
