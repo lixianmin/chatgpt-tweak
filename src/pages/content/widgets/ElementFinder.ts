@@ -14,11 +14,6 @@ export function getFooter(): HTMLDivElement | null {
   return document.querySelector("div[class*='absolute bottom-0']");
 }
 
-export function getConsolePanel(): any {
-  const panel = document.querySelector("div[class*='react-scroll-to-bottom']")?.firstChild?.firstChild;
-  return panel;
-}
-
 export function getSubmitButton(): HTMLButtonElement {
   const inputBox = getInputBox();
   if (!inputBox) {
@@ -32,4 +27,37 @@ export function getSubmitButton(): HTMLButtonElement {
 
   const button = parent.querySelector("button");
   return button;
+}
+
+function getConsolePanel(): any {
+  const panel = document.querySelector("div[class*='react-scroll-to-bottom']")?.firstChild?.firstChild;
+  return panel;
+}
+
+export function printHtml(html) {
+  const panel = getConsolePanel();
+  if (panel && panel.children) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+
+    const children = panel.children;
+    const insertIndex = children.length - 1;
+    const pivot = children[insertIndex];
+    panel.insertBefore(div, pivot);
+  }
+}
+
+export function printText(text) {
+  const panel = getConsolePanel();
+  if (panel && panel.children) {
+    const div = document.createElement("div");
+    div.innerText = text;
+    div.style.marginTop = "2rem";
+    div.style.marginLeft = "6rem";
+
+    const children = panel.children;
+    const insertIndex = children.length - 1;
+    const pivot = children[insertIndex];
+    panel.insertBefore(div, pivot);
+  }
 }

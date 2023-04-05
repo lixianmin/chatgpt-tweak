@@ -5,7 +5,7 @@ import ToolbarEnable from "@pages/content/widgets/ToolbarEnable.jsx";
 import { Col, Form, Row } from "solid-bootstrap";
 import ToolbarPrompts from "@pages/content/widgets/ToolbarPrompts.jsx";
 import ToolbarOptions from "@pages/content/widgets/ToolbarOptions.jsx";
-import { getConsolePanel, getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
+import { getInputBox, getSubmitButton, printText } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
@@ -28,28 +28,14 @@ function initInputBox() {
   inputBox.addEventListener("keydown", onKeyDown);
   btnSubmit.addEventListener("click", onSubmit);
 
-  function printHtml(html) {
-    const panel = getConsolePanel();
-    if (panel && panel.children) {
-      const div = document.createElement("div");
-      div.innerHTML = html;
-
-      const children = panel.children;
-      const insertIndex = children.length - 1;
-      const pivot = children[insertIndex];
-      panel.insertBefore(div, pivot);
-    }
-  }
-
   function printHistory() {
     const list = historyStore.getHistoryList();
-    let result = "<ol>";
+    let result = "history commands: \n\n";
     for (let i = 0; i < list.length; i++) {
-      result += `<li>${i + 1}. ${list[i]}</li>`;
+      result += `${i + 1}. ${list[i]} \n`;
     }
 
-    result += "</ol>";
-    printHtml(result);
+    printText(result);
   }
 
   function pressEnter() {
@@ -63,7 +49,7 @@ function initInputBox() {
     inputBox.dispatchEvent(enterEvent);
   }
 
-  function completeCommandHints(evt) {
+  function onKeyDownTab(evt) {
     const query = inputBox.value;
     const commandList = ["history"];
 
@@ -79,9 +65,9 @@ function initInputBox() {
       const hint = longestCommonPrefix(candidateList);
       inputBox.value = hint;
       delayedSetCursor(hint.length);
-
-      evt.preventDefault();
     }
+
+    evt.preventDefault();
   }
 
   function onKeyDown(evt) {
@@ -96,7 +82,7 @@ function initInputBox() {
         onKeyDownArrow(evt);
         break;
       case "Tab":
-        completeCommandHints(evt);
+        onKeyDownTab(evt);
         break;
     }
   }
@@ -118,12 +104,26 @@ function initInputBox() {
     evt.preventDefault();
   }
 
+  function checkHistoryExpansion(query) {
+    if (query.startsWith("!")) {
+      const index = Number(query.substring(1)) - 1;
+      if (!Number.isNaN(index)) {
+        query = historyStore.getHistory(index);
+        inputBox.value = query;
+      }
+    }
+
+    return query;
+  }
+
   function onSubmit() {
     if (!isProcessing) {
-      const query = inputBox.value.trim();
+      let query = inputBox.value.trim();
       if (query !== "") {
+        query = checkHistoryExpansion(query);
         historyStore.add(query);
 
+        // 如果是history命令，则打印
         if (query === "history") {
           printHistory();
           inputBox.value = "";
