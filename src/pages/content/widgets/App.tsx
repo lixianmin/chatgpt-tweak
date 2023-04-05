@@ -32,17 +32,19 @@ const App = () => {
     }
   }
 
-  async function onSubmit(event: MouseEvent | KeyboardEvent) {
-    if (event instanceof KeyboardEvent && event.shiftKey && event.key === "Enter") {
-      return;
+  function onKeyDown(event: KeyboardEvent) {
+    switch (event.key) {
+      case "Enter":
+        if (!event.shiftKey && !event.isComposing) {
+          onSubmit();
+        }
+        break;
     }
+  }
 
-    if (event instanceof KeyboardEvent && event.key === "Enter" && event.isComposing) {
-      return;
-    }
-
+  function onSubmit() {
     const textarea = getTextarea();
-    if (textarea && (event.type === "click" || (event instanceof KeyboardEvent && event.key === "Enter")) && !isProcessing) {
+    if (textarea && !isProcessing) {
       const query = textarea.value.trim();
       if (query !== "") {
         isProcessing = true;
@@ -65,7 +67,7 @@ const App = () => {
       return;
     }
 
-    textarea.addEventListener("keydown", onSubmit);
+    textarea.addEventListener("keydown", onKeyDown);
     btnSubmit.addEventListener("click", onSubmit);
 
     render(() => <Toolbar id={toolbarId} />, textarea.parentElement.parentElement);
