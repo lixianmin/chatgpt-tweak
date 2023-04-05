@@ -14,6 +14,11 @@ export function getFooter(): HTMLDivElement | null {
   return document.querySelector("div[class*='absolute bottom-0']");
 }
 
+export function getConsolePanel(): any {
+  const panel = document.querySelector("div[class*='react-scroll-to-bottom']")?.firstChild?.firstChild;
+  return panel;
+}
+
 export function getSubmitButton(): HTMLButtonElement {
   const inputBox = getInputBox();
   if (!inputBox) {
