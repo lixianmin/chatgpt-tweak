@@ -30,6 +30,7 @@ function initInputBox() {
   const btnSubmit = getSubmitButton();
   inputBox.addEventListener("keydown", onKeyDown);
   btnSubmit.addEventListener("click", onSubmit);
+  document.addEventListener("keydown", () => inputBox.focus()); // 如果焦点不在inputBox，则回车时获得焦点
 
   createEffect(() => {
     // 这里需要设置成响应式的
