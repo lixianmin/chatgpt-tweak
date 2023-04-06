@@ -4,6 +4,7 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
+import { formatDateTime } from "@src/core/Time";
 
 export function getInputBox(): HTMLTextAreaElement {
   const inputBox = document.querySelector("textarea");
@@ -34,30 +35,43 @@ function getConsolePanel(): any {
   return panel;
 }
 
-export function printHtml(html) {
+function createPrintDiv() {
   const panel = getConsolePanel();
   if (panel && panel.children) {
     const div = document.createElement("div");
-    div.innerHTML = html;
+    div.style.margin = "2rem auto 2rem 6rem"; // top right bottom left
 
     const children = panel.children;
     const insertIndex = children.length - 1;
     const pivot = children[insertIndex];
     panel.insertBefore(div, pivot);
+
+    return div;
+  }
+}
+
+export function printHtml(html) {
+  const div = createPrintDiv();
+  if (div) {
+    div.innerHTML = html;
   }
 }
 
 export function printText(text) {
-  const panel = getConsolePanel();
-  if (panel && panel.children) {
-    const div = document.createElement("div");
+  const div = createPrintDiv();
+  if (div) {
     div.innerText = text;
-    div.style.marginTop = "2rem";
-    div.style.marginLeft = "6rem";
-
-    const children = panel.children;
-    const insertIndex = children.length - 1;
-    const pivot = children[insertIndex];
-    panel.insertBefore(div, pivot);
   }
+}
+
+export function printHtmlWithTimestamp(html) {
+  const currentTime = formatDateTime(new Date());
+  const output = currentTime + "\n" + html;
+  printHtml(output);
+}
+
+export function printTextWithTimestamp(text) {
+  const currentTime = formatDateTime(new Date());
+  const output = currentTime + "\n" + text;
+  printText(output);
 }

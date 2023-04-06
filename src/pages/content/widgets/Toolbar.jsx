@@ -5,14 +5,14 @@ import ToolbarEnable from "@pages/content/widgets/ToolbarEnable.jsx";
 import { Col, Form, Row } from "solid-bootstrap";
 import ToolbarPrompts from "@pages/content/widgets/ToolbarPrompts.jsx";
 import ToolbarOptions from "@pages/content/widgets/ToolbarOptions.jsx";
-import { getInputBox, getSubmitButton, printText } from "@pages/content/widgets/ElementFinder";
+import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
-import { createDelayed, longestCommonPrefix } from "@src/core/Tools.ts";
-import { formatDateTime } from "@src/core/Time.js";
+import { createDelayed } from "@src/core/Tools.ts";
 import { _T } from "@src/common/Locale.js";
 import { createEffect } from "solid-js";
+import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -44,17 +44,6 @@ function initInputBox() {
     inputBox.placeholder = _T("↑↓:histories Tab:complete Enter:send");
   });
 
-  function printHistory() {
-    const list = historyStore.getHistoryList();
-    const currentTime = formatDateTime(new Date());
-    let result = currentTime + "\n\n history commands: \n\n";
-    for (let i = 0; i < list.length; i++) {
-      result += `${i + 1}. ${list[i]} \n`;
-    }
-
-    printText(result);
-  }
-
   function pressEnter() {
     inputBox.focus();
     const enterEvent = new KeyboardEvent("keydown", {
@@ -68,18 +57,8 @@ function initInputBox() {
 
   function onKeyDownTab(evt) {
     const query = inputBox.value;
-    const commandList = ["history"];
-
-    const candidateList = [];
-    for (let v of commandList.values()) {
-      if (v.startsWith(query)) {
-        candidateList.push(v);
-      }
-    }
-
-    // console.log("candidateList", candidateList);
-    if (candidateList.length > 0) {
-      const hint = longestCommonPrefix(candidateList);
+    const hint = fetchCommandHint(query);
+    if (hint !== query) {
       inputBox.value = hint;
       delayedSetCursor(hint.length);
     }
@@ -102,7 +81,7 @@ function initInputBox() {
         onKeyDownTab(evt);
         break;
       default:
-        // console.log("evt", evt);
+      // console.log("evt", evt);
     }
   }
 
@@ -142,9 +121,7 @@ function initInputBox() {
         query = checkHistoryExpansion(query);
         historyStore.add(query);
 
-        // 如果是history命令，则打印
-        if (query === "history") {
-          printHistory();
+        if (checkBuiltinCommands(query)) {
           inputBox.value = "";
           return;
         }
