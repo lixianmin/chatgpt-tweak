@@ -31,6 +31,11 @@ function initInputBox() {
   inputBox.addEventListener("keydown", onKeyDown);
   btnSubmit.addEventListener("click", onSubmit);
 
+  const tempIntputData = {
+    ok: false,
+    text: ""
+  };
+
   // 如果焦点不在inputBox，则回车时获得焦点
   document.addEventListener("keydown", (evt) => {
     if (evt.key === "Enter" && evt.target !== inputBox) {
@@ -83,6 +88,10 @@ function initInputBox() {
       default:
       // console.log("evt", evt);
     }
+
+    if (tempIntputData.ok && (evt.key !== "ArrowUp" && evt.key !== "ArrowDown")) {
+      tempIntputData.ok = false;
+    }
   }
 
   const delayedSetCursor = createDelayed((position) => {
@@ -90,11 +99,22 @@ function initInputBox() {
   });
 
   function onKeyDownArrow(evt) {
-    const step = evt.key === "ArrowUp" ? -1 : 1;
-    const nextText = historyStore.move(step);
+    const isArrowUp = evt.key === "ArrowUp";
+    const isArrowDown = !isArrowUp;
+
+    if (!tempIntputData.ok) {
+      tempIntputData.ok = true;
+      tempIntputData.text = inputBox.value;
+    }
+
+    const step = isArrowUp ? -1 : 1;
+    let nextText = historyStore.move(step);
+    if (isArrowDown && tempIntputData.ok && nextText === "") {
+      nextText = tempIntputData.text;
+    }
 
     // 按bash中history的操作习惯, 如果是arrow down的话, 最后一个应该是""
-    if (nextText !== "" || step === 1) {
+    if (nextText !== "" || isArrowDown) {
       inputBox.value = nextText;
       delayedSetCursor(nextText.length);
     }
