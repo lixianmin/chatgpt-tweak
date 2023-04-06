@@ -64,7 +64,7 @@ export default function AddPromptItem(props) {
   function checkDisableAddButton() {
     const name = nameControl.value.trim();
     const text = textControl.value.trim();
-    const disable = !name || !text || showWarning() || !text.includes("{query}");
+    const disable = !name || !text || showWarning(); //|| !text.includes("{query}"); 有些prompts的确不需要{query}
 
     // console.log("!name", !name, "!text", !text, "showWarning", showWarning());
     setDisableAddButton(disable);
