@@ -11,7 +11,7 @@ import useLocalStorage from "@src/core/LocalStorage.js";
 
 function createHistoryStore() {
   const storage = useLocalStorage("tweak-history-store", []);
-  let _list = storage.getStorage()
+  let _list = storage.getStorage();
   let _currentIndex = _list.length;
 
   return {
@@ -25,9 +25,11 @@ function createHistoryStore() {
         } else { // add()都是在输入命令时才调用的，这时万一historyIndex处于history数组的中间位置，将其调整到最后
           _currentIndex = _list.length;
         }
-      }
 
-      storage.setStorage(_list)
+        // 最多存储100到磁盘上
+        const maxStore = _list.slice(0, 100);
+        storage.setStorage(maxStore);
+      }
     },
     move(step) {
       if (typeof step === "number" && step !== 0) {
