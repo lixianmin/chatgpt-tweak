@@ -9,5 +9,10 @@
   "Reset": "Reset",
   "Home": "Home",
   "System Language": "System Language",
-  "↑↓:histories Tab:complete Enter:send": "↑↓:histories Tab:complete Enter:send"
+  "↑↓:histories Tab:complete Enter:send": "↑↓:histories Tab:complete Enter:send",
+  "Command": "Command",
+  "Note": "Note",
+  "list history messages": "list history messages",
+  "print this help message": "print this help message",
+  "GitHub Online Document": "GitHub Online Document"
 }

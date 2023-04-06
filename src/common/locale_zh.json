@@ -1,13 +1,18 @@
 {
   "switch tweak": "tweak开关",
-  "+ New Prompt": "+ 新提示词",
-  "Name of the prompt": "提示词的名字",
-  "Full content of the prompt": "提示词的完整内容",
-  "The same name already exists": "提示词的名字重复啦",
+  "+ New Prompt": "+ 新提示语",
+  "Name of the prompt": "提示语名称",
+  "Full content of the prompt": "提示语的完整内容",
+  "The same name already exists": "提示语的名字重复啦",
   "Add": "添加",
   "Save": "保存",
   "Reset": "重置",
   "Home": "主页",
   "System Language": "系统语言",
-  "↑↓:histories Tab:complete Enter:send": "↑↓切历史 Tab补全 Enter发送"
+  "↑↓:histories Tab:complete Enter:send": "↑↓切历史 Tab补全 Enter发送",
+  "Command": "命令",
+  "Note": "注释",
+  "list history messages": "列出历史消息",
+  "print this help message": "显示帮助文档",
+  "GitHub Online Document": "GitHub在线文档"
 }
