@@ -22,12 +22,12 @@ export default function usePrompts() {
   function addBuiltinPrompts() {
     addPrompt({
       name: "Translator",
-      text: "{current_time}\nFirstly, you must firstly rephrase what I will say into elegant English. Secondly, if I am asking a question, please answer it in a new paragraph. What I will say is:\n\n{query}"
+      text: "{time}\nFirstly, you must firstly rephrase what I will say into elegant English. Secondly, if I am asking a question, please answer it in a new paragraph. What I will say is:\n\n{query}"
     });
 
     addPrompt({
       name: "Coder",
-      text: "{current_time}\nSuppose you are a professional coder. Firstly, you must rephrase my question in elegant English." +
+      text: "{time}\nSuppose you are a professional coder. Firstly, you must rephrase my question in elegant English." +
         "Secondly, if I ask you program questions, you must provide some code examples besides answer my question." +
         "At last, after answering my questions, you must provide at least 3 related urls. " +
         "my question is: \n\n{query}"
@@ -114,11 +114,11 @@ export default function usePrompts() {
   function compilePrompt(query) {
     const current = promptState.current;
     const prompt = getPromptByName(current);
-    const currentTime = formatDateTime(new Date());
+    const time = formatDateTime(new Date());
 
     const text = _replaceVariables(prompt.text, {
       "{query}": query,
-      "{current_time}": currentTime
+      "{time}": time
     });
 
     return text;

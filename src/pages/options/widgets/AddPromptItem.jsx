@@ -108,7 +108,7 @@ export default function AddPromptItem(props) {
           </Col>
           <Col xs="5">
             <Button variant="outline-success" size="sm"
-                    onClick={() => onClickInsertToCursor("{current_time}")}>{"{current_time}"}</Button>
+                    onClick={() => onClickInsertToCursor("{time}")}>{"{time}"}</Button>
           </Col>
           <Col xs="auto">
             <Button variant="outline-primary" size="sm" onClick={onClickAdd}
