@@ -95,6 +95,9 @@ function initInputBox() {
     if (hint !== query) {
       inputBox.value = hint;
       delayedSetCursor(hint.length);
+    } else {
+      const next = checkHistoryExpansion(query);
+      delayedSetCursor(next.length);
     }
 
     evt.preventDefault();

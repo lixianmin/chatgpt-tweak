@@ -33,10 +33,12 @@
 
 #### 3 Todo
 
-1. extension的简介要改一下
-2. options页面布局，是不是太大了？如果改成小按钮，鼠标过去后tips出来， 是否更方便合理一些？
-3. 可以用拖动的方式，对prompts进行重新排版，不仅仅是指在settings页面，也可以是dropdown list中
-
+1. 批量import和export prompts的功能
+2. tab键展开历史命令的功能，这样才能方便修改
+3. 当prompts越来越多的时候，通过tab展开prompts的name? 
+4. 加入一个prompts命令，打印所有的prompts提示语？
+5. options页面布局，是不是太大了？如果改成小按钮，鼠标过去后tips出来， 是否更方便合理一些？
+6. 可以用拖动的方式，对prompts进行重新排版，不仅仅是指在settings页面，也可以是dropdown list中
 
 
 ---

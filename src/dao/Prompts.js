@@ -21,17 +21,22 @@ export default function usePrompts() {
 
   function addBuiltinPrompts() {
     addPrompt({
-      name: "Translator",
+      name: "translator",
       text: "{time}\nFirstly, you must firstly rephrase what I will say into elegant English. Secondly, if I am asking a question, please answer it in a new paragraph. What I will say is:\n\n{query}"
     });
 
     addPrompt({
-      name: "Coder",
-      text: "{time}\nSuppose you are a professional coder. Firstly, you must rephrase my question in elegant English." +
-        "Secondly, if I ask you program questions, you must provide some code examples besides answer my question." +
-        "At last, after answering my questions, you must provide at least 3 related urls. " +
-        "my question is: \n\n{query}"
+      name: "empty",
+      text: "{query}"
     });
+
+    // addPrompt({
+    //   name: "coder",
+    //   text: "{time}\nSuppose you are a professional coder. Firstly, you must rephrase my question in elegant English." +
+    //     "Secondly, if I ask you program questions, you must provide some code examples besides answer my question." +
+    //     "At last, after answering my questions, you must provide at least 3 related urls. " +
+    //     "my question is: \n\n{query}"
+    // });
   }
 
   function getPromptByName(name) {
