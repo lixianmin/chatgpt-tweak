@@ -21,7 +21,7 @@ function setToolbarEnable(enable) {
 
 export default function useUserConfig() {
   return {
-    toolbarEnable: configState.toolbarEnable,
+    isToolbarEnable: () => configState.toolbarEnable,
     setToolbarEnable: setToolbarEnable
   };
 }

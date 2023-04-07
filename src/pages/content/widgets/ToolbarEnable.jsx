@@ -1,6 +1,5 @@
 "use strict";
 import { Form } from "solid-bootstrap";
-import { createEffect, createSignal } from "solid-js";
 import useUserConfig from "@src/dao/UserConfig.js";
 import { _T } from "@src/common/Locale.js";
 
@@ -13,18 +12,17 @@ import { _T } from "@src/common/Locale.js";
 
 export default function ToolbarEnable() {
   const config = useUserConfig();
-  const [enable, setEnable] = createSignal(config.toolbarEnable);
 
-  createEffect(() => {
-    config.setToolbarEnable(enable());
-  });
+  function onClick(evt) {
+    config.setToolbarEnable(evt.target.checked);
+  }
 
   return <>
     <Form.Check
       type="switch"
       label={_T("switch tweak")}
-      onClick={(evt) => setEnable(evt.target.checked)}
-      checked={enable()}
+      onClick={onClick}
+      checked={config.isToolbarEnable()}
     />
   </>;
 }

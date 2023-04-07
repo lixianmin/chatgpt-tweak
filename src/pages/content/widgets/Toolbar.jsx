@@ -13,6 +13,7 @@ import { createDelayed } from "@src/core/Tools.ts";
 import { _T } from "@src/common/Locale.js";
 import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
+import { addEventListener } from "@src/core/EventListener.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -25,28 +26,56 @@ function initInputBox() {
   const prompts = usePrompts();
   const historyStore = useHistoryStore();
   let isProcessing = false;
+  const userConfig = useUserConfig();
 
   const inputBox = getInputBox();
   const btnSubmit = getSubmitButton();
-  inputBox.addEventListener("keydown", onKeyDown);
-  btnSubmit.addEventListener("click", onSubmit);
 
   const tempIntputData = {
     ok: false,
     text: ""
   };
 
-  // 如果焦点不在inputBox，则回车时获得焦点
-  document.addEventListener("keydown", (evt) => {
-    if (evt.key === "Enter" && evt.target !== inputBox) {
-      inputBox.focus();
-      evt.preventDefault();
-    }
-  });
+  function createListeners() {
+    let list = [];
 
+    function attachEventListeners() {
+      list = [
+        addEventListener(inputBox, "keydown", onKeyDown),
+        addEventListener(btnSubmit, "click", onSubmit),
+        // 如果焦点不在inputBox，则回车时获得焦点
+        addEventListener(document, "keydown", (evt) => {
+          if (evt.key === "Enter" && evt.target !== inputBox) {
+            inputBox.focus();
+            evt.preventDefault();
+          }
+        })
+      ];
+    }
+
+    function detachEventListeners() {
+      if (list.length > 0) {
+        for (let v of list.values()) {
+          v.removeEventListener();
+        }
+        list = [];
+      }
+    }
+
+    return { attachEventListeners, detachEventListeners };
+  }
+
+  // 是否添加相关事件
+  const listeners = createListeners();
+  const originalPlaceholder = inputBox.placeholder;
   createEffect(() => {
-    // 这里需要设置成响应式的
-    inputBox.placeholder = _T("↑↓:histories Tab:complete Enter:send");
+    if (userConfig.isToolbarEnable()) {
+      listeners.attachEventListeners();
+      inputBox.placeholder = _T("↑↓:histories Tab:complete Enter:send");
+    } else {
+      listeners.detachEventListeners();
+      inputBox.placeholder = originalPlaceholder;
+    }
   });
 
   function pressEnter() {
@@ -136,7 +165,9 @@ function initInputBox() {
 
   function onSubmit() {
     if (!isProcessing) {
+      // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
       let query = inputBox.value.trim();
+      console.log("query", query);
       if (query !== "") {
         query = checkHistoryExpansion(query);
         historyStore.add(query);
@@ -147,11 +178,7 @@ function initInputBox() {
         }
 
         isProcessing = true;
-        const userConfig = useUserConfig();
-        if (userConfig.toolbarEnable) {
-          inputBox.value = prompts.compilePrompt(query);
-          // console.log(`textarea.value=${textarea.value}`);
-        }
+        inputBox.value = prompts.compilePrompt(query);
 
         pressEnter();
         isProcessing = false;
