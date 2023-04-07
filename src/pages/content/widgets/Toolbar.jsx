@@ -62,7 +62,7 @@ function initInputBox() {
       }
     }
 
-    return { attachEventListeners, detachEventListeners };
+    return { attachEventListeners: attachEventListeners, detachEventListeners: detachEventListeners };
   }
 
   // 是否添加相关事件
