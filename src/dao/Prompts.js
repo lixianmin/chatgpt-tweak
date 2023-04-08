@@ -22,7 +22,7 @@ const [promptState, setPromptState] = createStore({
 
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
-  if (!promptStorage.list) {
+  if (promptStorage.list.length === 0) {
     addBuiltinPrompts();
     // setPromptStorage("current", promptStorage.list[0].name);
   }
@@ -33,10 +33,10 @@ export default function usePrompts() {
       text: "{time}\nFirstly, you must firstly rephrase what I will say into elegant English. Secondly, if I am asking a question, please answer it in a new paragraph. What I will say is:\n\n{query}"
     });
 
-    addPrompt({
-      name: "empty",
-      text: "{query}"
-    });
+    // addPrompt({
+    //   name: "empty",
+    //   text: "{query}"
+    // });
 
     // addPrompt({
     //   name: "coder",

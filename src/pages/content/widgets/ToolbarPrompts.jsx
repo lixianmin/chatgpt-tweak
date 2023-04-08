@@ -18,7 +18,7 @@ export default function ToolbarPrompts() {
 
   createEffect(() => {
     const promptList = prompts.getHints();
-    const buttonHeight = 45;
+    const buttonHeight = 30;  // lg的button高45
     const delta = -buttonHeight * (promptList.length - 1);
     // console.log("delta", delta, "list", promptList.length);
     divList.style.top = delta + "px";
@@ -45,9 +45,10 @@ export default function ToolbarPrompts() {
         <ButtonGroup vertical>
           <For each={prompts.getHints()}>{(prompt, index) => {
             return <Show when={prompts.getCurrentPrompt() === prompt.name} keyed fallback={
-              <Button onClick={onClick} value={prompt.name}>{prompt.name}</Button>
+              <Button size="sm" onClick={onClick} value={prompt.name} style="text-align: left;">{prompt.name}</Button>
             }>
-              <Button onClick={onClick} value={prompt.name} active>{prompt.name}</Button>
+              <Button size="sm" onClick={onClick} value={prompt.name} style="text-align: left;"
+                      active>{prompt.name}</Button>
             </Show>;
           }}</For>
         </ButtonGroup>
