@@ -23,7 +23,7 @@ const manifest = defineManifest(async () => ({
   //   newtab: "src/pages/newtab/index.html",
   // },
   icons: {
-    "128": "icons/128x128.png"
+    "128": "src/assets/icons/128x128.png"
   },
   content_scripts: [
     {
@@ -34,7 +34,7 @@ const manifest = defineManifest(async () => ({
   // devtools_page: "src/pages/devtools/index.html",
   web_accessible_resources: [
     {
-      resources: ["assets/js/*.js", "assets/css/*.css", "assets/img/*"],
+      resources: ["assets/js/*.js", "assets/css/*.css", "assets/images/*"],
       matches: ["*://*/*"]
     }
   ],

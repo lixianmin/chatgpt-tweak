@@ -1,4 +1,4 @@
-import logo from "@assets/img/logo.svg";
+import logo from "@assets/images/logo.svg";
 import styles from "./Popup.module.css";
 
 const Popup = () => {

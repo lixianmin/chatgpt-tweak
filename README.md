@@ -18,7 +18,11 @@
 1. **Customizable prompts**: Each time a message is sent, it can be accompanied by a selected prompt to prevent ChatGPT from getting carried away.
 2. **Quickly switch between message history**: Pressing the up and down arrow keys (↑↓) in the input box can switch between message history, making it easy to adjust and resend messages.
 
+<img src="./src/assets/images/content.png" style="zoom:100%" />
 
+
+
+<img src="./src/assets/images/options.png" style="zoom:100%" />
 
 ##### 2 Tips
 
@@ -28,6 +32,10 @@
 2. History command expansion: Similar to Linux shell, typing `!56` and pressing `Enter` can quickly input the 56th history command.
 3. When the input focus is not in the textarea, pressing `Enter` quickly gives the textare input focus.
 4. UI interface supports Chinese and English.
+
+
+
+<img src="./src/assets/images/history.png" style="zoom:100%" />
 
 
 

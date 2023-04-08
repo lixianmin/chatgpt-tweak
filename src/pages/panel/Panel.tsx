@@ -1,4 +1,4 @@
-import logo from "@assets/img/logo.svg";
+import logo from "@assets/images/logo.svg";
 import "@src/styles/index.css";
 import styles from "./Panel.module.css";
 
