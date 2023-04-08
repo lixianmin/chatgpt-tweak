@@ -72,7 +72,7 @@ function initInputBox() {
   createEffect(() => {
     if (userConfig.isToolbarEnable()) {
       listeners.attachEventListeners();
-      inputBox.placeholder = _T("↑↓:histories Tab:complete Enter:send");
+      inputBox.placeholder = _T("/prompts ↑↓histories Tab:complete Enter:send");
     } else {
       listeners.detachEventListeners();
       inputBox.placeholder = originalPlaceholder;
