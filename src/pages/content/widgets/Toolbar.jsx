@@ -103,7 +103,30 @@ function initInputBox() {
     evt.preventDefault();
   }
 
-  function checkPromptsListVisible(evt) {
+  function resetHints() {
+    const query = inputBox.value;
+    if (query.startsWith("/")) {
+      const list = prompts.getPromptList();
+      const hints = [];
+      const prefix = inputBox.value.substring(1);
+      const maxSize = 10;
+
+      for (let i = 0; i < list.length; i++) {
+        const prompt = list[i];
+        if (prompt.name.startsWith(prefix)) {
+          hints.push(prompt);
+        }
+
+        if (hints.length >= maxSize) {
+          break;
+        }
+      }
+
+      prompts.setHints(hints);
+    }
+  }
+
+  function checkPromptHintsVisible(evt) {
     const key = evt.key;
     const query = inputBox.value;
     // console.log("key", key);
@@ -112,7 +135,16 @@ function initInputBox() {
       setTimeout(() => {
         const query = inputBox.value;
         const visible = query.startsWith("/");
-        prompts.setVisible(visible);
+        prompts.setHintsVisible(visible);
+        if (visible) {
+          resetHints();
+        }
+      });
+    }
+
+    if (prompts.getHintsVisible()) {
+      setTimeout(() => {
+        resetHints();
       });
     }
   }
@@ -138,7 +170,7 @@ function initInputBox() {
       // console.log("evt", evt);
     }
 
-    checkPromptsListVisible(evt);
+    checkPromptHintsVisible(evt);
 
     if (tempIntputData.ok && (evt.key !== "ArrowUp" && evt.key !== "ArrowDown")) {
       tempIntputData.ok = false;

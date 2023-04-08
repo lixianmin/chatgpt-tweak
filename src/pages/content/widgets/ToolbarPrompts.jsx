@@ -17,14 +17,15 @@ export default function ToolbarPrompts() {
   let divList;
 
   createEffect(() => {
-    const promptList = prompts.getPromptList();
-    const buttonHeight = 46.33;
+    const promptList = prompts.getHints();
+    const buttonHeight = 45;
     const delta = -buttonHeight * (promptList.length - 1);
     // console.log("delta", delta, "list", promptList.length);
     divList.style.top = delta + "px";
   });
 
   function onClick(evt) {
+    // console.log("evt.target.value", evt.target.value);
     let name = evt.target.value;
     prompts.setCurrentPrompt(name);
     removeFocusFromCurrentElement();
@@ -40,9 +41,9 @@ export default function ToolbarPrompts() {
   return <>
     <div ref={divList}
          style="position: absolute; left: 0; z-index: 1;">
-      <Show when={prompts.getVisible()} keyed>
+      <Show when={prompts.getHintsVisible()} keyed>
         <ButtonGroup vertical>
-          <For each={prompts.getPromptList()}>{(prompt, index) => {
+          <For each={prompts.getHints()}>{(prompt, index) => {
             return <Show when={prompts.getCurrentPrompt() === prompt.name} keyed fallback={
               <Button onClick={onClick} value={prompt.name}>{prompt.name}</Button>
             }>

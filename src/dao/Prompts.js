@@ -7,23 +7,24 @@
  *********************************************************************/
 import { formatDateTime } from "@src/core/Time.js";
 import createStoreBrowserStorage from "@src/core/StoreBrowserStorage.js";
-import { produce } from "solid-js/store";
-import { createSignal } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 
 // 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
-const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-prompt-data", {
+const [promptStorage, setPromptStorage] = await createStoreBrowserStorage("tweak-prompt-data", {
   current: "",
-  visible: false,
   list: []
 });
 
-const [promptVisisble, setPromptVisible] = createSignal(false);
+const [promptState, setPromptState] = createStore({
+  hintsVisible: false,
+  hints: []
+});
 
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
-  if (!promptState.current) {
+  if (!promptStorage.current) {
     addBuiltinPrompts();
-    setPromptState("current", promptState.list[0].name);
+    setPromptStorage("current", promptStorage.list[0].name);
   }
 
   function addBuiltinPrompts() {
@@ -47,7 +48,7 @@ export default function usePrompts() {
   }
 
   function getPromptByName(name) {
-    for (let item of promptState.list) {
+    for (let item of promptStorage.list) {
       if (item.name === name) {
         return item;
       }
@@ -55,7 +56,7 @@ export default function usePrompts() {
   }
 
   function indexOfByName(name) {
-    const list = promptState.list;
+    const list = promptStorage.list;
     const size = list.length;
     for (let i = 0; i < size; i++) {
       const item = list[i];
@@ -68,7 +69,7 @@ export default function usePrompts() {
   }
 
   function getPromptByIndex(index) {
-    const list = promptState.list;
+    const list = promptStorage.list;
     if (index >= 0 && index < list.length) {
       return list[index];
     }
@@ -80,9 +81,9 @@ export default function usePrompts() {
   }
 
   function deletePromptByIndex(index) {
-    const list = promptState.list;
+    const list = promptStorage.list;
     if (index >= 0 && index < list.length) {
-      setPromptState(produce(draft => {
+      setPromptStorage(produce(draft => {
           draft.list.splice(index, 1);
         })
       );
@@ -95,9 +96,9 @@ export default function usePrompts() {
   }
 
   function setPromptByIndex(index, prompt) {
-    const list = promptState.list;
+    const list = promptStorage.list;
     if (index >= 0 && index < list.length) {
-      setPromptState(produce(draft => {
+      setPromptStorage(produce(draft => {
         draft.list[index] = prompt;
         // console.log("draft", draft, "index", index, "prompt", prompt);
       }));
@@ -105,7 +106,7 @@ export default function usePrompts() {
   }
 
   function addPrompt(prompt) {
-    setPromptState(produce(draft => {
+    setPromptStorage(produce(draft => {
       draft.list.push(prompt);
       // console.log("draft.list", draft.list);
     }));
@@ -124,7 +125,7 @@ export default function usePrompts() {
   }
 
   function compilePrompt(query) {
-    const current = promptState.current;
+    const current = promptStorage.current;
     const prompt = getPromptByName(current);
     const time = formatDateTime(new Date());
 
@@ -136,17 +137,25 @@ export default function usePrompts() {
     return text;
   }
 
+  function setHints(list) {
+    setPromptState(produce(draft => {
+      draft.hints = list;
+    }));
+  }
+
   return {
-    getCurrentPrompt: () => promptState.current,
-    setCurrentPrompt: (current) => setPromptState("current", current),
+    getCurrentPrompt: () => promptStorage.current,
+    setCurrentPrompt: (current) => setPromptStorage("current", current),
     addPrompt: addPrompt,
-    getPromptList: () => promptState.list,
+    getPromptList: () => promptStorage.list,
     getPromptByName: getPromptByName,
     setPromptByName: setPromptByName,
     getPromptByIndex: getPromptByIndex,
     deletePromptByName: deletePromptByName,
-    getVisible: () => promptVisisble(),
-    setVisible: (visible) => setPromptVisible(visible),
+    getHintsVisible: () => promptState.hintsVisible,
+    setHintsVisible: (visible) => setPromptState("hintsVisible", visible),
+    getHints: () => promptState.hints,
+    setHints: setHints,
     compilePrompt: compilePrompt
   };
 }
