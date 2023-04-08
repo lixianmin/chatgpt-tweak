@@ -9,11 +9,12 @@ import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFind
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
-import { createDelayed } from "@src/core/Tools.ts";
+import { createDelayed, longestCommonPrefix } from "@src/core/Tools.ts";
 import { _T } from "@src/common/Locale.js";
 import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
 import { addEventListener } from "@src/core/EventListener.js";
+import { map } from "lodash-es";
 
 /********************************************************************
  created:    2023-03-27
@@ -89,15 +90,46 @@ function initInputBox() {
     inputBox.dispatchEvent(enterEvent);
   }
 
+  function fetchPromptCandidates(prefix) {
+    const candidates = [];
+    for (let v of prompts.getPromptList()) {
+      const name = v.name;
+      if (name.startsWith(prefix)) {
+        candidates.push(v);
+      }
+    }
+
+    return candidates;
+  }
+
   function onKeyDownTab(evt) {
     const query = inputBox.value;
-    const hint = fetchCommandHint(query);
-    if (hint !== query) {
-      inputBox.value = hint;
-      delayedSetCursor(hint.length);
-    } else {
-      const next = checkHistoryExpansion(query);
-      delayedSetCursor(next.length);
+    if (query.length > 0) {
+      const c = query[0];
+      if (c === "/") {
+        const prefix = query.substring(1);
+        const candidates = fetchPromptCandidates(prefix);
+        // 如果有多个candidates，或者只有一个但跟prefix的值不一样，则设置为hint
+        if (candidates.length >= 2 || candidates.length === 1 && candidates[0].name !== prefix) {
+          const hint = longestCommonPrefix(map(candidates, "name"));
+          const next = "/" + hint;
+          inputBox.value = next;
+          delayedSetCursor(next.length);
+        } else if (candidates.length === 1) { // 否则，展开当前的prompt
+          const next = candidates[0].text;
+          inputBox.value = next;
+          delayedSetCursor(next.length);
+        }
+      } else if (c === "!") {
+        const next = checkHistoryExpansion(query);
+        delayedSetCursor(next.length);
+      } else if (c >= "a" && c <= "z") {
+        const hint = fetchCommandHint(query);
+        if (hint !== query) {
+          inputBox.value = hint;
+          delayedSetCursor(hint.length);
+        }
+      }
     }
 
     evt.preventDefault();
@@ -217,6 +249,20 @@ function initInputBox() {
     return query;
   }
 
+  function checkPromptExpansion(query) {
+    if (query.startsWith("/")) {
+      const hint = query.substring(1);
+      const list = prompts.getPromptList();
+      for (const v of list.values()) {
+        if (hint === v.name) {
+          return v.text;
+        }
+      }
+    }
+
+    return query;
+  }
+
   function onSubmit() {
     if (!isProcessing) {
       // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
@@ -230,6 +276,8 @@ function initInputBox() {
           inputBox.value = "";
           return;
         }
+
+        query = checkPromptExpansion(query);
 
         isProcessing = true;
         inputBox.value = prompts.compilePrompt(query);

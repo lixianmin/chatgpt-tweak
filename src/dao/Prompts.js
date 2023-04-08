@@ -22,9 +22,9 @@ const [promptState, setPromptState] = createStore({
 
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
-  if (!promptStorage.current) {
+  if (!promptStorage.list) {
     addBuiltinPrompts();
-    setPromptStorage("current", promptStorage.list[0].name);
+    // setPromptStorage("current", promptStorage.list[0].name);
   }
 
   function addBuiltinPrompts() {
@@ -126,15 +126,19 @@ export default function usePrompts() {
 
   function compilePrompt(query) {
     const current = promptStorage.current;
-    const prompt = getPromptByName(current);
-    const time = formatDateTime(new Date());
+    if (current) {
+      const prompt = getPromptByName(current);
+      const time = formatDateTime(new Date());
 
-    const text = _replaceVariables(prompt.text, {
-      "{query}": query,
-      "{time}": time
-    });
+      const text = _replaceVariables(prompt.text, {
+        "{query}": query,
+        "{time}": time
+      });
 
-    return text;
+      return text;
+    }
+
+    return query;
   }
 
   function setHints(list) {
