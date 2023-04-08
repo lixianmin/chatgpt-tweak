@@ -43,18 +43,23 @@ export default function ToolbarPrompts() {
     document.activeElement?.blur();
   }
 
+  function getPromptButtonName(prompt) {
+    const name = prompt.name;
+    if (prompts.getCurrentPrompt() === name) {
+      return name + " ♧";
+    }
+
+    return name;
+  }
+
   return <>
     <div ref={divList}
          style="position: absolute; left: 0; z-index: 1;">
       <Show when={prompts.getHintsVisible()} keyed>
         <ButtonGroup vertical>
           <For each={prompts.getHints()}>{(prompt, index) => {
-            return <Show when={prompts.getCurrentPrompt() === prompt.name} keyed fallback={
-              <Button size="sm" onClick={onClick} value={prompt.name} style="text-align: left;">{prompt.name}</Button>
-            }>
-              <Button size="sm" onClick={onClick} value={prompt.name} style="text-align: left;"
-                      active>{prompt.name}</Button>
-            </Show>;
+            return <Button size="sm" onClick={onClick} value={prompt.name}
+                           style="text-align: left;">{getPromptButtonName(prompt)}</Button>;
           }}</For>
         </ButtonGroup>
       </Show>
