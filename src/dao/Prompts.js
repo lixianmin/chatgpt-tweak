@@ -8,9 +8,16 @@
 import { formatDateTime } from "@src/core/Time.js";
 import createStoreBrowserStorage from "@src/core/StoreBrowserStorage.js";
 import { produce } from "solid-js/store";
+import { createSignal } from "solid-js";
 
 // 这个原来是用dexie来存储的，但是因为加载的时候会消耗30ms，导致chatgpt已经收到数据了，但textarea.value还没设置成功。所以改为localStorage试试
-const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-prompt-data", { current: "", list: [] });
+const [promptState, setPromptState] = await createStoreBrowserStorage("tweak-prompt-data", {
+  current: "",
+  visible: false,
+  list: []
+});
+
+const [promptVisisble, setPromptVisible] = createSignal(false);
 
 export default function usePrompts() {
   // 初始的时候默认加一个当前的prompt
@@ -138,6 +145,8 @@ export default function usePrompts() {
     setPromptByName: setPromptByName,
     getPromptByIndex: getPromptByIndex,
     deletePromptByName: deletePromptByName,
+    getVisible: () => promptVisisble(),
+    setVisible: (visible) => setPromptVisible(visible),
     compilePrompt: compilePrompt
   };
 }

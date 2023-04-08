@@ -103,7 +103,24 @@ function initInputBox() {
     evt.preventDefault();
   }
 
+  function checkPromptsListVisible(evt) {
+    const key = evt.key;
+    const query = inputBox.value;
+    // console.log("key", key);
+    if (query === "" || key === "/" || key === "Backspace" || key === "Enter") {
+      // 因为inputBox.value总是慢上一帧，所以延迟一帧处理
+      setTimeout(() => {
+        const query = inputBox.value;
+        const visible = query.startsWith("/");
+        prompts.setVisible(visible);
+      });
+    }
+  }
+
   function onKeyDown(evt) {
+    // inputBox.value总是慢一帧，缺少evt.key的操作结果
+    // console.log('inputBox.value', inputBox.value, 'evt.key:', evt.key)
+
     switch (evt.key) {
       case "Enter":
         if (!evt.shiftKey && !evt.isComposing) {
@@ -120,6 +137,8 @@ function initInputBox() {
       default:
       // console.log("evt", evt);
     }
+
+    checkPromptsListVisible(evt);
 
     if (tempIntputData.ok && (evt.key !== "ArrowUp" && evt.key !== "ArrowDown")) {
       tempIntputData.ok = false;
@@ -170,7 +189,7 @@ function initInputBox() {
     if (!isProcessing) {
       // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
       let query = inputBox.value.trim();
-      console.log("query", query);
+      // console.log("query", query);
       if (query !== "") {
         query = checkHistoryExpansion(query);
         historyStore.add(query);
@@ -196,12 +215,14 @@ export default function Toolbar(props) {
   return <>
     <ShadowBootstrap id={props.id}>
       <Form>
+        <Row>
+          <Col xs="auto">
+            <ToolbarPrompts />
+          </Col>
+        </Row>
         <Row class="align-items-center">
           <Col xs="auto">
             <ToolbarEnable />
-          </Col>
-          <Col xs="auto">
-            <ToolbarPrompts />
           </Col>
           <Col xs="auto">
             <ToolbarOptions />
