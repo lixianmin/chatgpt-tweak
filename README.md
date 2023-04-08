@@ -2,7 +2,7 @@
 
 # ChatGPT Tweak
 
-
+[中文在线文档](https://github.com/lixianmin/chatgpt-tweak/blob/dev/README_CN.md)
 
 #### 1 Install
 

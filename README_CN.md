@@ -2,7 +2,7 @@
 
 # ChatGPT Tweak
 
-
+[English Online Docuemnt](https://github.com/lixianmin/chatgpt-tweak/blob/dev/README.md)
 
 
 #### 1 安装
