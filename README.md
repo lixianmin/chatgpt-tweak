@@ -1,13 +1,12 @@
 
 
-<div align="center">
-<h1>ChatGPT Tweak</h1>
+# ChatGPT Tweak
 
 
 
 #### 1 Install
 
-[<img src="https://user-images.githubusercontent.com/3750161/214147732-c75e96a4-48a4-4b64-b407-c2402e899a75.PNG" height="67" alt="Chrome" valign="middle">][link-chrome]
+[<img src="https://user-images.githubusercontent.com/3750161/214147732-c75e96a4-48a4-4b64-b407-c2402e899a75.PNG" height="67" alt="Chrome" valign="left">][link-chrome]
 
 
 
