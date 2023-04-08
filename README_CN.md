@@ -1,7 +1,7 @@
 
 
-<div align="center">
-<h1>ChatGPT Tweak</h1>
+# ChatGPT Tweak
+
 
 
 
