@@ -188,12 +188,16 @@ function initInputBox() {
     switch (evt.key) {
       case "Enter":
         if (!evt.shiftKey && !evt.isComposing) {
-          onSubmit();
+          onSubmit(evt);
         }
         break;
       case "ArrowUp":
       case "ArrowDown":
-        onKeyDownArrow(evt);
+        if (prompts.getHintsVisible()) {
+          onKeyDownArrowHints(evt);
+        } else {
+          onKeyDownArrowHistory(evt);
+        }
         break;
       case "Tab":
         onKeyDownTab(evt);
@@ -213,7 +217,14 @@ function initInputBox() {
     inputBox.setSelectionRange(position, position);
   });
 
-  function onKeyDownArrow(evt) {
+  function onKeyDownArrowHints(evt) {
+    const isArrowUp = evt.key === "ArrowUp";
+    const step = isArrowUp ? -1 : 1;
+    prompts.moveCurrentHintIndex(step);
+    evt.preventDefault();
+  }
+
+  function onKeyDownArrowHistory(evt) {
     const isArrowUp = evt.key === "ArrowUp";
     const isArrowDown = !isArrowUp;
 
@@ -263,7 +274,20 @@ function initInputBox() {
     return query;
   }
 
-  function onSubmit() {
+  function checkInputCurrentHint() {
+    if (prompts.getHintsVisible() && prompts.getCurrentHintIndex() >= 0) {
+      const hints = prompts.getHints();
+      const currentHint = hints[prompts.getCurrentHintIndex()];
+      const next = "/" + currentHint.name;
+      if (next.startsWith(inputBox.value)) {
+        inputBox.value = next;
+      }
+    }
+  }
+
+  function onSubmit(evt) {
+    checkInputCurrentHint();
+
     if (!isProcessing) {
       // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
       let query = inputBox.value;

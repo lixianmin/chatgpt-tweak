@@ -52,6 +52,17 @@ export default function ToolbarPrompts() {
     return name;
   }
 
+  function getPromptButtonVariant(prompt, index) {
+    const hintIndex = prompts.getCurrentHintIndex();
+    // console.log("hintIndex", hintIndex, "index", index());
+
+    if (hintIndex === index()) {
+      return "success";
+    } else {
+      return "primary";
+    }
+  }
+
   return <>
     <div ref={divList}
          style="position: absolute; left: 0; z-index: 1;">
@@ -59,6 +70,7 @@ export default function ToolbarPrompts() {
         <ButtonGroup vertical>
           <For each={prompts.getHints()}>{(prompt, index) => {
             return <Button size="sm" onClick={onClick} value={prompt.name}
+                           variant={getPromptButtonVariant(prompt, index)}
                            style="text-align: left;">{getPromptButtonName(prompt)}</Button>;
           }}</For>
         </ButtonGroup>

@@ -15,9 +15,11 @@ const [promptStorage, setPromptStorage] = await createStoreBrowserStorage("tweak
   list: []
 });
 
+const invalidCurrentHintIndex = -9999;
 const [promptState, setPromptState] = createStore({
   hintsVisible: false,
-  hints: []
+  hints: [],
+  currentHintIndex: invalidCurrentHintIndex
 });
 
 export default function usePrompts() {
@@ -141,9 +143,41 @@ export default function usePrompts() {
     return query;
   }
 
+  function setHintsVisible(visible) {
+    setPromptState(produce(draft => {
+      draft.hintsVisible = visible;
+      draft.currentHintIndex = invalidCurrentHintIndex;
+    }));
+  }
+
   function setHints(list) {
     setPromptState(produce(draft => {
       draft.hints = list;
+    }));
+  }
+
+  function moveCurrentHintIndex(step) {
+    setPromptState(produce(draft => {
+      const maxIndex = draft.hints.length - 1;
+      if (draft.currentHintIndex === invalidCurrentHintIndex) {
+        const isArrowDown = step === 1;
+        if (isArrowDown) {
+          draft.currentHintIndex = 0;
+        } else {
+          draft.currentHintIndex = maxIndex;
+        }
+      } else {
+        let nextIndex = draft.currentHintIndex + step;
+        if (nextIndex < 0) {
+          nextIndex = maxIndex;
+        } else if (nextIndex > maxIndex) {
+          nextIndex = 0;
+        }
+
+        draft.currentHintIndex = nextIndex;
+      }
+
+      // console.log("currentHintIndex", draft.currentHintIndex);
     }));
   }
 
@@ -157,9 +191,11 @@ export default function usePrompts() {
     getPromptByIndex: getPromptByIndex,
     deletePromptByName: deletePromptByName,
     getHintsVisible: () => promptState.hintsVisible,
-    setHintsVisible: (visible) => setPromptState("hintsVisible", visible),
+    setHintsVisible: setHintsVisible,
     getHints: () => promptState.hints,
     setHints: setHints,
+    getCurrentHintIndex: () => promptState.currentHintIndex,
+    moveCurrentHintIndex: moveCurrentHintIndex,
     compilePrompt: compilePrompt
   };
 }
