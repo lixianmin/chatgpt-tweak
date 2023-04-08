@@ -39,6 +39,10 @@
 
 
 
+<img src="./src/assets/images/help.png" style="zoom:100%" />
+
+
+
 ---
 
 Like this free project? Please consider [supporting me](https://www.buymeacoffee.com/lixianmin) to keep it running.

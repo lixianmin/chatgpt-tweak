@@ -18,6 +18,10 @@
 1. **自定义提示语**：每次发送消息时携带选定的提示语，可防止ChatGPT聊得忘乎所以
 2. **快速切换历史消息**：在输入框中按上下箭头键（↑↓），可切换历史消息，方便快速调整后重新发送
 
+<img src="./src/assets/images/content.png" style="zoom:100%" />
+
+<img src="./src/assets/images/options.png" style="zoom:100%" />
+
 
 
 ##### 2 小贴士
@@ -28,6 +32,12 @@
 2. 历史命令展开：类似于linux shell，通过输入`!56`并回车，可以快速输入第56号history命令
 3. 当输入焦点不在文本框中时，按下Enter后，文本框快速获得输入焦点
 4. UI界面支持中英文
+
+
+
+<img src="./src/assets/images/history.png" style="zoom:100%" />
+
+<img src="./src/assets/images/help.png" style="zoom:100%" />
 
 
 
