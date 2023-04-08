@@ -27,7 +27,12 @@ export default function ToolbarPrompts() {
   function onClick(evt) {
     // console.log("evt.target.value", evt.target.value);
     let name = evt.target.value;
-    prompts.setCurrentPrompt(name);
+    if (prompts.getCurrentPrompt() === name) {
+      prompts.setCurrentPrompt("");
+    } else {
+      prompts.setCurrentPrompt(name);
+    }
+
     removeFocusFromCurrentElement();
 
     // 通知options page

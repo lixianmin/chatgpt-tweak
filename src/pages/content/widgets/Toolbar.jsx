@@ -266,7 +266,7 @@ function initInputBox() {
   function onSubmit() {
     if (!isProcessing) {
       // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
-      let query = inputBox.value.trim();
+      let query = inputBox.value;
       // console.log("query", query);
       if (query !== "") {
         query = checkHistoryExpansion(query);
