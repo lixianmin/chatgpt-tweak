@@ -27,7 +27,12 @@ function createHistoryStore() {
         }
 
         // 最多存储100到磁盘上
-        const maxStore = _list.slice(0, 100);
+        let maxStore = _list;
+        const startPos = maxStore.length - 100;
+        if (startPos > 0) {
+          maxStore = maxStore.slice(startPos);
+        }
+
         storage.setStorage(maxStore);
       }
     },
