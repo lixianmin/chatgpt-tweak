@@ -6,8 +6,7 @@
 
 #### 1 Install
 
-[<img src="https://user-images.githubusercontent.com/3750161/214147732-c75e96a4-48a4-4b64-b407-c2402e899a75.PNG" style="zoom:100%" alt="Chrome" valign="left">][https://chrome.google.com/webstore/detail/chatgpt-tweak/hpflaeanaohienflejiplkjhoiclkepj/related?hl=zh-CN&authuser=0]
-
+[<img src="https://user-images.githubusercontent.com/3750161/214147732-c75e96a4-48a4-4b64-b407-c2402e899a75.PNG" style="zoom:100%" alt="Chrome" valign="left">](https://chrome.google.com/webstore/detail/chatgpt-tweak/hpflaeanaohienflejiplkjhoiclkepj/related?hl=zh-CN&authuser=0)
 
 
 #### 2 Why do we need ChatGPT Tweak？
