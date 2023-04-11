@@ -2,12 +2,12 @@
 
 # ChatGPT Tweak
 
-[English Online Docuemnt](https://github.com/lixianmin/chatgpt-tweak/blob/dev/README.md)
+[English Online Document](https://github.com/lixianmin/chatgpt-tweak/blob/dev/README.md)
 
 
 #### 1 安装
 
-[<img src="https://user-images.githubusercontent.com/3750161/214147732-c75e96a4-48a4-4b64-b407-c2402e899a75.PNG" height="67" alt="Chrome" valign="middle">][link-chrome] 
+[<img src="https://user-images.githubusercontent.com/3750161/214147732-c75e96a4-48a4-4b64-b407-c2402e899a75.PNG" height="67" alt="Chrome" valign="middle">][https://chrome.google.com/webstore/detail/chatgpt-tweak/hpflaeanaohienflejiplkjhoiclkepj/related?hl=zh-CN&authuser=0] 
 
 
 
