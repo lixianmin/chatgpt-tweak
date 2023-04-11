@@ -18,8 +18,8 @@ export default function ToolbarPrompts() {
 
   createEffect(() => {
     const promptList = prompts.getHints();
-    const buttonHeight = 35;  // lg的button高45
-    const delta = -buttonHeight * (promptList.length - 1);
+    const buttonHeight = 37;  // small button
+    let delta = -buttonHeight * promptList.length;
     // console.log("delta", delta, "list", promptList.length);
     divList.style.top = delta + "px";
   });
