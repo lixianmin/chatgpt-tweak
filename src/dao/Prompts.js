@@ -32,7 +32,7 @@ export default function usePrompts() {
   function addBuiltinPrompts() {
     addPrompt({
       name: "translator",
-      text: "{time}\nFirstly, you must firstly rephrase what I will say into elegant English. Secondly, if I am asking a question, please answer it in a new paragraph. What I will say is:\n\n{query}"
+      text: "{time}\n Firstly I want you to act as a English translator, you must rephrase what I speak to you into elegant English. \n Secondly I want you to act as a sage, you must answer all my questions in a new paragraph. My question is: \n"
     });
 
     // addPrompt({
