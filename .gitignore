@@ -11,7 +11,7 @@
 .DS_Store
 .env.local
 .idea
-.zip
+*.zip
 
 #generated manifest
 public/manifest.json
