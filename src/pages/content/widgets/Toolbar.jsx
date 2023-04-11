@@ -135,6 +135,13 @@ function initInputBox() {
     evt.preventDefault();
   }
 
+  // 方便其它插件接受焦点在document上时的输入
+  function onKeyDownEscape(evt) {
+    inputBox.blur();
+    // console.log(evt)
+    evt.preventDefault();
+  }
+
   function resetHints() {
     const query = inputBox.value;
     if (query.startsWith("/")) {
@@ -201,6 +208,9 @@ function initInputBox() {
         break;
       case "Tab":
         onKeyDownTab(evt);
+        break;
+      case "Escape":
+        onKeyDownEscape(evt);
         break;
       default:
       // console.log("evt", evt);
