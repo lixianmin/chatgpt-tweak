@@ -191,10 +191,14 @@ function initInputBox() {
   function onKeyDown(evt) {
     // inputBox.value总是慢一帧，缺少evt.key的操作结果
     // console.log('inputBox.value', inputBox.value, 'evt.key:', evt.key)
+    // 如果是输入中文的过程中，收到了escape等按键事件，则不处理
+    if (evt.isComposing) {
+      return;
+    }
 
     switch (evt.key) {
       case "Enter":
-        if (!evt.shiftKey && !evt.isComposing) {
+        if (!evt.shiftKey) {
           onSubmit(evt);
         }
         break;
