@@ -5,7 +5,6 @@ import usePrompts from "@src/dao/Prompts.js";
 import { createEffect, For, Show } from "solid-js";
 import { CommandType as Consts } from "@src/common/Consts.js";
 import Browser from "webextension-polyfill";
-import { getInputBox } from "@pages/content/widgets/ElementFinder.ts";
 
 /********************************************************************
  created:    2023-03-27
@@ -14,8 +13,8 @@ import { getInputBox } from "@pages/content/widgets/ElementFinder.ts";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 export default function ToolbarPrompts() {
-  const inputBox = getInputBox();
-  const inputBoxParentHeight = inputBox.parentElement.offsetHeight;
+  // const inputBox = getInputBox();
+  // const inputBoxParentHeight = inputBox.parentElement.offsetHeight;
 
   const prompts = usePrompts();
   let divList;
@@ -23,12 +22,13 @@ export default function ToolbarPrompts() {
   createEffect(() => {
     const promptList = prompts.getHints();  // 这个用途目前就是为了触发createEffect()，以前用hints的数量来计算divList的高度，现在发现不需要
     // const buttonHeight = 37.58;  // small button，这个数值是从dev tools中测量出来的
-    let delta = inputBoxParentHeight - divList.clientHeight;
+    // let delta = inputBoxParentHeight - divList.clientHeight;
+    let delta = -divList.clientHeight;
 
-    // 如果有Voice Control for chatgpt这个插件，则需要调整一下高度
-    if (document.getElementById("sai-root")) {
-      delta -= inputBoxParentHeight;
-    }
+    // 如果有Voice Control for chatgpt这个插件，则需要调整一下高度 ==> 这个插件已经不能用了
+    // if (document.getElementById("sai-root")) {
+    //   delta -= inputBoxParentHeight;
+    // }
 
     // console.log("delta", delta, "list", promptList.length, "inputBoxParentHeight", inputBoxParentHeight);
     divList.style.top = delta + "px";
