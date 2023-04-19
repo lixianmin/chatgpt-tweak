@@ -22,11 +22,10 @@ export default function ToolbarPrompts() {
 
   createEffect(() => {
     const promptList = prompts.getHints();  // 这个用途目前就是为了触发createEffect()，以前用hints的数量来计算divList的高度，现在发现不需要
-    // const buttonHeight = 37.58;  // small button，这个数值是从dev tools中测量出来的
     let delta = inputBoxParentHeight - divList.clientHeight;
 
-    // 如果有Voice Control for chatgpt这个插件，则需要调整一下高度
-    if (document.getElementById("sai-root")) {
+    const isNewChat = document.querySelector("span[style*=\"box-sizing\"]") === null;
+    if (isNewChat) {
       delta -= inputBoxParentHeight;
     }
 
