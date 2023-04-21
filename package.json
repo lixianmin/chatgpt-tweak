@@ -1,7 +1,7 @@
 {
     "name": "chatgpt-tweak",
     "displayName": "Chatgpt Tweak",
-    "version": "2023.04.19",
+    "version": "2023.04.21",
     "description": "Tweak your chatgpt to customize prompts, and quickly switch between histories, and so on",
     "license": "MIT",
     "repository": {
