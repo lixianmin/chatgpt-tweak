@@ -10,7 +10,7 @@ import { _T } from "@src/common/Locale.js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function ToolbarEnable() {
+export default function ToolbarBottomEnable() {
   const config = useUserConfig();
 
   function onClick(evt) {

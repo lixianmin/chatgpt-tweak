@@ -2,10 +2,9 @@
 
 import { Button, ButtonGroup } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
-import { createEffect, For, Show } from "solid-js";
+import { For, Show } from "solid-js";
 import { CommandType as Consts } from "@src/common/Consts.js";
 import Browser from "webextension-polyfill";
-import { getInputBox } from "@pages/content/widgets/ElementFinder.ts";
 
 /********************************************************************
  created:    2023-03-27
@@ -13,25 +12,9 @@ import { getInputBox } from "@pages/content/widgets/ElementFinder.ts";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-export default function ToolbarPrompts() {
-  const inputBox = getInputBox();
-  const inputBoxParentHeight = inputBox.parentElement.offsetHeight;
-
+export default function ToolbarTopPrompts() {
   const prompts = usePrompts();
   let divList;
-
-  createEffect(() => {
-    const promptList = prompts.getHints();  // 这个用途目前就是为了触发createEffect()，以前用hints的数量来计算divList的高度，现在发现不需要
-    let delta = inputBoxParentHeight - divList.clientHeight;
-
-    const isNewChat = document.querySelector("span[style*=\"box-sizing\"]") === null;
-    if (isNewChat) {
-      delta -= inputBoxParentHeight;
-    }
-
-    // console.log("delta", delta, "list", promptList.length, "inputBoxParentHeight", inputBoxParentHeight);
-    divList.style.top = delta + "px";
-  });
 
   function onClick(evt) {
     // console.log("evt.target.value", evt.target.value);
@@ -74,7 +57,7 @@ export default function ToolbarPrompts() {
 
   return <>
     <div ref={divList}
-         style="position: absolute; left: 0; z-index: 1;">
+         style="position: relative; left: 0; top:0; z-index: 1;">
       <Show when={prompts.getHintsVisible()} keyed>
         <ButtonGroup vertical>
           <For each={prompts.getHints()}>{(prompt, index) => {
@@ -85,24 +68,6 @@ export default function ToolbarPrompts() {
         </ButtonGroup>
       </Show>
     </div>
-
-    {/*<DropdownButton variant="outline-info"*/}
-    {/*                as={ButtonGroup}*/}
-    {/*                size="sm"*/}
-    {/*                title={prompts.getCurrentPrompt()}*/}
-    {/*                onSelect={onSelectPromptName}>*/}
-    {/*  <For each={prompts.getPromptList()}>{(prompt, index) => {*/}
-    {/*    return <Show when={prompts.getCurrentPrompt() === prompt.name} keyed fallback={*/}
-    {/*      <Dropdown.Item eventKey={prompt.name}>{prompt.name}</Dropdown.Item>*/}
-    {/*    }>*/}
-    {/*      <Dropdown.Item eventKey={prompt.name} active>{prompt.name}</Dropdown.Item>*/}
-    {/*    </Show>;*/}
-    {/*  }}</For>*/}
-    {/*  <Button variant="outline-info" style={{ background: "transparent", border: "none" }}*/}
-    {/*          onClick={() => Browser.runtime.sendMessage({ cmd: CommandType.openOptionsPage })}>*/}
-    {/*    {_T("+ New Prompt")}*/}
-    {/*  </Button>*/}
-    {/*</DropdownButton>*/}
   </>;
 }
 

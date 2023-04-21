@@ -1,10 +1,10 @@
 "use strict";
 
 import ShadowBootstrap from "@src/core/widgets/ShadowBootstrap.jsx";
-import ToolbarEnable from "@pages/content/widgets/ToolbarEnable.jsx";
+import ToolbarBottomEnable from "@pages/content/widgets/ToolbarBottomEnable.jsx";
 import { Col, Form, Row } from "solid-bootstrap";
-import ToolbarPrompts from "@pages/content/widgets/ToolbarPrompts.jsx";
-import ToolbarOptions from "@pages/content/widgets/ToolbarOptions.jsx";
+import ToolbarTopPrompts from "@pages/content/widgets/ToolbarTopPrompts.jsx";
+import ToolbarBottomOptions from "@pages/content/widgets/ToolbarBottomOptions.jsx";
 import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
@@ -327,23 +327,18 @@ function initInputBox() {
   }
 }
 
-export default function Toolbar(props) {
+export default function ToolbarBottom(props) {
   initInputBox();
 
   return <>
     <ShadowBootstrap id={props.id}>
       <Form>
-        <Row>
-          <Col xs="auto">
-            <ToolbarPrompts />
-          </Col>
-        </Row>
         <Row class="align-items-center">
           <Col xs="auto">
-            <ToolbarEnable />
+            <ToolbarBottomEnable />
           </Col>
           <Col xs="auto">
-            <ToolbarOptions />
+            <ToolbarBottomOptions />
           </Col>
         </Row>
       </Form>
