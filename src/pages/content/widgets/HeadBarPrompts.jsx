@@ -12,7 +12,7 @@ import Browser from "webextension-polyfill";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-export default function ToolbarTopPrompts() {
+export default function HeadBarPrompts() {
   const prompts = usePrompts();
   let divList;
 

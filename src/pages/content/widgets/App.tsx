@@ -1,9 +1,9 @@
 import { onMount } from "solid-js";
 import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
-import ToolbarBottom from "@pages/content/widgets/ToolbarBottom";
+import FootBar from "@pages/content/widgets/FootBar";
 import { render } from "solid-js/web";
 import attachTabBusListener from "@pages/content/widgets/ContentMessageListener";
-import ToolbarTop from "@pages/content/widgets/ToolbarTop";
+import HeadBar from "@pages/content/widgets/HeadBar";
 
 /********************************************************************
  created:    2023-03-27
@@ -19,8 +19,8 @@ const App = () => {
     const inputBox = getInputBox();
     const btnSubmit = getSubmitButton();
     if (inputBox && btnSubmit) {
-      render(() => <ToolbarTop />, inputBox.parentElement.parentElement.firstElementChild);
-      render(() => <ToolbarBottom id={toolbarId} />, inputBox.parentElement.parentElement);
+      render(() => <HeadBar />, inputBox.parentElement.parentElement.firstElementChild);
+      render(() => <FootBar id={toolbarId} />, inputBox.parentElement.parentElement);
     }
   }
 

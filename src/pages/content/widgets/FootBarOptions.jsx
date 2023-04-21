@@ -11,7 +11,7 @@ import { CommandType } from "@src/common/Consts.js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function ToolbarBottomOptions() {
+export default function FootBarOptions() {
   // 因为是自定义控件，所以还需要兼顾chatgpt处于dark mode还是light mode
   return <>
     <IconButton color="#0fcaf0" hoverColor="#0d6efd"

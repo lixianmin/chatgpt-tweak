@@ -1,7 +1,7 @@
 "use strict";
 
 import ShadowBootstrap from "@src/core/widgets/ShadowBootstrap.jsx";
-import ToolbarTopPrompts from "@pages/content/widgets/ToolbarTopPrompts.jsx";
+import HeadBarPrompts from "@pages/content/widgets/HeadBarPrompts.jsx";
 
 /********************************************************************
  created:    2023-04-21
@@ -10,10 +10,10 @@ import ToolbarTopPrompts from "@pages/content/widgets/ToolbarTopPrompts.jsx";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export default function ToolbarTop() {
+export default function HeadBar() {
   return <>
     <ShadowBootstrap>
-      <ToolbarTopPrompts />
+      <HeadBarPrompts />
     </ShadowBootstrap>
   </>;
 }
