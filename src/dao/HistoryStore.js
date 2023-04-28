@@ -15,26 +15,33 @@ function createHistoryStore() {
   let _currentIndex = _list.length;
 
   return {
-    add(command) {
-      if (typeof command === "string" && command !== "") {
-        const size = _list.length;
-
-        // 如果history中存储的最后一条与command不一样，则将command加入到history列表。否则将historyIndex调整到最后
-        if (size === 0 || _list[size - 1] !== command) {
-          _currentIndex = _list.push(command);
-        } else { // add()都是在输入命令时才调用的，这时万一historyIndex处于history数组的中间位置，将其调整到最后
-          _currentIndex = _list.length;
-        }
-
-        // 最多存储100到磁盘上
-        let maxStore = _list;
-        const startPos = maxStore.length - 100;
-        if (startPos > 0) {
-          maxStore = maxStore.slice(startPos);
-        }
-
-        storage.setStorage(maxStore);
+    add(text) {
+      if (typeof text !== "string") {
+        return;
       }
+
+      text = text.trim();
+      if (text === "") {
+        return;
+      }
+
+      const size = _list.length;
+
+      // 如果history中存储的最后一条与command不一样，则将command加入到history列表。否则将historyIndex调整到最后
+      if (size === 0 || _list[size - 1] !== text) {
+        _currentIndex = _list.push(text);
+      } else { // add()都是在输入命令时才调用的，这时万一historyIndex处于history数组的中间位置，将其调整到最后
+        _currentIndex = _list.length;
+      }
+
+      // 最多存储100到磁盘上
+      let maxStore = _list;
+      const startPos = maxStore.length - 100;
+      if (startPos > 0) {
+        maxStore = maxStore.slice(startPos);
+      }
+
+      storage.setStorage(maxStore);
     },
     move(step) {
       if (typeof step === "number" && step !== 0) {

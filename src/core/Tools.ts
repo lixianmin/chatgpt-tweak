@@ -5,6 +5,20 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
+export function sleep(ms: any) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+export function random(lower: number, upper: number): number {
+  return lower + (upper - lower) * Math.random()
+}
+
+export function getTimestamp(): number {
+  return Math.floor(Date.now() / 1000)
+}
+
 export function longestCommonPrefix(list: string[]): string {
   if (list.length < 2) {
     return list.join();
