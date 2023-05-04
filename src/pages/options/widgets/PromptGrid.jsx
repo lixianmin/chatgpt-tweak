@@ -16,10 +16,11 @@ export default function PromptGrid() {
   const prompts = usePrompts();
   let activeIndex = -1;
   let dragToIndex = -1;
+  let minuend = -1;
 
-  // function reveredPromptList() {
-  //   return prompts.getPromptList().slice().reverse();
-  // }
+  function reveredPromptList() {
+    return prompts.getPromptList().slice().reverse();
+  }
 
   function getItemIndex(item) {
     let elem = item;
@@ -39,6 +40,7 @@ export default function PromptGrid() {
   function onDragStart(evt) {
     const dom = evt.currentTarget;
     activeIndex = getItemIndex(dom);
+    minuend = prompts.getPromptList().length;
   }
 
   function onDragOver(evt) {
@@ -46,9 +48,11 @@ export default function PromptGrid() {
     const dom = evt.currentTarget;
     const overIndex = getItemIndex(dom);
     if (dragToIndex !== overIndex) {
-      dragToIndex = overIndex;
-      prompts.swapPromptByIndex(activeIndex, overIndex);
+      prompts.swapPromptByIndex(minuend - activeIndex, minuend - overIndex);
       // console.log("activeIndex=", activeIndex, "overIndex=", overIndex);
+
+      dragToIndex = overIndex;
+      activeIndex = overIndex;
     }
   }
 
@@ -56,6 +60,7 @@ export default function PromptGrid() {
     evt.preventDefault();
     activeIndex = -1;
     dragToIndex = -1;
+    minuend = -1;
   }
 
   // 通过在一行中把所有的column都放进来，然后设置 md='auto'，可以进行自动排版
@@ -65,13 +70,11 @@ export default function PromptGrid() {
         <Col md="auto">
           <AddPromptItem prompts={prompts} />
         </Col>
-        <div>
-          <For each={prompts.getPromptList()}>{(prompt, reverseIndex) => {
-            return <Col md="auto" onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-              <PromptItem prompts={prompts} reverseIndex={reverseIndex()}></PromptItem>
-            </Col>;
-          }}</For>
-        </div>
+        <For each={reveredPromptList()}>{(prompt, reverseIndex) => {
+          return <Col md="auto" onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
+            <PromptItem prompts={prompts} reverseIndex={reverseIndex()}></PromptItem>
+          </Col>;
+        }}</For>
       </Row>
     </Form>
   </>;
