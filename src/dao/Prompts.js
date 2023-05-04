@@ -32,8 +32,12 @@ export default function usePrompts() {
   function addBuiltinPrompts() {
     addPrompt({
       name: "translator",
-      text: "{time}\n Firstly I want you to act as a English translator, you must rephrase what I speak to you into elegant English. " +
-        "\n Secondly I want you to act as a sage, you must answer all my questions in a new paragraph. My question is: \n {query}"
+      text: "{time}\n" +
+        "Rephrase the text delimited by the xml tag: <text2></text2> into elegant English. And then if this text is a question, answer the question.\n\n" +
+        "using the following format:\n" +
+        "1. Rephrased: <rephrased text>\n" +
+        "2. Answer: <answer of the question>\n\n" +
+        "TEXT: <text2>{query}</text2>"
     });
 
     // addPrompt({
@@ -88,6 +92,19 @@ export default function usePrompts() {
     if (index >= 0 && index < list.length) {
       setPromptStorage(produce(draft => {
           draft.list.splice(index, 1);
+        })
+      );
+    }
+  }
+
+  function swapPromptByIndex(index1, index2) {
+    const list = promptStorage.list;
+    if (index1 !== index2 && index1 >= 0 && index1 < list.length && index2 >= 0 && index2 < list.length) {
+      setPromptStorage(produce(draft => {
+          const list = draft.list;
+          const temp = list[index1];
+          list[index1] = list[index2];
+          list[index2] = temp;
         })
       );
     }
@@ -197,6 +214,7 @@ export default function usePrompts() {
     setHints: setHints,
     getCurrentHintIndex: () => promptState.currentHintIndex,
     moveCurrentHintIndex: moveCurrentHintIndex,
-    compilePrompt: compilePrompt
+    compilePrompt: compilePrompt,
+    swapPromptByIndex: swapPromptByIndex
   };
 }

@@ -50,11 +50,12 @@ export default function PromptItem(props) {
     }
   }
 
+  // 如果一个element想被drag必须加上draggable属性
   return <>
-    <Card
-      border="success"
-      style={{ width: "18rem" }}
-      class="m-2"
+    <Card draggable
+          border="success"
+          style={{ width: "18rem" }}
+          class="m-2"
     >
 
       <Card.Body>

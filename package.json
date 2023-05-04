@@ -9,7 +9,7 @@
         "url": "https://github.com/lixianmin/chatgpt-tweak.git"
     },
     "scripts": {
-        "dev": "vite build -w",
+        "dev": "vite build --watch",
         "build": "vite build && bash postbuild.sh",
         "lint": "eslint . --fix -c .eslintrc --ext js,ts --ignore-pattern='!.*'",
         "dev:nodemon": "nodemon",
