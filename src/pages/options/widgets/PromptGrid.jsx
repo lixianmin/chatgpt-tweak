@@ -14,7 +14,11 @@ import { For } from "solid-js";
 
 export default function PromptGrid() {
   const prompts = usePrompts();
-  
+
+  function reveredPromptList() {
+    return prompts.getPromptList().slice().reverse();
+  }
+
   // 通过在一行中把所有的column都放进来，然后设置 md='auto'，可以进行自动排版
   return <>
     <Form>
@@ -22,7 +26,7 @@ export default function PromptGrid() {
         <Col md="auto">
           <AddPromptItem prompts={prompts} />
         </Col>
-        <For each={prompts.getPromptList().slice().reverse()}>{(prompt, reverseIndex) => {
+        <For each={reveredPromptList()}>{(prompt, reverseIndex) => {
           return <Col md="auto">
             <PromptItem prompts={prompts} reverseIndex={reverseIndex()}></PromptItem>
           </Col>;
