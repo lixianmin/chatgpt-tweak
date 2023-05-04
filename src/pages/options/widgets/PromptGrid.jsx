@@ -16,7 +16,7 @@ export default function PromptGrid() {
   const prompts = usePrompts();
   let activeIndex = -1;
   let dragToIndex = -1;
-  let minuend = -1;
+  let lastOpacity = 0;
 
   function reveredPromptList() {
     return prompts.getPromptList().slice().reverse();
@@ -40,7 +40,9 @@ export default function PromptGrid() {
   function onDragStart(evt) {
     const dom = evt.currentTarget;
     activeIndex = getItemIndex(dom);
-    minuend = prompts.getPromptList().length;
+    lastOpacity = dom.style.opacity;
+    // console.log("lastOpacity", lastOpacity);
+    dom.style.opacity = 0.3;
   }
 
   function onDragOver(evt) {
@@ -48,6 +50,8 @@ export default function PromptGrid() {
     const dom = evt.currentTarget;
     const overIndex = getItemIndex(dom);
     if (dragToIndex !== overIndex) {
+      // 这里计算reversedINdex不需要用minuend-activeIndex-1, 因为这里面多一个AddPromptItem, 抵消了
+      const minuend = prompts.getPromptList().length;
       prompts.swapPromptByIndex(minuend - activeIndex, minuend - overIndex);
       // console.log("activeIndex=", activeIndex, "overIndex=", overIndex);
 
@@ -60,7 +64,9 @@ export default function PromptGrid() {
     evt.preventDefault();
     activeIndex = -1;
     dragToIndex = -1;
-    minuend = -1;
+
+    const dom = evt.currentTarget;
+    dom.style.opacity = lastOpacity;
   }
 
   // 通过在一行中把所有的column都放进来，然后设置 md='auto'，可以进行自动排版
