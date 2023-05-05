@@ -1,7 +1,7 @@
 "use strict";
 
 import { longestCommonPrefix } from "@src/core/Tools.ts";
-import { printHtmlWithTimestamp, printTextWithTimestamp } from "@pages/content/widgets/ElementFinder.ts";
+import { printHtmlWithTimestamp, printTextWithTimestamp } from "@pages/content/widgets/ElementFinder.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
 import { Styles } from "@pages/content/widgets/Styles.js";
 import { _T } from "@src/common/Locale.js";

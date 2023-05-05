@@ -4,7 +4,6 @@ import ShadowBootstrap from "@src/core/widgets/ShadowBootstrap.jsx";
 import FootBarEnable from "@pages/content/widgets/FootBarEnable.jsx";
 import { Col, Form, Row } from "solid-bootstrap";
 import FootBarOptions from "@pages/content/widgets/FootBarOptions.jsx";
-import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
@@ -14,6 +13,7 @@ import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
 import { addEventListener } from "@src/core/EventListener.js";
 import { map } from "lodash-es";
+import { createSiteFactory } from "@pages/content/widgets/SiteFactory.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -27,9 +27,10 @@ function initInputBox() {
   const historyStore = useHistoryStore();
   let isProcessing = false;
   const userConfig = useUserConfig();
+  const factory = createSiteFactory();
 
-  const inputBox = getInputBox();
-  const btnSubmit = getSubmitButton();
+  const inputBox = factory.getInputBox();
+  const btnSubmit = factory.getSubmitButton();
 
   const tempIntputData = {
     ok: false,

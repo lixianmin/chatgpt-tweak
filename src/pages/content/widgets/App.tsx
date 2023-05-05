@@ -1,9 +1,9 @@
 import { onMount } from "solid-js";
-import { getInputBox, getSubmitButton } from "@pages/content/widgets/ElementFinder";
 import FootBar from "@pages/content/widgets/FootBar";
 import { render } from "solid-js/web";
 import attachTabBusListener from "@pages/content/widgets/ContentMessageListener";
 import HeadBar from "@pages/content/widgets/HeadBar";
+import { createSiteFactory } from "@pages/content/widgets/SiteFactory";
 
 /********************************************************************
  created:    2023-03-27
@@ -14,10 +14,11 @@ import HeadBar from "@pages/content/widgets/HeadBar";
 
 const App = () => {
   const toolbarId = "tweak-toolbar";
+  const factory = createSiteFactory();
 
   function attachTweakUI() {
-    const inputBox = getInputBox();
-    const btnSubmit = getSubmitButton();
+    const inputBox = factory.getInputBox();
+    const btnSubmit = factory.getSubmitButton();
     if (inputBox && btnSubmit) {
       render(() => <HeadBar />, inputBox.parentElement.parentElement.firstElementChild);
       render(() => <FootBar id={toolbarId} />, inputBox.parentElement.parentElement);

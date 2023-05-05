@@ -5,38 +5,12 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { formatDateTime } from "@src/core/Time";
+import { createSiteFactory } from "@pages/content/widgets/SiteFactory";
 
-export function getInputBox(): HTMLTextAreaElement {
-  const inputBox = document.querySelector("textarea");
-  return inputBox;
-}
-
-export function getFooter(): HTMLDivElement | null {
-  return document.querySelector("div[class*='absolute bottom-0']");
-}
-
-export function getSubmitButton(): HTMLButtonElement {
-  const inputBox = getInputBox();
-  if (!inputBox) {
-    return null;
-  }
-
-  const parent = inputBox.parentNode;
-  if (!parent) {
-    return null;
-  }
-
-  const button = parent.querySelector("button");
-  return button;
-}
-
-function getConsolePanel(): any {
-  const panel = document.querySelector("div[class*='react-scroll-to-bottom']")?.firstChild?.firstChild;
-  return panel;
-}
+const factory = createSiteFactory();
 
 function createPrintDiv() {
-  const panel = getConsolePanel();
+  const panel = factory.getConsolePanel();
   if (panel && panel.children) {
     const div = document.createElement("div");
     div.style.margin = "2rem auto 2rem 6rem"; // top right bottom left
