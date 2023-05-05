@@ -4,10 +4,9 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { createDelayed } from "@src/core/Tools.ts";
 
 export function useInputBox() {
-  const inputBox = document.querySelector("div[role=\"textbox\"]")?.firstElementChild;
+  const inputBox = document.querySelector("div[role=\"textbox\"]");
   if (!inputBox) {
     return null;
   }
@@ -15,30 +14,31 @@ export function useInputBox() {
   const placeholder = document.querySelector("div[class=\"ql-placeholder\"]").firstElementChild;
 
   function getDom() {
-    return inputBox.parentElement;
+    return inputBox;
   }
 
   function setText(text) {
-    inputBox.textContent = text;
+    inputBox.firstElementChild.textContent = text;
   }
 
   function getText() {
-    return inputBox.textContent;
+    return inputBox.firstElementChild.textContent;
   }
 
   function focus() {
-    inputBox.parentElement.focus();
+    inputBox.focus();
   }
 
   function blur() {
-    inputBox.parentElement.blur();
+    inputBox.blur();
   }
 
   function setSelectionRange(start, end) {
     // 设置div中的cursor位置
     const range = document.createRange();
-    range.setStart(inputBox.firstChild, start);
-    range.setEnd(inputBox.firstChild, end);
+    const node = inputBox.firstElementChild.firstChild;
+    range.setStart(node, start);
+    range.setEnd(node, end);
 
     const selection = window.getSelection();
     selection.removeAllRanges();
