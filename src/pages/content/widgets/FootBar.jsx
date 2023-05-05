@@ -42,11 +42,11 @@ function initInputBox() {
 
     function attachEventListeners() {
       list = [
-        addEventListener(inputBox, "keydown", onKeyDown),
+        addEventListener(inputBox.getDom(), "keydown", onKeyDown),
         addEventListener(btnSubmit, "click", onSubmit),
         // 如果焦点不在inputBox，则回车时获得焦点
         addEventListener(document, "keydown", (evt) => {
-          if (evt.key === "Enter" && evt.target !== inputBox) {
+          if (evt.key === "Enter" && evt.target !== inputBox.getDom()) {
             inputBox.focus();
             evt.preventDefault();
           }
@@ -68,14 +68,14 @@ function initInputBox() {
 
   // 是否添加相关事件
   const listeners = createListeners();
-  const originalPlaceholder = inputBox.placeholder;
+  const originalPlaceholder = inputBox.getPlaceholder();
   createEffect(() => {
     if (userConfig.isToolbarEnable()) {
       listeners.attachEventListeners();
-      inputBox.placeholder = _T("/prompts ↑↓histories Tab:complete Enter:send");
+      inputBox.setPlaceholder(_T("/prompts ↑↓histories Tab:complete Enter:send"));
     } else {
       listeners.detachEventListeners();
-      inputBox.placeholder = originalPlaceholder;
+      inputBox.setPlaceholder(originalPlaceholder);
     }
   });
 
@@ -87,7 +87,8 @@ function initInputBox() {
       // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
       code: "Enter"
     });
-    inputBox.dispatchEvent(enterEvent);
+    // todo 这里要改dispatchEvent
+    inputBox.getDom().dispatchEvent(enterEvent);
   }
 
   function fetchPromptCandidates(prefix) {
@@ -103,7 +104,7 @@ function initInputBox() {
   }
 
   function onKeyDownTab(evt) {
-    const query = inputBox.value;
+    const query = inputBox.getText();
     if (query.length > 0) {
       const c = query[0];
       if (c === "/") {
@@ -113,11 +114,11 @@ function initInputBox() {
         if (candidates.length >= 2 || candidates.length === 1 && candidates[0].name !== prefix) {
           const hint = longestCommonPrefix(map(candidates, "name"));
           const next = "/" + hint;
-          inputBox.value = next;
+          inputBox.setText(next);
           delayedSetCursor(next.length);
         } else if (candidates.length === 1) { // 否则，展开当前的prompt
           const next = candidates[0].text;
-          inputBox.value = next;
+          inputBox.setText(next);
           delayedSetCursor(next.length);
         }
       } else if (c === "!") {
@@ -126,7 +127,7 @@ function initInputBox() {
       } else if (c >= "a" && c <= "z") {
         const hint = fetchCommandHint(query);
         if (hint !== query) {
-          inputBox.value = hint;
+          inputBox.setText(hint);
           delayedSetCursor(hint.length);
         }
       }
@@ -143,11 +144,11 @@ function initInputBox() {
   }
 
   function resetHints() {
-    const query = inputBox.value;
+    const query = inputBox.getText();
     if (query.startsWith("/")) {
       const list = prompts.getPromptList();
       const hints = [];
-      const prefix = inputBox.value.substring(1);
+      const prefix = inputBox.getText().substring(1);
       const maxSize = 10;
 
       for (let i = 0; i < list.length; i++) {
@@ -167,12 +168,12 @@ function initInputBox() {
 
   function checkPromptHintsVisible(evt) {
     const key = evt.key;
-    const query = inputBox.value;
+    const query = inputBox.getText();
     // console.log("key", key);
     if (query === "" || key === "/" || key === "Backspace" || key === "Enter") {
       // 因为inputBox.value总是慢上一帧，所以延迟一帧处理
       setTimeout(() => {
-        const query = inputBox.value;
+        const query = inputBox.getText();
         const visible = query.startsWith("/");
         prompts.setHintsVisible(visible);
         if (visible) {
@@ -228,7 +229,8 @@ function initInputBox() {
   }
 
   const delayedSetCursor = createDelayed((position) => {
-    inputBox.setSelectionRange(position, position);
+    // todo 这里要改:setSelectionRange
+    inputBox.getDom().setSelectionRange(position, position);
   });
 
   function onKeyDownArrowHints(evt) {
@@ -244,7 +246,7 @@ function initInputBox() {
 
     if (!tempIntputData.ok) {
       tempIntputData.ok = true;
-      tempIntputData.text = inputBox.value;
+      tempIntputData.text = inputBox.getText();
     }
 
     const step = isArrowUp ? -1 : 1;
@@ -255,7 +257,7 @@ function initInputBox() {
 
     // 按bash中history的操作习惯, 如果是arrow down的话, 最后一个应该是""
     if (nextText !== "" || isArrowDown) {
-      inputBox.value = nextText;
+      inputBox.setText(nextText);
       delayedSetCursor(nextText.length);
     }
 
@@ -267,7 +269,7 @@ function initInputBox() {
       const index = Number(query.substring(1)) - 1;
       if (!Number.isNaN(index)) {
         query = historyStore.getHistory(index);
-        inputBox.value = query;
+        inputBox.setText(query);
       }
     }
 
@@ -293,8 +295,8 @@ function initInputBox() {
       const hints = prompts.getHints();
       const currentHint = hints[prompts.getCurrentHintIndex()];
       const next = "/" + currentHint.name;
-      if (next.startsWith(inputBox.value)) {
-        inputBox.value = next;
+      if (next.startsWith(inputBox.getText())) {
+        inputBox.setText(next);
       }
     }
   }
@@ -304,21 +306,21 @@ function initInputBox() {
 
     if (!isProcessing) {
       // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
-      let query = inputBox.value;
+      let query = inputBox.getText();
       // console.log("query", query);
       if (query !== "") {
         query = checkHistoryExpansion(query);
         historyStore.add(query);
 
         if (checkBuiltinCommands(query)) {
-          inputBox.value = "";
+          inputBox.setText("");
           return;
         }
 
         query = checkPromptExpansion(query);
 
         isProcessing = true;
-        inputBox.value = prompts.compilePrompt(query);
+        inputBox.setText(prompts.compilePrompt(query));
 
         pressEnter();
         isProcessing = false;

@@ -19,9 +19,11 @@ const App = () => {
   function attachTweakUI() {
     const inputBox = factory.getInputBox();
     const btnSubmit = factory.getSubmitButton();
+
     if (inputBox && btnSubmit) {
-      render(() => <HeadBar />, inputBox.parentElement.parentElement.firstElementChild);
-      render(() => <FootBar id={toolbarId} />, inputBox.parentElement.parentElement);
+      const dom = inputBox.getDom();
+      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
+      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
     }
   }
 
