@@ -88,7 +88,7 @@ function initInputBox() {
       code: "Enter"
     });
     // todo 这里要改dispatchEvent
-    inputBox.getDom().dispatchEvent(enterEvent);
+    // inputBox.getDom().dispatchEvent(enterEvent);
   }
 
   function fetchPromptCandidates(prefix) {
@@ -229,8 +229,7 @@ function initInputBox() {
   }
 
   const delayedSetCursor = createDelayed((position) => {
-    // todo 这里要改:setSelectionRange
-    inputBox.getDom().setSelectionRange(position, position);
+    inputBox.setSelectionRange(position, position);
   });
 
   function onKeyDownArrowHints(evt) {
@@ -307,7 +306,7 @@ function initInputBox() {
     if (!isProcessing) {
       // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
       let query = inputBox.getText();
-      // console.log("query", query);
+      // console.warn("query", query);
       if (query !== "") {
         query = checkHistoryExpansion(query);
         historyStore.add(query);
@@ -320,7 +319,9 @@ function initInputBox() {
         query = checkPromptExpansion(query);
 
         isProcessing = true;
-        inputBox.setText(prompts.compilePrompt(query));
+        const compiled = prompts.compilePrompt(query);
+        // console.warn("query:", query, ", compiled:", compiled);
+        inputBox.setText(compiled);
 
         pressEnter();
         isProcessing = false;

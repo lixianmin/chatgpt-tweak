@@ -31,6 +31,10 @@ export function useInputBox() {
     inputBox.blur();
   }
 
+  function setSelectionRange(start, end) {
+    inputBox.setSelectionRange(start, end);
+  }
+
   function setPlaceholder(text) {
     inputBox.placeholder = text;
   }
@@ -45,6 +49,7 @@ export function useInputBox() {
     getText: getText,
     focus: focus,
     blur: blur,
+    setSelectionRange: setSelectionRange,
     setPlaceholder: setPlaceholder,
     getPlaceholder: getPlaceholder
   };
