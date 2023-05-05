@@ -29,6 +29,8 @@ export default function mountContentMessageListener() {
       case CommandType.setCurrentLanguageByName:
         Locale.setCurrentLanguageByName(request.name);
         break;
+      case CommandType.swapPromptByIndex:
+        prompts.swapPromptByIndex(request.index1, request.index2);
     }
   });
 }

@@ -4,6 +4,8 @@ import PromptItem from "@pages/options/widgets/PromptItem.jsx";
 import { Col, Form, Row } from "solid-bootstrap";
 import AddPromptItem from "@pages/options/widgets/AddPromptItem.jsx";
 import { For } from "solid-js";
+import { CommandType } from "@src/common/Consts.js";
+import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
 
 /********************************************************************
  created:    2023-03-28
@@ -13,7 +15,9 @@ import { For } from "solid-js";
  *********************************************************************/
 
 export default function PromptGrid() {
+  const tabBus = createTabMessageBusChatGPT();
   const prompts = usePrompts();
+
   let activeIndex = -1;
   let dragToIndex = -1;
   let lastOpacity = 0;
@@ -52,7 +56,10 @@ export default function PromptGrid() {
     if (dragToIndex !== overIndex) {
       // 这里计算reversedINdex不需要用minuend-activeIndex-1, 因为这里面多一个AddPromptItem, 抵消了
       const minuend = prompts.getPromptList().length;
-      prompts.swapPromptByIndex(minuend - activeIndex, minuend - overIndex);
+      const index1 = minuend - activeIndex;
+      const index2 = minuend - overIndex;
+      prompts.swapPromptByIndex(index1, index2);
+      tabBus.broadcastMessage({ cmd: CommandType.swapPromptByIndex, index1, index2 });
       // console.log("activeIndex=", activeIndex, "overIndex=", overIndex);
 
       dragToIndex = overIndex;

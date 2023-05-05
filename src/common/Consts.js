@@ -13,5 +13,6 @@ export const CommandType = {
   deletePromptByName: "delete.prompt.by.name",
   savePrompt: "save.prompt",
   setCurrentLanguageByName: "set.current.language.by.name",
-  setCurrentPrompt: "set.current.prompt"
+  setCurrentPrompt: "set.current.prompt",
+  swapPromptByIndex: "swap.prompt.by.index"
 };
