@@ -2,7 +2,7 @@
 
 import { Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { CommandType } from "@src/common/Constants.js";
-import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
+import { createTabMessageBusSites } from "@src/core/MessageBus.js";
 import { IoTrash } from "solid-icons/io";
 import IconButton from "@src/core/widgets/IconButton.jsx";
 import { createSignal, Show } from "solid-js";
@@ -16,7 +16,7 @@ import { _T } from "@src/common/Locale.js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-const tabBus = createTabMessageBusChatGPT();
+const tabBus = createTabMessageBusSites();
 
 export default function PromptItem(props) {
   const prompts = props.prompts;

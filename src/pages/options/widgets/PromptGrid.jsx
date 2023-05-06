@@ -5,7 +5,7 @@ import { Col, Form, Row } from "solid-bootstrap";
 import AddPromptItem from "@pages/options/widgets/AddPromptItem.jsx";
 import { For } from "solid-js";
 import { CommandType } from "@src/common/Constants.js";
-import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
+import { createTabMessageBusSites } from "@src/core/MessageBus.js";
 
 /********************************************************************
  created:    2023-03-28
@@ -15,7 +15,7 @@ import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
  *********************************************************************/
 
 export default function PromptGrid() {
-  const tabBus = createTabMessageBusChatGPT();
+  const tabBus = createTabMessageBusSites();
   const prompts = usePrompts();
 
   let activeIndex = -1;

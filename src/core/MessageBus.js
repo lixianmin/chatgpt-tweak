@@ -10,8 +10,8 @@ import { onCleanup, onMount } from "solid-js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export function createTabMessageBusChatGPT() {
-  return createTabMessageBus({ url: "https://chat.openai.com/*" });
+export function createTabMessageBusSites() {
+  return createTabMessageBus({ url: ["https://chat.openai.com/*", "https://app.slack.com/*"] });
 }
 
 export function createTabMessageBus(queryInfo) {
