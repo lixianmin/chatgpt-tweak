@@ -1,8 +1,5 @@
 import { onMount } from "solid-js";
-import FootBar from "@pages/content/widgets/FootBar";
-import { render } from "solid-js/web";
 import attachTabBusListener from "@pages/content/widgets/ContentMessageListener";
-import HeadBar from "@pages/content/widgets/HeadBar";
 import { createSiteFactory } from "@pages/content/widgets/SiteFactory";
 
 /********************************************************************
@@ -16,17 +13,6 @@ const App = () => {
   const toolbarId = "tweak-toolbar";
   const factory = createSiteFactory();
 
-  function attachTweakUI() {
-    const inputBox = factory.getInputBox();
-    const btnSubmit = factory.getSubmitButton();
-
-    if (inputBox && btnSubmit) {
-      const dom = inputBox.getDom();
-      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
-      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
-    }
-  }
-
   function checkAttachTweakUI() {
     try {
       // todo 这里实际上是创建了两个Toolbar，第一个创建了，但是不知道为啥消失不见的
@@ -34,7 +20,7 @@ const App = () => {
       setInterval(() => {
         const toolbar = document.getElementById(toolbarId);
         if (!toolbar) {
-          attachTweakUI();
+          factory.attachTweakUI(toolbarId);
         }
       }, 200);
     } catch (err) {

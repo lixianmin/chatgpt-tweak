@@ -4,8 +4,8 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { createChatgptFactory } from "@pages/content/chatgpt/factory.js";
-import { createClaudeFactory } from "@pages/content/claude/factory.js";
+import { createChatgptFactory } from "@pages/content/chatgpt/factory.jsx";
+import { createClaudeFactory } from "@pages/content/claude/factory.jsx";
 
 export function createSiteFactory() {
   const host = window.location.host;

@@ -6,6 +6,9 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { useInputBox } from "@pages/content/chatgpt/inputbox.js";
+import { render } from "solid-js/web";
+import HeadBar from "@pages/content/widgets/HeadBar.jsx";
+import FootBar from "@pages/content/widgets/FootBar.jsx";
 
 export function createChatgptFactory() {
   let inputBox = null;
@@ -37,9 +40,21 @@ export function createChatgptFactory() {
     return panel;
   }
 
+  function attachTweakUI(toolbarId) {
+    const inputBox = getInputBox();
+    const btnSubmit = getSubmitButton();
+
+    if (inputBox && btnSubmit) {
+      const dom = inputBox.getDom();
+      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
+      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
+    }
+  }
+
   return {
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
-    getConsolePanel: getConsolePanel
+    getConsolePanel: getConsolePanel,
+    attachTweakUI: attachTweakUI
   };
 }

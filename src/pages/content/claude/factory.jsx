@@ -6,6 +6,9 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { useInputBox } from "@pages/content/claude/inputbox.js";
+import { render } from "solid-js/web";
+import HeadBar from "@pages/content/widgets/HeadBar.jsx";
+import FootBar from "@pages/content/widgets/FootBar.jsx";
 
 export function createClaudeFactory() {
   let inputBox = null;
@@ -27,9 +30,21 @@ export function createClaudeFactory() {
     return panel;
   }
 
+  function attachTweakUI(toolbarId) {
+    const inputBox = getInputBox();
+
+    if (inputBox) {
+      const toolbars = document.querySelectorAll("div[role=\"toolbar\"]");
+      const footBar = toolbars[toolbars.length - 1];
+      render(() => <HeadBar />, footBar.parentElement);
+      render(() => <FootBar id={toolbarId} />, footBar.parentElement.parentElement.parentElement);
+    }
+  }
+
   return {
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
-    getConsolePanel: getConsolePanel
+    getConsolePanel: getConsolePanel,
+    attachTweakUI: attachTweakUI
   };
 }
