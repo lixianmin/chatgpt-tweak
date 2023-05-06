@@ -1,4 +1,5 @@
 "use strict";
+
 /********************************************************************
  created:    2023-05-05
  author:     lixianmin
@@ -32,8 +33,9 @@ export function useInputBox() {
     inputBox.blur();
   }
 
-  function setSelectionRange(start, end) {
-    inputBox.setSelectionRange(start, end);
+  function moveCursorToEnd() {
+    const textLength = inputBox.value.length;
+    inputBox.setSelectionRange(textLength, textLength);
   }
 
   function setPlaceholder(text) {
@@ -50,7 +52,7 @@ export function useInputBox() {
     getText: getText,
     focus: focus,
     blur: blur,
-    setSelectionRange: setSelectionRange,
+    moveCursorToEnd: moveCursorToEnd,
     setPlaceholder: setPlaceholder,
     getPlaceholder: getPlaceholder
   };

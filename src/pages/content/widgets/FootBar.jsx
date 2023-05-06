@@ -122,20 +122,20 @@ function initInputBox() {
           const hint = longestCommonPrefix(map(candidates, "name"));
           const next = Constants.PromptKey + hint;
           inputBox.setText(next);
-          delayedSetCursor(next.length);
+          delayedMoveCursorToEnd();
         } else if (candidates.length === 1) { // 否则，展开当前的prompt
           const next = candidates[0].text;
           inputBox.setText(next);
-          delayedSetCursor(next.length);
+          delayedMoveCursorToEnd();
         }
       } else if (c === "!") {
-        const next = checkHistoryExpansion(query);
-        delayedSetCursor(next.length);
+        checkHistoryExpansion(query);
+        delayedMoveCursorToEnd();
       } else if (c >= "a" && c <= "z") {
         const hint = fetchCommandHint(query);
         if (hint !== query) {
           inputBox.setText(hint);
-          delayedSetCursor(hint.length);
+          delayedMoveCursorToEnd();
         }
       }
     }
@@ -235,8 +235,8 @@ function initInputBox() {
     }
   }
 
-  const delayedSetCursor = createDelayed((position) => {
-    inputBox.setSelectionRange(position, position);
+  const delayedMoveCursorToEnd = createDelayed(() => {
+    inputBox.moveCursorToEnd();
   });
 
   function onKeyDownArrowHints(evt) {
@@ -264,7 +264,7 @@ function initInputBox() {
     // 按bash中history的操作习惯, 如果是arrow down的话, 最后一个应该是""
     if (nextText !== "" || isArrowDown) {
       inputBox.setText(nextText);
-      delayedSetCursor(nextText.length);
+      delayedMoveCursorToEnd();
     }
 
     evt.preventDefault();

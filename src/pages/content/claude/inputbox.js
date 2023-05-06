@@ -1,4 +1,5 @@
 "use strict";
+
 /********************************************************************
  created:    2023-05-05
  author:     lixianmin
@@ -19,11 +20,11 @@ export function useInputBox() {
   }
 
   function setText(text) {
-    inputBox.firstElementChild.textContent = text;
+    inputBox.innerHTML = text;
   }
 
   function getText() {
-    return inputBox.firstElementChild.textContent;
+    return inputBox.innerHTML;
   }
 
   function focus() {
@@ -34,12 +35,14 @@ export function useInputBox() {
     inputBox.blur();
   }
 
-  function setSelectionRange(start, end) {
+  function moveCursorToEnd() {
     // 设置div中的cursor位置
     const range = document.createRange();
-    const node = inputBox.firstElementChild.firstChild;
-    range.setStart(node, start);
-    range.setEnd(node, end);
+    const dom = inputBox.lastElementChild;
+    const textLength = dom.textContent.length;
+
+    range.setStart(dom.firstChild, textLength);
+    range.setEnd(dom.firstChild, textLength);
 
     const selection = window.getSelection();
     selection.removeAllRanges();
@@ -60,7 +63,7 @@ export function useInputBox() {
     getText: getText,
     focus: focus,
     blur: blur,
-    setSelectionRange: setSelectionRange,
+    moveCursorToEnd: moveCursorToEnd,
     setPlaceholder: setPlaceholder,
     getPlaceholder: getPlaceholder
   };
