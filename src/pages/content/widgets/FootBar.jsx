@@ -43,7 +43,7 @@ function initInputBox() {
     function attachEventListeners() {
       list = [
         addEventListener(inputBox.getDom(), "keydown", onKeyDown),
-        addEventListener(btnSubmit, "click", onSubmit),
+        // addEventListener(btnSubmit, "click", onSubmit),
         // 如果焦点不在inputBox，则回车时获得焦点
         addEventListener(document, "keydown", (evt) => {
           if (evt.key === "Enter" && evt.target !== inputBox.getDom()) {
@@ -79,16 +79,22 @@ function initInputBox() {
     }
   });
 
-  function pressEnter() {
-    inputBox.focus();
-    const enterEvent = new KeyboardEvent("keydown", {
-      bubbles: true,
-      cancelable: true,
-      // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
-      code: "Enter"
-    });
-    // todo 这里要改dispatchEvent
+  function sendClickEvent() {
+    // inputBox.focus();
+    // const enterEvent = new KeyboardEvent("keydown", {
+    //   bubbles: true,
+    //   cancelable: true,
+    //   // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
+    //   code: "Enter"
+    // });
     // inputBox.getDom().dispatchEvent(enterEvent);
+
+    const clickEvent = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true
+    });
+
+    btnSubmit.dispatchEvent(clickEvent);
   }
 
   function fetchPromptCandidates(prefix) {
@@ -323,7 +329,10 @@ function initInputBox() {
         // console.warn("query:", query, ", compiled:", compiled);
         inputBox.setText(compiled);
 
-        pressEnter();
+        setTimeout(() => {
+          sendClickEvent();
+        });
+
         isProcessing = false;
       }
     }
