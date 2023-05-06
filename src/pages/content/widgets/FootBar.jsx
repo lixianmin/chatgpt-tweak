@@ -312,9 +312,10 @@ function initInputBox() {
 
     if (!isProcessing) {
       let queryText = inputBox.getText();
-      // console.warn("query", query);
       if (queryText !== "") {
         let queryHtml = inputBox.getHtml();
+        // console.warn("queryHtml", queryHtml);
+
         const nextQueryText = checkHistoryExpansion(queryText);
         const isExpanded = nextQueryText !== queryText;
         if (isExpanded) {

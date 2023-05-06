@@ -24,7 +24,14 @@ export function useInputBox() {
   }
 
   function getHtml() {
-    return inputBox.innerHTML;
+    // claude中, 在回车的时候, 这个html经常被自动加上一个<br>的换行, 所以要移除它
+    const blank = "<p><br></p>";
+    let html = inputBox.innerHTML;
+    while (html.endsWith(blank)) {
+      html = html.substring(0, html.length - blank.length);
+    }
+
+    return html;
   }
 
   function getText() {
