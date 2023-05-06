@@ -17,8 +17,12 @@ export function useInputBox() {
     return inputBox;
   }
 
-  function setText(text) {
-    inputBox.value = text;
+  function setHtml(html) {
+    inputBox.value = html;
+  }
+
+  function getHtml() {
+    return inputBox.value;
   }
 
   function getText() {
@@ -48,7 +52,8 @@ export function useInputBox() {
 
   return {
     getDom: getDom,
-    setText: setText,
+    setHtml: setHtml,
+    getHtml: getHtml,
     getText: getText,
     focus: focus,
     blur: blur,

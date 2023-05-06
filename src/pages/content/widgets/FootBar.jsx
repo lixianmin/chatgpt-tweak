@@ -121,11 +121,11 @@ function initInputBox() {
         if (candidates.length >= 2 || candidates.length === 1 && candidates[0].name !== prefix) {
           const hint = longestCommonPrefix(map(candidates, "name"));
           const next = Constants.PromptKey + hint;
-          inputBox.setText(next);
+          inputBox.setHtml(next);
           delayedMoveCursorToEnd();
         } else if (candidates.length === 1) { // 否则，展开当前的prompt
           const next = candidates[0].text;
-          inputBox.setText(next);
+          inputBox.setHtml(next);
           delayedMoveCursorToEnd();
         }
       } else if (c === "!") {
@@ -134,7 +134,7 @@ function initInputBox() {
       } else if (c >= "a" && c <= "z") {
         const hint = fetchCommandHint(query);
         if (hint !== query) {
-          inputBox.setText(hint);
+          inputBox.setHtml(hint);
           delayedMoveCursorToEnd();
         }
       }
@@ -263,7 +263,7 @@ function initInputBox() {
 
     // 按bash中history的操作习惯, 如果是arrow down的话, 最后一个应该是""
     if (nextText !== "" || isArrowDown) {
-      inputBox.setText(nextText);
+      inputBox.setHtml(nextText);
       delayedMoveCursorToEnd();
     }
 
@@ -275,7 +275,7 @@ function initInputBox() {
       const index = Number(query.substring(1)) - 1;
       if (!Number.isNaN(index)) {
         query = historyStore.getHistory(index);
-        inputBox.setText(query);
+        inputBox.setHtml(query);
       }
     }
 
@@ -302,7 +302,7 @@ function initInputBox() {
       const currentHint = hints[prompts.getCurrentHintIndex()];
       const next = Constants.PromptKey + currentHint.name;
       if (next.startsWith(inputBox.getText())) {
-        inputBox.setText(next);
+        inputBox.setHtml(next);
       }
     }
   }
@@ -311,24 +311,28 @@ function initInputBox() {
     checkInputCurrentHint();
 
     if (!isProcessing) {
-      // todo 刚刚enable toolbar的时候，这个值是empty的，因此无法正确执行
-      let query = inputBox.getText();
+      let queryText = inputBox.getText();
       // console.warn("query", query);
-      if (query !== "") {
-        query = checkHistoryExpansion(query);
-        historyStore.add(query);
+      if (queryText !== "") {
+        let queryHtml = inputBox.getHtml();
+        const nextQueryText = checkHistoryExpansion(queryText);
+        const isExpanded = nextQueryText !== queryText;
+        if (isExpanded) {
+          queryHtml = nextQueryText;
+        }
 
-        if (checkBuiltinCommands(query)) {
-          inputBox.setText("");
+        historyStore.add(queryHtml);
+        if (checkBuiltinCommands(queryText)) {
+          inputBox.setHtml("");
           return;
         }
 
-        query = checkPromptExpansion(query);
+        // todo 这里是如果出现了以?开头的, 则展开成prompt写进来
+        // queryText = checkPromptExpansion(queryText);
 
         isProcessing = true;
-        const compiled = prompts.compilePrompt(query);
-        // console.warn("query:", query, ", compiled:", compiled);
-        inputBox.setText(compiled);
+        const compiled = prompts.compilePrompt(queryHtml);
+        inputBox.setHtml(compiled);
 
         setTimeout(() => {
           sendClickEvent();
