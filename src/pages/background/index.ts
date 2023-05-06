@@ -1,7 +1,7 @@
 "use strict";
 
 import Browser from "webextension-polyfill";
-import { CommandType } from "@src/common/Consts";
+import { CommandType } from "@src/common/Constants";
 
 /********************************************************************
  created:    2023-03-29

@@ -14,6 +14,7 @@ import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/C
 import { addEventListener } from "@src/core/EventListener.js";
 import { map } from "lodash-es";
 import { createSiteFactory } from "@pages/content/widgets/SiteFactory.js";
+import { Constants } from "@src/common/Constants.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -72,7 +73,7 @@ function initInputBox() {
   createEffect(() => {
     if (userConfig.isToolbarEnable()) {
       listeners.attachEventListeners();
-      inputBox.setPlaceholder(_T("/prompts ↑↓histories Tab:complete Enter:send"));
+      inputBox.setPlaceholder(_T("?prompts ↑↓histories Tab:complete Ctrl+Enter:send"));
     } else {
       listeners.detachEventListeners();
       inputBox.setPlaceholder(originalPlaceholder);
@@ -113,13 +114,13 @@ function initInputBox() {
     const query = inputBox.getText();
     if (query.length > 0) {
       const c = query[0];
-      if (c === "/") {
+      if (c === Constants.PromptKey) {
         const prefix = query.substring(1);
         const candidates = fetchPromptCandidates(prefix);
         // 如果有多个candidates，或者只有一个但跟prefix的值不一样，则设置为hint
         if (candidates.length >= 2 || candidates.length === 1 && candidates[0].name !== prefix) {
           const hint = longestCommonPrefix(map(candidates, "name"));
-          const next = "/" + hint;
+          const next = Constants.PromptKey + hint;
           inputBox.setText(next);
           delayedSetCursor(next.length);
         } else if (candidates.length === 1) { // 否则，展开当前的prompt
@@ -151,7 +152,7 @@ function initInputBox() {
 
   function resetHints() {
     const query = inputBox.getText();
-    if (query.startsWith("/")) {
+    if (query.startsWith(Constants.PromptKey)) {
       const list = prompts.getPromptList();
       const hints = [];
       const prefix = inputBox.getText().substring(1);
@@ -176,11 +177,11 @@ function initInputBox() {
     const key = evt.key;
     const query = inputBox.getText();
     // console.log("key", key);
-    if (query === "" || key === "/" || key === "Backspace" || key === "Enter") {
+    if (query === "" || key === Constants.PromptKey || key === "Backspace" || key === "Enter") {
       // 因为inputBox.value总是慢上一帧，所以延迟一帧处理
       setTimeout(() => {
         const query = inputBox.getText();
-        const visible = query.startsWith("/");
+        const visible = query.startsWith(Constants.PromptKey);
         prompts.setHintsVisible(visible);
         if (visible) {
           resetHints();
@@ -205,7 +206,7 @@ function initInputBox() {
 
     switch (evt.key) {
       case "Enter":
-        if (!evt.shiftKey) {
+        if (evt.ctrlKey) {
           onSubmit(evt);
         }
         break;
@@ -224,7 +225,7 @@ function initInputBox() {
         onKeyDownEscape(evt);
         break;
       default:
-      // console.log("evt", evt);
+      // console.warn("evt", evt);
     }
 
     checkPromptHintsVisible(evt);
@@ -282,7 +283,7 @@ function initInputBox() {
   }
 
   function checkPromptExpansion(query) {
-    if (query.startsWith("/")) {
+    if (query.startsWith(Constants.PromptKey)) {
       const hint = query.substring(1);
       const list = prompts.getPromptList();
       for (const v of list.values()) {
@@ -299,7 +300,7 @@ function initInputBox() {
     if (prompts.getHintsVisible() && prompts.getCurrentHintIndex() >= 0) {
       const hints = prompts.getHints();
       const currentHint = hints[prompts.getCurrentHintIndex()];
-      const next = "/" + currentHint.name;
+      const next = Constants.PromptKey + currentHint.name;
       if (next.startsWith(inputBox.getText())) {
         inputBox.setText(next);
       }

@@ -2,7 +2,7 @@
 import { TbSettings } from "solid-icons/tb";
 import IconButton from "@src/core/widgets/IconButton.jsx";
 import Browser from "webextension-polyfill";
-import { CommandType } from "@src/common/Consts.js";
+import { CommandType } from "@src/common/Constants.js";
 
 /********************************************************************
  created:    2023-03-29

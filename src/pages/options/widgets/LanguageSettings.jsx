@@ -4,7 +4,7 @@ import { ButtonGroup, Dropdown, DropdownButton } from "solid-bootstrap";
 import { For, Show } from "solid-js";
 import { _T, Locale } from "@src/common/Locale.js";
 import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
-import { CommandType } from "@src/common/Consts.js";
+import { CommandType } from "@src/common/Constants.js";
 
 /********************************************************************
  created:    2023-04-01

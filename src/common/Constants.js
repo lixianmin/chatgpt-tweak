@@ -16,3 +16,7 @@ export const CommandType = {
   setCurrentPrompt: "set.current.prompt",
   swapPromptByIndex: "swap.prompt.by.index"
 };
+
+export const Constants = {
+  PromptKey: "?"
+};

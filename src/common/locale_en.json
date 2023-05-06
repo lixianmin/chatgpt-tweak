@@ -9,7 +9,7 @@
   "Reset": "Reset",
   "Home": "Home",
   "System Language": "System Language",
-  "/prompts ↑↓histories Tab:complete Enter:send": "/prompts ↑↓histories Tab:complete Enter:send",
+  "?prompts ↑↓histories Tab:complete Ctrl+Enter:send": "?prompts ↑↓histories Tab:complete Ctrl+Enter:send",
   "Command": "Command",
   "Note": "Note",
   "list history messages": "list history messages",

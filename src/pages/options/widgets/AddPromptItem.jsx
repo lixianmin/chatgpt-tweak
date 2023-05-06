@@ -2,7 +2,7 @@
 
 import { Badge, Button, Card, Col, Form, Row } from "solid-bootstrap";
 import { createSignal } from "solid-js";
-import { CommandType } from "@src/common/Consts.js";
+import { CommandType } from "@src/common/Constants.js";
 import { createTabMessageBusChatGPT } from "@src/core/MessageBus.js";
 import { _T } from "@src/common/Locale.js";
 

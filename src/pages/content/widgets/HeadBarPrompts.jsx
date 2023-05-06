@@ -3,7 +3,7 @@
 import { Button, ButtonGroup } from "solid-bootstrap";
 import usePrompts from "@src/dao/Prompts.js";
 import { For, Show } from "solid-js";
-import { CommandType as Consts } from "@src/common/Consts.js";
+import { CommandType as Consts } from "@src/common/Constants.js";
 import Browser from "webextension-polyfill";
 
 /********************************************************************

@@ -1,7 +1,7 @@
 "use strict";
 
 import { mountMessageListener } from "@src/core/MessageBus.js";
-import { CommandType } from "@src/common/Consts.js";
+import { CommandType } from "@src/common/Constants.js";
 import usePrompts from "@src/dao/Prompts.js";
 
 /********************************************************************
