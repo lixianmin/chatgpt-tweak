@@ -14,6 +14,11 @@ function createHistoryStore() {
   let _list = storage.getStorage();
   let _currentIndex = _list.length;
 
+  function setCurrentIndex(index) {
+    _currentIndex = index;
+    // console.warn(`_currentIndex=${index}, text=${_list.at(index) ?? ""}, _list.length=${_list.length}`);
+  }
+
   return {
     add(text) {
       if (typeof text !== "string") {
@@ -28,11 +33,13 @@ function createHistoryStore() {
       const size = _list.length;
 
       // 如果history中存储的最后一条与command不一样，则将command加入到history列表。否则将historyIndex调整到最后
+      let nextIndex = 0;
       if (size === 0 || _list[size - 1] !== text) {
-        _currentIndex = _list.push(text);
+        nextIndex = _list.push(text);
       } else { // add()都是在输入命令时才调用的，这时万一historyIndex处于history数组的中间位置，将其调整到最后
-        _currentIndex = _list.length;
+        nextIndex = _list.length;
       }
+      setCurrentIndex(nextIndex);
 
       // 最多存储100到磁盘上
       let maxStore = _list;
@@ -46,11 +53,11 @@ function createHistoryStore() {
     move(step) {
       if (typeof step === "number" && step !== 0) {
         let nextIndex = _currentIndex + step;
-        if (nextIndex >= 0 && nextIndex < _list.length) {
-          _currentIndex = nextIndex;
-          const text = _list.at(nextIndex);
-          // console.log(this.toString())
-          return text;
+        if (nextIndex >= 0 && nextIndex <= _list.length) {
+          setCurrentIndex(nextIndex);
+          if (nextIndex < _list.length) {
+            return _list[nextIndex];
+          }
         }
       }
 
