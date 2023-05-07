@@ -9,7 +9,7 @@
   "Reset": "重置",
   "Home": "主页",
   "System Language": "系统语言",
-  "?prompts ↑↓histories Tab:complete Enter:send": "?提示语 ↑↓切历史 Tab补全 Enter发送",
+  "input.box.placeholder": "?提示语 ↑↓切历史 Tab补全 Ctrl+Enter使用prompt",
   "Command": "命令",
   "Note": "注释",
   "list history messages": "列出历史消息",

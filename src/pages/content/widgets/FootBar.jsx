@@ -73,7 +73,7 @@ function initInputBox() {
   createEffect(() => {
     if (userConfig.isToolbarEnable()) {
       listeners.attachEventListeners();
-      inputBox.setPlaceholder(_T("?prompts ↑↓histories Tab:complete Enter:send"));
+      inputBox.setPlaceholder(_T("input.box.placeholder"));
     } else {
       listeners.detachEventListeners();
       inputBox.setPlaceholder(originalPlaceholder);
@@ -330,17 +330,20 @@ function initInputBox() {
         // todo 这里是如果出现了以?开头的, 则展开成prompt写进来
         // queryText = checkPromptExpansion(queryText);
 
-        isProcessing = true;
-        const compiled = prompts.compilePrompt(queryHtml);
-        inputBox.setHtml(compiled);
-        // console.warn("queryHtml", queryHtml, "compiled", compiled);
+        // 只有按下ctrl键时, 才使用prompt重写
+        if (evt.ctrlKey) {
+          isProcessing = true;
+          const compiled = prompts.compilePrompt(queryHtml);
+          inputBox.setHtml(compiled);
+          // console.warn("queryHtml", queryHtml, "compiled", compiled);
 
-        // 不再需要主动发一次button click
-        // setTimeout(() => {
-        //   sendClickEvent();
-        // });
+          // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
+          setTimeout(() => {
+            sendClickEvent();
+          });
 
-        isProcessing = false;
+          isProcessing = false;
+        }
       }
     }
   }
