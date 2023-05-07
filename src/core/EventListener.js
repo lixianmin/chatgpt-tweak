@@ -7,8 +7,8 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export function addEventListener(target, type, handler) {
-  target.addEventListener(type, handler);
+export function addEventListener(target, type, handler, options = false) {
+  target.addEventListener(type, handler, options);
 
   return {
     removeEventListener: () => {

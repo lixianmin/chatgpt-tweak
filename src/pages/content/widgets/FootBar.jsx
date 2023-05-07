@@ -43,7 +43,7 @@ function initInputBox() {
 
     function attachEventListeners() {
       list = [
-        addEventListener(inputBox.getDom(), "keydown", onKeyDown),
+        addEventListener(inputBox.getDom(), "keydown", onKeyDown, true),
         // addEventListener(btnSubmit, "click", onSubmit),
         // 如果焦点不在inputBox，则回车时获得焦点
         addEventListener(document, "keydown", (evt) => {
@@ -73,7 +73,7 @@ function initInputBox() {
   createEffect(() => {
     if (userConfig.isToolbarEnable()) {
       listeners.attachEventListeners();
-      inputBox.setPlaceholder(_T("?prompts ↑↓histories Tab:complete Ctrl+Enter:send"));
+      inputBox.setPlaceholder(_T("?prompts ↑↓histories Tab:complete Enter:send"));
     } else {
       listeners.detachEventListeners();
       inputBox.setPlaceholder(originalPlaceholder);
@@ -197,18 +197,17 @@ function initInputBox() {
   }
 
   function onKeyDown(evt) {
-    // inputBox.value总是慢一帧，缺少evt.key的操作结果
-    // console.log('inputBox.value', inputBox.value, 'evt.key:', evt.key)
-    // 如果是输入中文的过程中，收到了escape等按键事件，则不处理
+    // 1. 如果使用默认onKeyDown, 则inputBox.value总是慢一帧，缺少evt.key的操作结果, 这要到onKeyUp事件中才能体现出来
+    // 2. 当设置addEventListener()的第3个参数为true的时候, 可以在 evt.key==='Enter' 的时候拿到inputBox中的数据,
+    //    直接修改inputBox.value, 不用发送click button的事件, 等待原始page中的onkeydown事件发送即可
+    // 3. 如果是输入中文的过程中，收到了escape等按键事件，则不处理
     if (evt.isComposing) {
       return;
     }
 
     switch (evt.key) {
       case "Enter":
-        if (evt.ctrlKey) {
-          onSubmit(evt);
-        }
+        onSubmit(evt);
         break;
       case "ArrowUp":
       case "ArrowDown":
@@ -334,10 +333,12 @@ function initInputBox() {
         isProcessing = true;
         const compiled = prompts.compilePrompt(queryHtml);
         inputBox.setHtml(compiled);
+        // console.warn("queryHtml", queryHtml, "compiled", compiled);
 
-        setTimeout(() => {
-          sendClickEvent();
-        });
+        // 不再需要主动发一次button click
+        // setTimeout(() => {
+        //   sendClickEvent();
+        // });
 
         isProcessing = false;
       }
