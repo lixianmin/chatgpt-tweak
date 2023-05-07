@@ -30,14 +30,15 @@ export default function usePrompts() {
   }
 
   function addBuiltinPrompts() {
+    // 这次改写移除了prompt中的xml的tag, 因为claude会过滤这些tag导致发不出来
     addPrompt({
       name: "translator",
       text: "{time}\n" +
-        "Rephrase the text delimited by the xml tag: <text2></text2> into elegant English. And then if this text is a question, answer the question.\n\n" +
+        "Rephrase the text delimited by triple backticks into elegant English. And then if this text is a question, answer the question.\n\n" +
         "using the following format:\n" +
-        "1. Rephrased: <rephrased text>\n" +
-        "2. Answer: <answer of the question>\n\n" +
-        "TEXT: <text2>{query}</text2>"
+        "1. Rephrased: [rephrased text]\n" +
+        "2. Answer: [answer of the question]\n\n" +
+        "TEXT: ```{query}```"
     });
 
     // addPrompt({
