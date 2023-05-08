@@ -9,7 +9,7 @@ import useLocalStorage from "@src/core/LocalStorage.js";
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-function createHistoryStore() {
+function createHistoryStore(maxSize = 10) {
   const storage = useLocalStorage("tweak-history-store", []);
   let _list = storage.getStorage();
   let _currentIndex = _list.length;
@@ -43,7 +43,7 @@ function createHistoryStore() {
 
       // 最多存储100到磁盘上
       let maxStore = _list;
-      const startPos = maxStore.length - 100;
+      const startPos = maxStore.length - maxSize;
       if (startPos > 0) {
         maxStore = maxStore.slice(startPos);
       }
@@ -75,7 +75,7 @@ function createHistoryStore() {
   };
 }
 
-let store = createHistoryStore();
+let store = createHistoryStore(20);
 
 // 只所以导出useHistoryStore(), 是希望在所有的地方使用的都是同一个对象和存储, 如此而已
 export const useHistoryStore = () => store;
