@@ -309,16 +309,16 @@ function initInputBox() {
   }
 
   function checkBroadcastChat(evt, queryText) {
-    if (evt.detail === Constants.BroadcastChatSecondhandFlag) {
-      return;
+    const isSecondHand = evt.detail === Constants.BroadcastChatSecondhandFlag;
+    if (!isSecondHand) {
+      const host = window.location.host;
+      Browser.runtime.sendMessage({
+        cmd: CommandType.broadcastChat,
+        host: host,
+        ctrlKey: evt.ctrlKey,
+        queryText: queryText
+      });
     }
-
-    Browser.runtime.sendMessage({
-      cmd: CommandType.broadcastChat,
-      host: window.location.host,
-      ctrlKey: evt.ctrlKey,
-      queryText: queryText
-    });
   }
 
   function onSubmit(evt) {
@@ -346,20 +346,21 @@ function initInputBox() {
         // todo 这里是如果出现了以?开头的, 则展开成prompt写进来
         // queryText = checkPromptExpansion(queryText);
 
+        isProcessing = true;
         // 只有按下ctrl键时, 才使用prompt重写
         if (evt.ctrlKey) {
-          isProcessing = true;
           const compiled = prompts.compilePrompt(queryHtml);
           inputBox.setHtml(compiled);
           // console.warn("queryHtml", queryHtml, "compiled", compiled);
-
-          // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
-          setTimeout(() => {
-            sendClickEvent();
-          });
-
-          isProcessing = false;
         }
+
+        // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
+        // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息
+        // 到目前为止, 似乎任何情况下都可以考虑发一个button click出去
+        setTimeout(() => {
+          sendClickEvent();
+          isProcessing = false;
+        });
       }
     }
   }
