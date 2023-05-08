@@ -40,7 +40,7 @@ const manifest = defineManifest(async () => ({
   ],
   permissions: [
     "storage",  // 不加这个，Browser.storage.sync取不到
-    "tabs"
+    "tabs"      // 在option页面中遍历tabs需要这个权限, 但在content页面中无法遍历其它tabs, 需要通过Browser.runtime.sendMessage中转一下
     // "webRequest",
     // "webRequestBlocking",
     // "*://*/*"

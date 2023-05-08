@@ -17,6 +17,7 @@ export function createTabMessageBusSites() {
 export function createTabMessageBus(queryInfo) {
   function broadcastMessage(message) {
     // 使用这个方法，需要在manifest.ts文件中加入tabs权限，同时需要重启npm run dev，否则不生效
+    // 如果报Browser.tabs是undefined, 说明可能需要通过Browser.runtime.sendMessage中转一下, 参考:manifest.ts中关于tabs权限部分的说明和background下的index.ts文件
     Browser.tabs.query(queryInfo).then(tabs => {
       for (let tab of tabs.values()) {
         Browser.tabs.sendMessage(tab.id, message).then().catch(err => {

@@ -1,5 +1,4 @@
 import { onMount } from "solid-js";
-import attachTabBusListener from "@pages/content/widgets/ContentMessageListener";
 import { createSiteFactory } from "@pages/content/widgets/SiteFactory";
 
 /********************************************************************
@@ -31,8 +30,6 @@ const App = () => {
   onMount(() => {
     checkAttachTweakUI();
   });
-
-  attachTabBusListener();
 
   return <>
   </>;

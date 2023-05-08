@@ -14,9 +14,11 @@ export const CommandType = {
   savePrompt: "save.prompt",
   setCurrentLanguageByName: "set.current.language.by.name",
   setCurrentPrompt: "set.current.prompt",
-  swapPromptByIndex: "swap.prompt.by.index"
+  swapPromptByIndex: "swap.prompt.by.index",
+  broadcastChat: "broadcast.chat"
 };
 
 export const Constants = {
-  PromptKey: "?"
+  PromptKey: "?",
+  BroadcastChatSecondhandFlag: 20141209
 };

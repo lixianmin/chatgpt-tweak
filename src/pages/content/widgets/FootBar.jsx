@@ -14,7 +14,9 @@ import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/C
 import { addEventListener } from "@src/core/EventListener.js";
 import { map } from "lodash-es";
 import { createSiteFactory } from "@pages/content/widgets/SiteFactory.js";
-import { Constants } from "@src/common/Constants.js";
+import { CommandType, Constants } from "@src/common/Constants.js";
+import Browser from "webextension-polyfill";
+import mountContentMessageListener from "@pages/content/widgets/ContentMessageListener.js";
 
 /********************************************************************
  created:    2023-03-27
@@ -306,6 +308,19 @@ function initInputBox() {
     }
   }
 
+  function checkBroadcastChat(evt, queryText) {
+    if (evt.detail === Constants.BroadcastChatSecondhandFlag) {
+      return;
+    }
+
+    Browser.runtime.sendMessage({
+      cmd: CommandType.broadcastChat,
+      host: window.location.host,
+      ctrlKey: evt.ctrlKey,
+      queryText: queryText
+    });
+  }
+
   function onSubmit(evt) {
     checkInputCurrentHint();
 
@@ -313,6 +328,7 @@ function initInputBox() {
       let queryText = inputBox.getText();
       if (queryText !== "") {
         let queryHtml = inputBox.getHtml();
+        checkBroadcastChat(evt, queryText);
         // console.warn("queryHtml", queryHtml);
 
         const nextQueryText = checkHistoryExpansion(queryText);
@@ -351,6 +367,7 @@ function initInputBox() {
 
 export default function FootBar(props) {
   initInputBox();
+  mountContentMessageListener();
 
   return <>
     <ShadowBootstrap id={props.id}>

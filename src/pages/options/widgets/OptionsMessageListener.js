@@ -17,7 +17,7 @@ export default function mountOptionsMessageListener() {
   mountMessageListener(request => {
     switch (request.cmd) {
       case CommandType.setCurrentPrompt:
-        console.log("mountMessageListener", request.name);
+        // console.log("mountMessageListener", request.name);
         prompts.setCurrentPrompt(request.name);
         break;
     }
