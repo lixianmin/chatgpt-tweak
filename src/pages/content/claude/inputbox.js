@@ -52,12 +52,16 @@ export function useInputBox() {
     const dom = inputBox.lastElementChild;
     const textLength = dom.textContent.length;
 
-    range.setStart(dom.firstChild, textLength);
-    range.setEnd(dom.firstChild, textLength);
+    try {
+      range.setStart(dom.firstChild, textLength);
+      range.setEnd(dom.firstChild, textLength);
 
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } catch (err) {
+      console.warn("dom:", dom, "textLength", textLength, "err:", err);
+    }
   }
 
   function setPlaceholder(text) {
