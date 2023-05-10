@@ -21,7 +21,3 @@ export function createSiteFactory() {
       return null;
   }
 }
-
-export function getSiteUrls() {
-  return ["https://chat.openai.com/*", "https://app.slack.com/*", "https://www.bing.com/*"];
-}

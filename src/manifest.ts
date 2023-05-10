@@ -27,7 +27,7 @@ const manifest = defineManifest(async () => ({
   },
   content_scripts: [
     {
-      matches: ["https://chat.openai.com/*", "https://app.slack.com/*", "https://www.bing.com/*"],
+      matches: packageJson.siteUrls,
       js: ["src/pages/content/index.tsx"]
     }
   ],

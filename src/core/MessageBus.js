@@ -2,6 +2,7 @@
 
 import Browser from "webextension-polyfill";
 import { onCleanup, onMount } from "solid-js";
+import packageJson from "../../package.json";
 
 /********************************************************************
  created:    2023-03-28
@@ -11,7 +12,7 @@ import { onCleanup, onMount } from "solid-js";
  *********************************************************************/
 
 export function createTabMessageBusSites() {
-  return createTabMessageBus({ url: ["https://chat.openai.com/*", "https://app.slack.com/*", "https://www.bing.com/*"] });
+  return createTabMessageBus({ url: packageJson.siteUrls });
 }
 
 export function createTabMessageBus(queryInfo) {
