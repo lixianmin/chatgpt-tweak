@@ -7,8 +7,9 @@
  *********************************************************************/
 import { useInputBox } from "@pages/content/bing/inputbox.js";
 import { render } from "solid-js/web";
-import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
+import HeadBar from "@pages/content/widgets/HeadBar.jsx";
+import { renderBefore } from "@src/core/Tools.js";
 
 export function createBingFactory() {
   let inputBox = null;
@@ -43,8 +44,9 @@ export function createBingFactory() {
 
     if (inputBox && btnSubmit) {
       const dom = inputBox.getDom();
-      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
-      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
+      const parent = dom.parentElement;
+      renderBefore(() => <HeadBar />, parent);
+      render(() => <FootBar id={toolbarId} />, parent);
     }
   }
 

@@ -4,19 +4,20 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
+import { render } from "solid-js/web";
 
 export function sleep(ms: any) {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
+    setTimeout(resolve, ms);
+  });
 }
 
 export function random(lower: number, upper: number): number {
-  return lower + (upper - lower) * Math.random()
+  return lower + (upper - lower) * Math.random();
 }
 
 export function getTimestamp(): number {
-  return Math.floor(Date.now() / 1000)
+  return Math.floor(Date.now() / 1000);
 }
 
 export function longestCommonPrefix(list: string[]): string {
@@ -71,4 +72,10 @@ export function createDelayed(handler: Function, wait: number = 50) {
 
     timeoutId = setTimeout(() => handler(...args), wait);
   };
+}
+
+// render方法是渲染为子节点, renderBefore是在element节点之前渲染
+export function renderBefore(code, element) {
+  element.insertAdjacentHTML("beforebegin", "<div></div>");
+  render(code, element.previousElementSibling);
 }

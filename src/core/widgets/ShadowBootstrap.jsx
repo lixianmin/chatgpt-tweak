@@ -13,13 +13,15 @@ import { render } from "solid-js/web";
 export default function ShadowBootstrap(props) {
   let my;
   onMount(() => {
-    const shadowRoot = my.attachShadow({ mode: "open" });
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css";
-    shadowRoot.append(link);
+    if (my) {
+      const shadowRoot = my.attachShadow({ mode: "open" });
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css";
+      shadowRoot.append(link);
 
-    render(() => props.children, shadowRoot);
+      render(() => props.children, shadowRoot);
+    }
   });
 
   return <>
