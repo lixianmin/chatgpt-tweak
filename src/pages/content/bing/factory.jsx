@@ -1,6 +1,6 @@
 "use strict";
 /********************************************************************
- created:    2023-05-05
+ created:    2023-05-10
  author:     lixianmin
 
  Copyright (C) - All Rights Reserved
@@ -9,7 +9,7 @@ import { useInputBox } from "@pages/content/bing/inputbox.js";
 import { render } from "solid-js/web";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
-import { renderBefore } from "@src/core/Tools.js";
+import { renderBefore } from "@src/core/Tools.ts";
 
 export function createBingFactory() {
   let inputBox = null;
@@ -50,11 +50,24 @@ export function createBingFactory() {
     }
   }
 
+  function sendChat() {
+    // 通过input事件激活发送
+    const inputBox = getInputBox();
+    const inputEvent = new KeyboardEvent("input", { bubbles: true, cancelable: true });
+    inputBox.getDom().dispatchEvent(inputEvent);
+
+    // 给发送按钮发送一个click事件
+    const btnSubmit = getSubmitButton();
+    const clickEvent = new MouseEvent("click", { bubbles: true, cancelable: true });
+    btnSubmit.dispatchEvent(clickEvent);
+  }
+
   return {
     getShadowRoot: getShadowRoot,
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
-    attachTweakUI: attachTweakUI
+    attachTweakUI: attachTweakUI,
+    sendChat: sendChat
   };
 }

@@ -82,24 +82,6 @@ function initInputBox() {
     }
   });
 
-  function sendClickEvent() {
-    // inputBox.focus();
-    // const enterEvent = new KeyboardEvent("keydown", {
-    //   bubbles: true,
-    //   cancelable: true,
-    //   // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
-    //   code: "Enter"
-    // });
-    // inputBox.getDom().dispatchEvent(enterEvent);
-
-    const clickEvent = new MouseEvent("click", {
-      bubbles: true,
-      cancelable: true
-    });
-
-    btnSubmit.dispatchEvent(clickEvent);
-  }
-
   function fetchPromptCandidates(prefix) {
     const candidates = [];
     for (let v of prompts.getPromptList()) {
@@ -358,7 +340,7 @@ function initInputBox() {
         // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息
         // 到目前为止, 似乎任何情况下都可以考虑发一个button click出去
         setTimeout(() => {
-          sendClickEvent();
+          factory.sendChat();
           isProcessing = false;
         });
       }
