@@ -5,43 +5,46 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { useInputBox } from "@pages/content/claude/inputbox.js";
+import { useInputBox } from "@pages/content/bing/inputbox.js";
 import { render } from "solid-js/web";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 
-export function createClaudeFactory() {
+export function createBingFactory() {
   let inputBox = null;
 
   function getShadowRoot() {
-    return document;
+    const shadowRoot = document.querySelector("cib-serp[class='cib-serp-main']")?.shadowRoot?.querySelector("cib-action-bar")?.shadowRoot;
+    return shadowRoot;
   }
 
   function getInputBox() {
     if (!inputBox) {
-      inputBox = useInputBox();
+      const shadowRoot = getShadowRoot();
+      inputBox = useInputBox(shadowRoot);
     }
     return inputBox;
   }
 
   function getSubmitButton() {
-    const button = document.querySelector("button[data-qa=\"texty_send_button\"]");
+    const shadowRoot = getShadowRoot();
+    const button = shadowRoot?.querySelector("button[class=\"button primary\"]");
     return button;
   }
 
   function getConsolePanel() {
-    const panel = document.querySelector("div[data-qa=\"message_pane\"]");
+    const panel = document.querySelector("div[class*='react-scroll-to-bottom']")?.firstChild?.firstChild;
     return panel;
   }
 
   function attachTweakUI(toolbarId) {
     const inputBox = getInputBox();
+    const btnSubmit = getSubmitButton();
 
-    if (inputBox) {
-      const toolbars = document.querySelectorAll("div[role=\"toolbar\"]");
-      const footBar = toolbars[toolbars.length - 1];
-      render(() => <HeadBar />, footBar.parentElement);
-      render(() => <FootBar id={toolbarId} />, footBar.parentElement.parentElement.parentElement);
+    if (inputBox && btnSubmit) {
+      const dom = inputBox.getDom();
+      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
+      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
     }
   }
 

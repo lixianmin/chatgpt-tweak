@@ -13,6 +13,10 @@ import FootBar from "@pages/content/widgets/FootBar.jsx";
 export function createChatgptFactory() {
   let inputBox = null;
 
+  function getShadowRoot() {
+    return document;
+  }
+
   function getInputBox() {
     if (!inputBox) {
       inputBox = useInputBox();
@@ -52,6 +56,7 @@ export function createChatgptFactory() {
   }
 
   return {
+    getShadowRoot: getShadowRoot,
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,

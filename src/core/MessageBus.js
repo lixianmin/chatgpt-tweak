@@ -11,7 +11,7 @@ import { onCleanup, onMount } from "solid-js";
  *********************************************************************/
 
 export function createTabMessageBusSites() {
-  return createTabMessageBus({ url: ["https://chat.openai.com/*", "https://app.slack.com/*"] });
+  return createTabMessageBus({ url: ["https://chat.openai.com/*", "https://app.slack.com/*", "https://www.bing.com/*"] });
 }
 
 export function createTabMessageBus(queryInfo) {
