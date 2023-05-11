@@ -5,7 +5,7 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { formatDateTime } from "@src/core/Time";
-import { createSiteFactory } from "@pages/content/widgets/SiteFactory";
+import { createSiteFactory } from "@pages/content/sites/SiteFactory.js";
 
 const factory = createSiteFactory();
 

@@ -1,5 +1,5 @@
 import { onMount } from "solid-js";
-import { createSiteFactory } from "@pages/content/widgets/SiteFactory";
+import { createSiteFactory } from "@pages/content/sites/SiteFactory";
 
 /********************************************************************
  created:    2023-03-27

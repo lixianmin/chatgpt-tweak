@@ -13,7 +13,7 @@ import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
 import { addEventListener } from "@src/core/EventListener.js";
 import { map } from "lodash-es";
-import { createSiteFactory } from "@pages/content/widgets/SiteFactory.js";
+import { createSiteFactory } from "@pages/content/sites/SiteFactory.js";
 import { CommandType, Constants } from "@src/common/Constants.js";
 import Browser from "webextension-polyfill";
 import mountContentMessageListener from "@pages/content/widgets/ContentMessageListener.js";

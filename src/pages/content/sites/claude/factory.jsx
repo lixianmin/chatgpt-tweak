@@ -5,12 +5,12 @@
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { useInputBox } from "@pages/content/chatgpt/inputbox.js";
+import { useInputBox } from "@pages/content/sites/claude/inputbox.js";
 import { render } from "solid-js/web";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 
-export function createChatgptFactory() {
+export function createClaudeFactory() {
   let inputBox = null;
 
   function getShadowRoot() {
@@ -25,33 +25,23 @@ export function createChatgptFactory() {
   }
 
   function getSubmitButton() {
-    const inputBox = getInputBox();
-    if (!inputBox) {
-      return null;
-    }
-
-    const parent = inputBox.getDom().parentNode;
-    if (!parent) {
-      return null;
-    }
-
-    const button = parent.querySelector("button");
+    const button = document.querySelector("button[data-qa=\"texty_send_button\"]");
     return button;
   }
 
   function getConsolePanel() {
-    const panel = document.querySelector("div[class*='react-scroll-to-bottom']")?.firstChild?.firstChild;
+    const panel = document.querySelector("div[data-qa=\"message_pane\"]");
     return panel;
   }
 
   function attachTweakUI(toolbarId) {
     const inputBox = getInputBox();
-    const btnSubmit = getSubmitButton();
 
-    if (inputBox && btnSubmit) {
-      const dom = inputBox.getDom();
-      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
-      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
+    if (inputBox) {
+      const toolbars = document.querySelectorAll("div[role=\"toolbar\"]");
+      const footBar = toolbars[toolbars.length - 1];
+      render(() => <HeadBar />, footBar.parentElement);
+      render(() => <FootBar id={toolbarId} />, footBar.parentElement.parentElement.parentElement);
     }
   }
 

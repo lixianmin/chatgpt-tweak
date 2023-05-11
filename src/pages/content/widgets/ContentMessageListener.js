@@ -4,7 +4,7 @@ import { Locale } from "@src/common/Locale.js";
 import { mountMessageListener } from "@src/core/MessageBus.js";
 import { CommandType, Constants } from "@src/common/Constants.js";
 import usePrompts from "@src/dao/Prompts.js";
-import { createSiteFactory } from "@pages/content/widgets/SiteFactory.js";
+import { createSiteFactory } from "@pages/content/sites/SiteFactory.js";
 
 /********************************************************************
  created:    2023-04-01

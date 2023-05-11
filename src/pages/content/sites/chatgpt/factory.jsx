@@ -1,35 +1,41 @@
 "use strict";
 /********************************************************************
- created:    2023-05-10
+ created:    2023-05-05
  author:     lixianmin
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
-import { useInputBox } from "@pages/content/bing/inputbox.js";
+import { useInputBox } from "@pages/content/sites/chatgpt/inputbox.js";
 import { render } from "solid-js/web";
-import FootBar from "@pages/content/widgets/FootBar.jsx";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
-import { renderBefore } from "@src/core/Tools.ts";
+import FootBar from "@pages/content/widgets/FootBar.jsx";
 
-export function createBingFactory() {
+export function createChatgptFactory() {
   let inputBox = null;
 
   function getShadowRoot() {
-    const shadowRoot = document.querySelector("cib-serp[class='cib-serp-main']")?.shadowRoot?.querySelector("cib-action-bar")?.shadowRoot;
-    return shadowRoot;
+    return document;
   }
 
   function getInputBox() {
     if (!inputBox) {
-      const shadowRoot = getShadowRoot();
-      inputBox = useInputBox(shadowRoot);
+      inputBox = useInputBox();
     }
     return inputBox;
   }
 
   function getSubmitButton() {
-    const shadowRoot = getShadowRoot();
-    const button = shadowRoot?.querySelector("button[class=\"button primary\"]");
+    const inputBox = getInputBox();
+    if (!inputBox) {
+      return null;
+    }
+
+    const parent = inputBox.getDom().parentNode;
+    if (!parent) {
+      return null;
+    }
+
+    const button = parent.querySelector("button");
     return button;
   }
 
@@ -44,17 +50,20 @@ export function createBingFactory() {
 
     if (inputBox && btnSubmit) {
       const dom = inputBox.getDom();
-      const parent = dom.parentElement;
-      renderBefore(() => <HeadBar />, parent);
-      render(() => <FootBar id={toolbarId} />, parent);
+      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
+      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
     }
   }
 
   function sendChat() {
-    // 通过input事件激活发送
-    const inputBox = getInputBox();
-    const inputEvent = new KeyboardEvent("input", { bubbles: true, cancelable: true });
-    inputBox.getDom().dispatchEvent(inputEvent);
+    // inputBox.focus();
+    // const enterEvent = new KeyboardEvent("keydown", {
+    //   bubbles: true,
+    //   cancelable: true,
+    //   // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
+    //   code: "Enter"
+    // });
+    // inputBox.getDom().dispatchEvent(enterEvent);
 
     // 给发送按钮发送一个click事件
     const btnSubmit = getSubmitButton();
