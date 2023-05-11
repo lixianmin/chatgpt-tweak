@@ -10,6 +10,7 @@ import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
 import { dispatchEventAsClick, dispatchEventAsInput } from "@pages/content/sites/SiteTools.js";
+import { renderBefore } from "@src/core/Tools.ts";
 
 export function createBardFactory() {
   let inputBox = null;
@@ -41,8 +42,9 @@ export function createBardFactory() {
 
     if (inputBox && btnSubmit) {
       const dom = inputBox.getDom();
-      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
-      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
+      const parent = dom.parentElement.parentElement.parentElement;
+      renderBefore(() => <HeadBar />, parent);
+      render(() => <FootBar id={toolbarId} />, parent.parentElement.parentElement.parentElement);
     }
   }
 
