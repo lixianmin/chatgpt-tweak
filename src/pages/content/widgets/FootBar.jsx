@@ -191,7 +191,7 @@ function initInputBox() {
 
     switch (evt.key) {
       case "Enter":
-        onSubmit(evt);
+        onKeyDownEnter(evt);
         break;
       case "ArrowUp":
       case "ArrowDown":
@@ -303,7 +303,12 @@ function initInputBox() {
     }
   }
 
-  function onSubmit(evt) {
+  function onKeyDownEnter(evt) {
+    // when the shiftKey is pressed, we want a linebreak instead of typing 'enter'
+    if (evt.shiftKey) {
+      return;
+    }
+
     checkInputCurrentHint();
 
     if (!isProcessing) {
