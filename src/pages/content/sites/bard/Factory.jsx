@@ -1,37 +1,29 @@
 "use strict";
 /********************************************************************
- created:    2023-05-10
+ created:    2023-05-11
  author:     lixianmin
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 import { render } from "solid-js/web";
-import FootBar from "@pages/content/widgets/FootBar.jsx";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
-import { renderBefore } from "@src/core/Tools.ts";
+import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
 import { createFactoryBase } from "@pages/content/sites/FactoryBase.js";
 
-export function createBingFactory() {
+export function createBardFactory() {
   const base = createFactoryBase();
   let inputBox = null;
 
-  function getShadowRoot() {
-    const shadowRoot = document.querySelector("cib-serp[class='cib-serp-main']")?.shadowRoot?.querySelector("cib-action-bar")?.shadowRoot;
-    return shadowRoot;
-  }
-
   function getInputBox() {
     if (!inputBox) {
-      const shadowRoot = getShadowRoot();
-      inputBox = useTextarea(shadowRoot);
+      inputBox = useTextarea(document);
     }
     return inputBox;
   }
 
   function getSubmitButton() {
-    const shadowRoot = getShadowRoot();
-    const button = shadowRoot?.querySelector("button[class=\"button primary\"]");
+    const button = document.querySelector("button[aria-label=\"Send message\"]");
     return button;
   }
 
@@ -46,9 +38,8 @@ export function createBingFactory() {
 
     if (inputBox && btnSubmit) {
       const dom = inputBox.getDom();
-      const parent = dom.parentElement;
-      renderBefore(() => <HeadBar />, parent);
-      render(() => <FootBar id={toolbarId} />, parent);
+      render(() => <HeadBar />, dom.parentElement.parentElement.firstElementChild);
+      render(() => <FootBar id={toolbarId} />, dom.parentElement.parentElement);
     }
   }
 
@@ -58,7 +49,6 @@ export function createBingFactory() {
   }
 
   return Object.assign(base, {
-    getShadowRoot: getShadowRoot,
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,

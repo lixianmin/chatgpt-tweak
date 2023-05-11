@@ -7,6 +7,7 @@
 import { createChatgptFactory } from "@pages/content/sites/chatgpt/Factory.jsx";
 import { createClaudeFactory } from "@pages/content/sites/claude/Factory.jsx";
 import { createBingFactory } from "@pages/content/sites/bing/Factory.jsx";
+import { createBardFactory } from "@pages/content/sites/bard/Factory.jsx";
 
 export function createSiteFactory() {
   const host = window.location.host;
@@ -17,6 +18,8 @@ export function createSiteFactory() {
       return createClaudeFactory();
     case "www.bing.com":
       return createBingFactory();
+    case "bard.google.com":
+      return createBardFactory();
     default:
       return null;
   }

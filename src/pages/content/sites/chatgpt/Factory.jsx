@@ -9,13 +9,11 @@ import { render } from "solid-js/web";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
+import { createFactoryBase } from "@pages/content/sites/FactoryBase.js";
 
 export function createChatgptFactory() {
+  const base = createFactoryBase();
   let inputBox = null;
-
-  function getShadowRoot() {
-    return document;
-  }
 
   function getInputBox() {
     if (!inputBox) {
@@ -56,27 +54,14 @@ export function createChatgptFactory() {
   }
 
   function sendChat() {
-    // inputBox.focus();
-    // const enterEvent = new KeyboardEvent("keydown", {
-    //   bubbles: true,
-    //   cancelable: true,
-    //   // key: "Enter",  // 这个key:"Enter"，会导致inputBox中多一个换行出来，其它的好像没有作用
-    //   code: "Enter"
-    // });
-    // inputBox.getDom().dispatchEvent(enterEvent);
-
-    // 给发送按钮发送一个click事件
-    const btnSubmit = getSubmitButton();
-    const clickEvent = new MouseEvent("click", { bubbles: true, cancelable: true });
-    btnSubmit.dispatchEvent(clickEvent);
+    base.dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
   }
 
-  return {
-    getShadowRoot: getShadowRoot,
+  return Object.assign(base, {
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
     attachTweakUI: attachTweakUI,
     sendChat: sendChat
-  };
+  });
 }
