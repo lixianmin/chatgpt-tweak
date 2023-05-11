@@ -25,12 +25,16 @@
 
 // 通过input事件激活发送
 export function dispatchEventAsClick(dom) {
-  const clickEvent = new MouseEvent("click", { bubbles: true, cancelable: true });
-  dom.dispatchEvent(clickEvent);
+  if (dom) {
+    const clickEvent = new MouseEvent("click", { bubbles: true, cancelable: true });
+    dom.dispatchEvent(clickEvent);
+  }
 }
 
 // 给发送按钮发送一个click事件
 export function dispatchEventAsInput(dom) {
-  const inputEvent = new KeyboardEvent("input", { bubbles: true, cancelable: true });
-  dom.dispatchEvent(inputEvent);
+  if (dom) {
+    const inputEvent = new KeyboardEvent("input", { bubbles: true, cancelable: true });
+    dom.dispatchEvent(inputEvent);
+  }
 }
