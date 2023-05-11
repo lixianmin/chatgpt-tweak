@@ -7,8 +7,8 @@
  Copyright (C) - All Rights Reserved
  *********************************************************************/
 
-export function useInputBox() {
-  const inputBox = document.querySelector("textarea");
+export function useTextarea(shadowRoot) {
+  const inputBox = shadowRoot?.querySelector("textarea");
   if (!inputBox) {
     return null;
   }
