@@ -9,11 +9,14 @@ import { render } from "solid-js/web";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
-import { createFactoryBase } from "@pages/content/sites/FactoryBase.js";
+import { dispatchEventAsClick, dispatchEventAsInput } from "@pages/content/sites/SiteTools.js";
 
 export function createBardFactory() {
-  const base = createFactoryBase();
   let inputBox = null;
+
+  function getShadowRoot() {
+    return document;
+  }
 
   function getInputBox() {
     if (!inputBox) {
@@ -44,15 +47,16 @@ export function createBardFactory() {
   }
 
   function sendChat() {
-    base.dispatchEventAsInput(getInputBox().getDom());  // 通过input事件激活发送
-    base.dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
+    dispatchEventAsInput(getInputBox().getDom());  // 通过input事件激活发送
+    dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
   }
 
-  return Object.assign(base, {
+  return {
+    getShadowRoot: getShadowRoot,
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
     attachTweakUI: attachTweakUI,
     sendChat: sendChat
-  });
+  };
 }

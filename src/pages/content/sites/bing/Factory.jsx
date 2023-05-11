@@ -10,10 +10,9 @@ import FootBar from "@pages/content/widgets/FootBar.jsx";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import { renderBefore } from "@src/core/Tools.ts";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
-import { createFactoryBase } from "@pages/content/sites/FactoryBase.js";
+import { dispatchEventAsClick, dispatchEventAsInput } from "@pages/content/sites/SiteTools.js";
 
 export function createBingFactory() {
-  const base = createFactoryBase();
   let inputBox = null;
 
   function getShadowRoot() {
@@ -53,16 +52,16 @@ export function createBingFactory() {
   }
 
   function sendChat() {
-    base.dispatchEventAsInput(getInputBox().getDom());  // 通过input事件激活发送
-    base.dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
+    dispatchEventAsInput(getInputBox().getDom());  // 通过input事件激活发送
+    dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
   }
 
-  return Object.assign(base, {
+  return {
     getShadowRoot: getShadowRoot,
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
     attachTweakUI: attachTweakUI,
     sendChat: sendChat
-  });
+  };
 }
