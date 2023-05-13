@@ -17,6 +17,8 @@ import { createSiteFactory } from "@pages/content/sites/SiteFactory.js";
 import { CommandType, Constants } from "@src/common/Constants.js";
 import Browser from "webextension-polyfill";
 import mountContentMessageListener from "@pages/content/widgets/ContentMessageListener.js";
+import axios from "axios";
+import { formatDateTime } from "@src/core/Time";
 
 /********************************************************************
  created:    2023-03-27
@@ -301,6 +303,37 @@ function initInputBox() {
         queryText: queryText
       });
     }
+  }
+
+  function search(queryText) {
+    axios.post("http://127.0.0.1:8888/search", { "query": queryText })
+      .then(response => {
+        const result = response.data;
+        const answers = result.data.answers;
+
+        // console.warn("answers", answers);
+
+        let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks ```\n";
+        for (let answer of answers) {
+          prefix += `${answer.text} at ${formatDateTime(answer.ts)}.\n`;
+        }
+
+        prefix += "```. \n 1. 不要重复我前面告诉你的facts 2. 请用朋友的口吻与我对话 3. 不要回复与问题无关的内容 4. 回答不要超过50个汉字\n";
+
+        if (prefix) {
+          const nextHtml = prefix + queryHtml;
+          // console.warn("nextHtml:", nextHtml, "prefix:", prefix, "queryHtml:", queryHtml);
+          inputBox.setHtml(nextHtml);
+
+          // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
+          // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息
+          // 到目前为止, 似乎任何情况下都可以考虑发一个button click出去
+          setTimeout(() => {
+            factory.sendChat();
+            isProcessing = false;
+          });
+        }
+      });
   }
 
   function onKeyDownEnter(evt) {

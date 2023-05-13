@@ -12,6 +12,7 @@
 .env.local
 .idea
 *.zip
+*.log
 
 #generated manifest
 public/manifest.json
