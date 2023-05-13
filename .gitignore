@@ -11,6 +11,7 @@
 .DS_Store
 .env.local
 .idea
+yarn.lock
 *.zip
 *.log
 
