@@ -6,7 +6,7 @@
  *********************************************************************/
 import { render } from "solid-js/web";
 
-export function sleep(ms: any) {
+export function sleep(ms: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });

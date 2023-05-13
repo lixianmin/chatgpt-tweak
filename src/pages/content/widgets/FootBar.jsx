@@ -7,7 +7,7 @@ import FootBarOptions from "@pages/content/widgets/FootBarOptions.jsx";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
-import { createDelayed, longestCommonPrefix } from "@src/core/Tools.ts";
+import { createDelayed, longestCommonPrefix, sleep } from "@src/core/Tools.ts";
 import { _T } from "@src/common/Locale.js";
 import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
@@ -182,7 +182,7 @@ function initInputBox() {
     }
   }
 
-  function onKeyDown(evt) {
+  async function onKeyDown(evt) {
     // 1. 如果使用默认onKeyDown, 则inputBox.value总是慢一帧，缺少evt.key的操作结果, 这要到onKeyUp事件中才能体现出来
     // 2. 当设置addEventListener()的第3个参数为true的时候, 可以在 evt.key==='Enter' 的时候拿到inputBox中的数据,
     //    直接修改inputBox.value, 不用发送click button的事件, 等待原始page中的onkeydown事件发送即可
@@ -193,7 +193,7 @@ function initInputBox() {
 
     switch (evt.key) {
       case "Enter":
-        onKeyDownEnter(evt);
+        await onKeyDownEnter(evt);
         break;
       case "ArrowUp":
       case "ArrowDown":
@@ -336,7 +336,7 @@ function initInputBox() {
       });
   }
 
-  function onKeyDownEnter(evt) {
+  async function onKeyDownEnter(evt) {
     // when the shiftKey is pressed, we want a linebreak instead of typing 'enter'
     if (evt.shiftKey) {
       return;
@@ -344,44 +344,47 @@ function initInputBox() {
 
     checkInputCurrentHint();
 
-    if (!isProcessing) {
-      let queryText = inputBox.getText();
-      if (queryText !== "") {
-        let queryHtml = inputBox.getHtml();
-        checkBroadcastChat(evt, queryText);
-        // console.warn("queryHtml", queryHtml);
+    let queryText = inputBox.getText();
+    let queryHtml = inputBox.getHtml();
 
-        const nextQueryText = checkHistoryExpansion(queryText);
-        const isExpanded = nextQueryText !== queryText;
-        if (isExpanded) {
-          queryHtml = nextQueryText;
-        }
+    if (!isProcessing && queryText !== "") {
+      // 通过第一时间把inputBox的内容置空, 解决原网站自动submit的问题
+      inputBox.setHtml("");
 
-        historyStore.add(queryHtml);
-        if (checkBuiltinCommands(queryText)) {
-          inputBox.setHtml("");
-          return;
-        }
+      // 广播消息到其它sites
+      checkBroadcastChat(evt, queryText);
+      // console.warn("queryHtml", queryHtml);
 
-        // todo 这里是如果出现了以?开头的, 则展开成prompt写进来
-        // queryText = checkPromptExpansion(queryText);
-
-        isProcessing = true;
-        // 只有按下ctrl键时, 才使用prompt重写
-        if (evt.ctrlKey) {
-          const compiled = prompts.compilePrompt(queryHtml);
-          inputBox.setHtml(compiled);
-          // console.warn("queryHtml", queryHtml, "compiled", compiled);
-        }
-
-        // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
-        // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息
-        // 到目前为止, 似乎任何情况下都可以考虑发一个button click出去
-        setTimeout(() => {
-          factory.sendChat();
-          isProcessing = false;
-        });
+      const nextQueryText = checkHistoryExpansion(queryText);
+      const isExpanded = nextQueryText !== queryText;
+      if (isExpanded) {
+        queryHtml = nextQueryText;
       }
+
+      historyStore.add(queryHtml);
+      if (checkBuiltinCommands(queryText)) {
+        return;
+      }
+
+      // todo 这里是如果出现了以?开头的, 则展开成prompt写进来
+      // queryText = checkPromptExpansion(queryText);
+
+      isProcessing = true;
+      // 只有按下ctrl键时, 才使用prompt重写
+      if (evt.ctrlKey) {
+        queryHtml = prompts.compilePrompt(queryHtml);
+        // console.warn("queryHtml", queryHtml, "compiled", compiled);
+      }
+
+      // 在主动click之前把数据设置到inputBox上, 然后等一帧, 等inputBox把数据设置好
+      inputBox.setHtml(queryHtml);
+      await sleep(0);
+
+      // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
+      // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息
+      // 到目前为止, 似乎任何情况下都可以考虑发一个button click出去
+      factory.sendChat();
+      isProcessing = false;
     }
   }
 }
