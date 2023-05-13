@@ -12,5 +12,9 @@ import moment from "moment";
 
 export function formatDateTime(dateTime) {
   const format = "YYYY-MM-DD HH:mm:ss";
-  return moment.unix(dateTime).format(format);
+  if (typeof dateTime === "string") {
+    return moment.unix(dateTime).format(format);
+  } else {
+    return moment(dateTime).format(format);
+  }
 }
