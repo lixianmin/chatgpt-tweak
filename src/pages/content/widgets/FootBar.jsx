@@ -365,6 +365,14 @@ function initInputBox() {
         // console.warn("queryHtml", queryHtml, "compiled", compiled);
       }
 
+      // google(queryText, function(err, res) {
+      //   for (let i = 0; i < res.links.length && i < 3; ++i) {
+      //     const link = res.links[i];
+      //     console.log(link.title + " - " + link.href);
+      //     console.log(link.description + "\n");
+      //   }
+      // });
+
       // const prefix = await searchFacts(queryText);
       // queryHtml = prefix + queryHtml;
 

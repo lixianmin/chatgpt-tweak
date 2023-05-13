@@ -27,6 +27,7 @@ export default defineConfig({
     target: ["edge90", "chrome90", "firefox90", "safari15"],  // 支持top level的await
     outDir,
     sourcemap: isDev,
+    chunkSizeWarningLimit: 1500 * 1024, // 1500 KB
     rollupOptions: {
       // input: {
       //   devtools: resolve(pagesDir, "devtools", "index.html"),
