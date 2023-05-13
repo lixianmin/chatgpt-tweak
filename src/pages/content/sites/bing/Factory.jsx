@@ -30,7 +30,8 @@ export function createBingFactory() {
 
   function getSubmitButton() {
     const shadowRoot = getShadowRoot();
-    const button = shadowRoot?.querySelector("button[class=\"button primary\"]");
+    // 现在多了一个语音输入的按钮, 所以获取逻辑需要修订一下
+    const button = shadowRoot?.querySelectorAll("button[class=\"button primary\"]")[1];
     return button;
   }
 
