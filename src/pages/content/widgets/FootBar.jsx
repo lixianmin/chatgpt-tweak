@@ -362,6 +362,8 @@ function initInputBox() {
         const friendResults = await searchFriend(queryText);
         if (friendResults !== "") {
           body += "```\n" + friendResults + "```\n";
+          const suffix = `\n 回答问题时请遵守以下原则: \n- 不要重复我前面告诉你的内容\n- 用朋友的口吻对话\n- 不要啰嗦与问题无关的内容, 回答不要超过50个汉字. \n\n 当前时间${formatDateTime(new Date())}, 我的问题是:\n\n`;
+          body += suffix;
         }
       }
     } catch (e) {
@@ -369,8 +371,7 @@ function initInputBox() {
     }
 
     if (body !== "") {
-      const suffix = `\n 回答问题时请遵守以下原则: \n- 不要重复我前面告诉你的内容\n- 用朋友的口吻对话\n- 不要啰嗦与问题无关的内容, 回答不要超过50个汉字. \n\n 当前时间${formatDateTime(new Date())}, 我的问题是:\n\n`;
-      return prefix + body + suffix;
+      return prefix + body;
     }
 
     return "";
