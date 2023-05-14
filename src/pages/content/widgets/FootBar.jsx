@@ -20,6 +20,8 @@ import mountContentMessageListener from "@pages/content/widgets/ContentMessageLi
 import axios from "axios";
 import { formatDateTime } from "@src/core/Time";
 import FootBarGoogle from "@pages/content/widgets/FootBarGoogle";
+import FootBarFriend from "@pages/content/widgets/FootBarFriend";
+import moment from "moment/moment";
 
 /********************************************************************
  created:    2023-03-27
@@ -187,7 +189,7 @@ function initInputBox() {
     // 2. 当设置addEventListener()的第3个参数为true的时候, 可以在 evt.key==='Enter' 的时候拿到inputBox中的数据,
     //    直接修改inputBox.value, 不用发送click button的事件, 等待原始page中的onkeydown事件发送即可
     // 3. 如果是输入中文的过程中，收到了escape等按键事件，则不处理
-    if (evt.isComposing) {
+    if (evt.isComposing || !userConfig.isToolbarEnable()) {
       return;
     }
 
@@ -305,19 +307,21 @@ function initInputBox() {
     }
   }
 
-  async function searchFacts(queryText) {
+  async function searchFriend(queryText) {
     try {
       const response = await axios.post("http://127.0.0.1:8888/search", { "query": queryText });
 
       const result = response.data;
       const answers = result.data.answers;
 
-      let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks ```\n";
-      for (let answer of answers) {
-        prefix += `${answer.text} at ${formatDateTime(answer.ts)}.\n`;
+      let prefix = "";
+      if (answers.length > 0) {
+        for (let i = 0; i < answers.length; i++) {
+          const answer = answers[i];
+          prefix += `${i + 1}. ${answer.text} at ${formatDateTime(answer.ts)}.\n`;
+        }
       }
 
-      prefix += "```. \n 1. 不要重复我前面告诉你的facts 2. 请用朋友的口吻与我对话 3. 不要回复与问题无关的内容 4. 回答不要超过30个汉字. \n我的问题是:\n\n";
       return prefix;
     } catch (err) {
       console.warn("err", err);
@@ -343,18 +347,26 @@ function initInputBox() {
   }
 
   async function combineSearch(queryText) {
-    let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks ```\n";
+    let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks:\n";
     let body = "";
 
     if (userConfig.isGoogleEnable()) {
-      let googleResults = await searchGoogle(queryText);
+      const googleResults = await searchGoogle(queryText);
       if (googleResults !== "") {
-        body += "```\n" + googleResults + "```";
+        body += "```" + googleResults + "```\n";
+      }
+    }
+
+    if (userConfig.isFriendEnable()) {
+      const friendResults = await searchFriend(queryText);
+      if (friendResults !== "") {
+        body += "```\n" + friendResults + "```\n";
       }
     }
 
     if (body !== "") {
-      return prefix + body;
+      const suffix = `\n 回答问题时请遵守以下原则: \n- 不要重复我前面告诉你的内容\n- 用朋友的口吻对话\n- 不要啰嗦与问题无关的内容, 回答不要超过50个汉字. \n\n 当前时间${formatDateTime(new Date())}, 我的问题是:\n\n`;
+      return prefix + body + suffix;
     }
 
     return "";
@@ -429,6 +441,9 @@ export default function FootBar(props) {
           </Col>
           <Col xs="auto">
             <FootBarGoogle />
+          </Col>
+          <Col xs="auto">
+            <FootBarFriend />
           </Col>
           <Col xs="auto">
             <FootBarOptions />

@@ -10,7 +10,8 @@ import { produce } from "solid-js/store";
 
 const [configState, setConfigState] = await createStoreBrowserStorage("tweak-user-config", {
   toolbarEnable: true,
-  googleEnable: false
+  googleEnable: false,
+  friendEnable: false
 });
 
 function setToolbarEnable(enable) {
@@ -27,11 +28,20 @@ function setGoogleEnable(enable) {
   ));
 }
 
+function setFriendEnable(enable) {
+  setConfigState(produce(draft => {
+      draft.friendEnable = enable;
+    }
+  ));
+}
+
 export default function useUserConfig() {
   return {
     isToolbarEnable: () => configState.toolbarEnable,
     setToolbarEnable: setToolbarEnable,
     isGoogleEnable: () => configState.googleEnable,
-    setGoogleEnable: setGoogleEnable
+    setGoogleEnable: setGoogleEnable,
+    isFriendEnable: () => configState.friendEnable,
+    setFriendEnable: setFriendEnable
   };
 }
