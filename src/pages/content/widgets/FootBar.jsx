@@ -389,8 +389,10 @@ function initInputBox() {
     let queryHtml = inputBox.getHtml();
 
     if (!isProcessing && queryText !== "") {
-      // 通过第一时间把inputBox的内容置空, 解决原网站自动submit的问题
+      // 通过第一时间把inputBox的内容置空, 解决原网站自动submit的问题,
+      // 清空inputBox后等一帧, 等原网页中的事件把inputBox清理后, 否则在claude中容易出来突然inputBox中的数据被后面的inputBox.setHtml(queryHtml)设置后又被原网页事件清空的尴尬
       inputBox.setHtml("");
+      await sleep(0);
 
       // 广播消息到其它sites
       checkBroadcastChat(evt, queryText);
