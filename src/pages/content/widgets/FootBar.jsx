@@ -21,7 +21,6 @@ import axios from "axios";
 import { formatDateTime } from "@src/core/Time";
 import FootBarGoogle from "@pages/content/widgets/FootBarGoogle";
 import FootBarFriend from "@pages/content/widgets/FootBarFriend";
-import moment from "moment/moment";
 
 /********************************************************************
  created:    2023-03-27
@@ -331,6 +330,7 @@ function initInputBox() {
   }
 
   async function searchGoogle(queryText) {
+
     const response = await Browser.runtime.sendMessage({ cmd: CommandType.google, query: queryText });
     const maxSize = 3;
 
@@ -350,18 +350,22 @@ function initInputBox() {
     let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks:\n";
     let body = "";
 
-    if (userConfig.isGoogleEnable()) {
-      const googleResults = await searchGoogle(queryText);
-      if (googleResults !== "") {
-        body += "```" + googleResults + "```\n";
+    try {
+      if (userConfig.isGoogleEnable()) {
+        const googleResults = await searchGoogle(queryText);
+        if (googleResults !== "") {
+          body += "```" + googleResults + "```\n";
+        }
       }
-    }
 
-    if (userConfig.isFriendEnable()) {
-      const friendResults = await searchFriend(queryText);
-      if (friendResults !== "") {
-        body += "```\n" + friendResults + "```\n";
+      if (userConfig.isFriendEnable()) {
+        const friendResults = await searchFriend(queryText);
+        if (friendResults !== "") {
+          body += "```\n" + friendResults + "```\n";
+        }
       }
+    } catch (e) {
+      console.log(e);
     }
 
     if (body !== "") {
