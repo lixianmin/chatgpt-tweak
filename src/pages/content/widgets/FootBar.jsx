@@ -19,6 +19,7 @@ import Browser from "webextension-polyfill";
 import mountContentMessageListener from "@pages/content/widgets/ContentMessageListener.js";
 import axios from "axios";
 import { formatDateTime } from "@src/core/Time";
+import FootBarGoogle from "@pages/content/widgets/FootBarGoogle";
 
 /********************************************************************
  created:    2023-03-27
@@ -344,9 +345,12 @@ function initInputBox() {
   async function combineSearch(queryText) {
     let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks ```\n";
     let body = "";
-    let googleResults = await searchGoogle(queryText);
-    if (googleResults !== "") {
-      body += "```\n" + googleResults + "```";
+
+    if (userConfig.isGoogleEnable()) {
+      let googleResults = await searchGoogle(queryText);
+      if (googleResults !== "") {
+        body += "```\n" + googleResults + "```";
+      }
     }
 
     if (body !== "") {
@@ -422,6 +426,9 @@ export default function FootBar(props) {
         <Row class="align-items-center">
           <Col xs="auto">
             <FootBarEnable />
+          </Col>
+          <Col xs="auto">
+            <FootBarGoogle />
           </Col>
           <Col xs="auto">
             <FootBarOptions />

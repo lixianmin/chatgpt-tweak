@@ -9,7 +9,8 @@ import createStoreBrowserStorage from "@src/core/StoreBrowserStorage.js";
 import { produce } from "solid-js/store";
 
 const [configState, setConfigState] = await createStoreBrowserStorage("tweak-user-config", {
-  toolbarEnable: true
+  toolbarEnable: true,
+  googleEnable: false
 });
 
 function setToolbarEnable(enable) {
@@ -19,9 +20,18 @@ function setToolbarEnable(enable) {
   ));
 }
 
+function setGoogleEnable(enable) {
+  setConfigState(produce(draft => {
+      draft.googleEnable = enable;
+    }
+  ));
+}
+
 export default function useUserConfig() {
   return {
     isToolbarEnable: () => configState.toolbarEnable,
-    setToolbarEnable: setToolbarEnable
+    setToolbarEnable: setToolbarEnable,
+    isGoogleEnable: () => configState.googleEnable,
+    setGoogleEnable: setGoogleEnable
   };
 }
