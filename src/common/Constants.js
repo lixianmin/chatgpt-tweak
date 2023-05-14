@@ -15,7 +15,8 @@ export const CommandType = {
   setCurrentLanguageByName: "set.current.language.by.name",
   setCurrentPrompt: "set.current.prompt",
   swapPromptByIndex: "swap.prompt.by.index",
-  broadcastChat: "broadcast.chat"
+  broadcastChat: "broadcast.chat",
+  google: "google"
 };
 
 export const Constants = {

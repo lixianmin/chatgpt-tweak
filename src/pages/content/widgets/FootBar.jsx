@@ -325,6 +325,37 @@ function initInputBox() {
     return "";
   }
 
+  async function searchGoogle(queryText) {
+    const response = await Browser.runtime.sendMessage({ cmd: CommandType.google, query: queryText });
+    const maxSize = 3;
+
+    let prefix = "";
+    const items = response.items;
+    if (items.length > 0) {
+      for (let i = 0; i < items.length && i < maxSize; i++) {
+        const item = items[i];
+        prefix += `${i + 1}. ${item.title}. ${item.url}\n`;
+      }
+    }
+
+    return prefix;
+  }
+
+  async function combineSearch(queryText) {
+    let prefix = "The following facts may be helpful for you to answer my question, these facts are delimited by triple backticks ```\n";
+    let body = "";
+    let googleResults = await searchGoogle(queryText);
+    if (googleResults !== "") {
+      body += "```\n" + googleResults + "```";
+    }
+
+    if (body !== "") {
+      return prefix + body;
+    }
+
+    return "";
+  }
+
   async function onKeyDownEnter(evt) {
     // when the shiftKey is pressed, we want a linebreak instead of typing 'enter'
     if (evt.shiftKey) {
@@ -365,16 +396,8 @@ function initInputBox() {
         // console.warn("queryHtml", queryHtml, "compiled", compiled);
       }
 
-      // google(queryText, function(err, res) {
-      //   for (let i = 0; i < res.links.length && i < 3; ++i) {
-      //     const link = res.links[i];
-      //     console.log(link.title + " - " + link.href);
-      //     console.log(link.description + "\n");
-      //   }
-      // });
-
-      // const prefix = await searchFacts(queryText);
-      // queryHtml = prefix + queryHtml;
+      const prefix = await combineSearch(queryText);
+      queryHtml = prefix + queryHtml;
 
       // 在主动click之前把数据设置到inputBox上, 然后等一帧, 等inputBox把数据设置好
       inputBox.setHtml(queryHtml);

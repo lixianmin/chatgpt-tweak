@@ -56,6 +56,9 @@ export default function mountContentMessageListener() {
       case CommandType.broadcastChat:
         broadcastChat(request);
         break;
+      default:
+        console.log("leaked request:", request);
+        break;
     }
   });
 }
