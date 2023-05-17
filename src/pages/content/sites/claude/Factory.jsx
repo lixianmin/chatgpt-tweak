@@ -10,6 +10,7 @@ import { render } from "solid-js/web";
 import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { dispatchEventAsClick } from "@pages/content/sites/SiteTools.js";
+import { sleep } from "@src/core/Tools";
 
 export function createClaudeFactory() {
   let inputBox = null;
@@ -50,12 +51,17 @@ export function createClaudeFactory() {
     dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
   }
 
+  async function checkWaitOneFrame() {
+    await sleep(0);
+  }
+
   return {
     getShadowRoot: getShadowRoot,
     getInputBox: getInputBox,
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
     attachTweakUI: attachTweakUI,
-    sendChat: sendChat
+    sendChat: sendChat,
+    checkWaitOneFrame: checkWaitOneFrame
   };
 }

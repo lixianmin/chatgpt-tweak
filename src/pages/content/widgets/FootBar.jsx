@@ -7,7 +7,7 @@ import FootBarOptions from "@pages/content/widgets/FootBarOptions.jsx";
 import useUserConfig from "@src/dao/UserConfig.js";
 import usePrompts from "@src/dao/Prompts.js";
 import { useHistoryStore } from "@src/dao/HistoryStore.js";
-import { createDelayed, longestCommonPrefix, sleep } from "@src/core/Tools.ts";
+import { createDelayed, longestCommonPrefix } from "@src/core/Tools.ts";
 import { _T } from "@src/common/Locale.js";
 import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
@@ -390,9 +390,9 @@ function initInputBox() {
 
     if (!isProcessing && queryText !== "") {
       // 通过第一时间把inputBox的内容置空, 解决原网站自动submit的问题,
-      // 清空inputBox后等一帧, 等原网页中的事件把inputBox清理后, 否则在claude中容易出来突然inputBox中的数据被后面的inputBox.setHtml(queryHtml)设置后又被原网页事件清空的尴尬
       inputBox.setHtml("");
-      await sleep(0);
+      // 有些网站需要在清空inputBox后等一帧. 比如claude, 否则容易出现inputBox中的数据被后面的inputBox.setHtml(queryHtml)设置后又被claude中原网页事件把inputBox清空的尴尬
+      await factory.checkWaitOneFrame();
 
       // 广播消息到其它sites
       checkBroadcastChat(evt, queryText);
@@ -422,9 +422,8 @@ function initInputBox() {
       const prefix = await combineSearch(queryText);
       queryHtml = prefix + queryHtml;
 
-      // 在主动click之前把数据设置到inputBox上, 然后等一帧, 等inputBox把数据设置好
       inputBox.setHtml(queryHtml);
-      await sleep(0);
+      await factory.checkWaitOneFrame();
 
       // 如果只使用Enter的话, 就不再需要主动发一次button click; 但如果是Ctrl+Enter, 就需要啦
       // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息

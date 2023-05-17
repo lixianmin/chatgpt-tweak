@@ -10,6 +10,7 @@ import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
 import { dispatchEventAsClick } from "@pages/content/sites/SiteTools.js";
+import { emptyMethod } from "@src/core/Tools";
 
 export function createChatgptFactory() {
   let inputBox = null;
@@ -66,6 +67,7 @@ export function createChatgptFactory() {
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
     attachTweakUI: attachTweakUI,
-    sendChat: sendChat
+    sendChat: sendChat,
+    checkWaitOneFrame: emptyMethod
   };
 }

@@ -10,7 +10,7 @@ import HeadBar from "@pages/content/widgets/HeadBar.jsx";
 import FootBar from "@pages/content/widgets/FootBar.jsx";
 import { useTextarea } from "@pages/content/sites/Textarea.js";
 import { dispatchEventAsClick, dispatchEventAsInput } from "@pages/content/sites/SiteTools.js";
-import { renderBefore } from "@src/core/Tools.ts";
+import { emptyMethod, renderBefore } from "@src/core/Tools.ts";
 
 export function createBardFactory() {
   let inputBox = null;
@@ -59,6 +59,7 @@ export function createBardFactory() {
     getSubmitButton: getSubmitButton,
     getConsolePanel: getConsolePanel,
     attachTweakUI: attachTweakUI,
-    sendChat: sendChat
+    sendChat: sendChat,
+    checkWaitOneFrame: emptyMethod
   };
 }

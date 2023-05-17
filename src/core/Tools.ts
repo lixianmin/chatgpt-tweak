@@ -12,6 +12,10 @@ export function sleep(ms: number) {
   });
 }
 
+export function emptyMethod() {
+
+}
+
 export function random(lower: number, upper: number): number {
   return lower + (upper - lower) * Math.random();
 }
