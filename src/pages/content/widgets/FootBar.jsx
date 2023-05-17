@@ -12,7 +12,7 @@ import { _T } from "@src/common/Locale.js";
 import { createEffect } from "solid-js";
 import { checkBuiltinCommands, fetchCommandHint } from "@pages/content/widgets/Commands.js";
 import { addEventListener } from "@src/core/EventListener.js";
-import { map } from "lodash-es";
+import { map, throttle } from "lodash-es";
 import { createSiteFactory } from "@pages/content/sites/SiteFactory.js";
 import { CommandType, Constants } from "@src/common/Constants.js";
 import Browser from "webextension-polyfill";
@@ -32,7 +32,6 @@ import FootBarFriend from "@pages/content/widgets/FootBarFriend";
 function initInputBox() {
   const prompts = usePrompts();
   const historyStore = useHistoryStore();
-  let isProcessing = false;
   const userConfig = useUserConfig();
   const factory = createSiteFactory();
 
@@ -48,7 +47,7 @@ function initInputBox() {
 
     function attachEventListeners() {
       list = [
-        addEventListener(inputBox.getDom(), "keydown", onKeyDown, true),
+        addEventListener(inputBox.getDom(), "keydown", throttle(onKeyDown, 200), true),
         // addEventListener(btnSubmit, "click", onSubmit),
         // 如果焦点不在inputBox，则回车时获得焦点
         addEventListener(document, "keydown", (evt) => {
@@ -388,7 +387,7 @@ function initInputBox() {
     let queryText = inputBox.getText();
     let queryHtml = inputBox.getHtml();
 
-    if (!isProcessing && queryText !== "") {
+    if (queryText !== "") {
       // 通过第一时间把inputBox的内容置空, 解决原网站自动submit的问题,
       inputBox.setHtml("");
       // 有些网站需要在清空inputBox后等一帧. 比如claude, 否则容易出现inputBox中的数据被后面的inputBox.setHtml(queryHtml)设置后又被claude中原网页事件把inputBox清空的尴尬
@@ -412,7 +411,6 @@ function initInputBox() {
       // todo 这里是如果出现了以?开头的, 则展开成prompt写进来
       // queryText = checkPromptExpansion(queryText);
 
-      isProcessing = true;
       // 只有按下ctrl键时, 才使用prompt重写
       if (evt.ctrlKey) {
         queryHtml = prompts.compilePrompt(queryHtml);
@@ -429,7 +427,6 @@ function initInputBox() {
       // 另外, 如果是claude收到chatgpt发来的secondhand事件的话, 也需要发一个button click的消息
       // 到目前为止, 似乎任何情况下都可以考虑发一个button click出去
       factory.sendChat();
-      isProcessing = false;
     }
   }
 }
