@@ -58,7 +58,12 @@ export function createChatgptFactory() {
   }
 
   function sendChat() {
-    dispatchEventAsClick(getSubmitButton()); // 给发送按钮发送一个click事件
+    // 解决chatgpt被动发送的时候submit button是disabled的问题
+    const submitButton = getSubmitButton();
+    submitButton.disabled = false;
+
+    // 给发送按钮发送一个click事件
+    dispatchEventAsClick(submitButton);
   }
 
   return {
