@@ -47,7 +47,7 @@ function initInputBox() {
 
     function attachEventListeners() {
       list = [
-        addEventListener(inputBox.getDom(), "keydown", throttle(onKeyDown, 200), true),
+        addEventListener(inputBox.getDom(), "keydown", onKeyDown, true),
         // addEventListener(btnSubmit, "click", onSubmit),
         // 如果焦点不在inputBox，则回车时获得焦点
         addEventListener(document, "keydown", (evt) => {
@@ -182,6 +182,9 @@ function initInputBox() {
     }
   }
 
+  // 每帧最多调用一次onKeyDownEnter, 防止回车过多导致bing反复发送消息, 但这个到底是否好使, 还需要测试后才知道
+  const onKeyDownEnterThrottle = throttle(onKeyDownEnter);
+
   async function onKeyDown(evt) {
     // 1. 如果使用默认onKeyDown, 则inputBox.value总是慢一帧，缺少evt.key的操作结果, 这要到onKeyUp事件中才能体现出来
     // 2. 当设置addEventListener()的第3个参数为true的时候, 可以在 evt.key==='Enter' 的时候拿到inputBox中的数据,
@@ -193,7 +196,7 @@ function initInputBox() {
 
     switch (evt.key) {
       case "Enter":
-        await onKeyDownEnter(evt);
+        await onKeyDownEnterThrottle(evt);
         break;
       case "ArrowUp":
       case "ArrowDown":
