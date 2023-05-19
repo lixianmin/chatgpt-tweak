@@ -21,6 +21,7 @@ import axios from "axios";
 import { formatDateTime } from "@src/core/Time";
 import FootBarGoogle from "@pages/content/widgets/FootBarGoogle";
 import FootBarFriend from "@pages/content/widgets/FootBarFriend";
+import { createBotProxy } from "@pages/content/sites/claude/BotProxy";
 
 /********************************************************************
  created:    2023-03-27
@@ -28,6 +29,7 @@ import FootBarFriend from "@pages/content/widgets/FootBarFriend";
 
  Copyright (C) - All Rights Reserved
  *********************************************************************/
+let botProxy = null;
 
 function initInputBox() {
   const prompts = usePrompts();
@@ -36,6 +38,7 @@ function initInputBox() {
   const factory = createSiteFactory();
 
   const inputBox = factory.getInputBox();
+  botProxy = createBotProxy(factory);
 
   const tempIntputData = {
     ok: false,
