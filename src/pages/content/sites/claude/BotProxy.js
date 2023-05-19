@@ -29,7 +29,7 @@ export function createBotProxy(factory) {
     factory.sendChat();
 
     while (true) {
-      await sleep(200);
+      await sleep(100);
       const list = fetchChatList();
       const size = list.length;
       if (size < 2) {
@@ -38,12 +38,18 @@ export function createBotProxy(factory) {
 
       // 先找到questionIndex
       let questionIndex = size - 2;
+      let isFound = false;
       while (questionIndex >= 0) {
         const question = list[questionIndex].innerText;
         if (question === message) {
+          isFound = true;
           break;
         }
         questionIndex--;
+      }
+
+      if (!isFound) {
+        continue;
       }
 
       const answerIndex = questionIndex + 1;
