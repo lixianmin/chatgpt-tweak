@@ -22,11 +22,17 @@ export function createBotProxy(factory) {
     return document.querySelectorAll("div[class=\"p-rich_text_section\"]");
   }
 
+  function removeInvisible(text) {
+    return text.replace(/[\s\n\t ]+/g, "");
+  }
+
   async function sendQuestion(message, onAnswer) {
     const inputBox = factory.getInputBox();
     inputBox.setHtml(message);
     await factory.checkWaitOneFrame();
     factory.sendChat();
+
+    const compactMessage = removeInvisible(message);
 
     while (true) {
       await sleep(100);
@@ -40,28 +46,34 @@ export function createBotProxy(factory) {
       let questionIndex = size - 2;
       let isFound = false;
       while (questionIndex >= 0) {
-        const question = list[questionIndex].innerText;
-        if (question === message) {
+        const question = removeInvisible(list[questionIndex].innerText);
+        if (question === compactMessage) {
           isFound = true;
           break;
         }
         questionIndex--;
       }
 
+      // console.warn("not found");
       if (!isFound) {
         continue;
       }
 
       const answerIndex = questionIndex + 1;
       const text = list[answerIndex].innerText;
+      // console.warn("text", text);
+
       if (text.endsWith("Typing… (edited) ")) {
-        onAnswer(text);
+        // onAnswer(text);
         continue;
       }
 
-      if (text.endsWith(" (edited) ")) {
-        onAnswer(text);
-        return text;
+      const trimEnd = " (edited) ";
+      if (text.endsWith(trimEnd)) {
+        const answer = removeInvisible(text.substring(0, text.length - trimEnd.length));
+        // console.warn("answer", answer);
+        onAnswer(answer);
+        return answer;
       }
     }
   }
