@@ -38,6 +38,8 @@ const manifest = defineManifest(async () => ({
       matches: ["*://*/*"]
     }
   ],
+  // 使用的时候才弹出申请权限的对话框
+  optional_host_permissions: ["https://*/*"],
   permissions: [
     "storage",  // 不加这个，Browser.storage.sync取不到
     "tabs"      // 在option页面中遍历tabs需要这个权限, 但在content页面中无法遍历其它tabs, 需要通过Browser.runtime.sendMessage中转一下
